@@ -2,52 +2,37 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>브리핑 — 금융·경제 뉴스</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>브리핑</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&family=Noto+Sans+KR:wght@300;400;500&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#ffffff;
-  --border:#e8e8e8;
-  --text:#111111;
-  --sub:#888888;
-  --accent:#c00000;
-  --hover:#f7f7f7;
-}
-body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;font-size:15px;line-height:1.6}
+body{background:#fff;color:#111;font-family:'Noto Sans KR',sans-serif}
 a{text-decoration:none;color:inherit}
 #header{border-bottom:3px solid #111;padding:16px 20px 12px;text-align:center;position:sticky;top:0;background:#fff;z-index:100}
-#logo{font-family:'Noto Serif KR',serif;font-size:28px;font-weight:700;letter-spacing:-0.03em;color:#111}
-#logo em{color:var(--accent);font-style:normal}
-#tagline{font-size:10px;color:#aaa;letter-spacing:0.15em;text-transform:uppercase;margin-top:2px}
-#tabs{display:flex;overflow-x:auto;border-bottom:1px solid var(--border);background:#fff;position:sticky;top:65px;z-index:99;-webkit-overflow-scrolling:touch}
+#logo{font-family:'Noto Serif KR',serif;font-size:28px;font-weight:700}
+#logo em{color:#c00000;font-style:normal}
+#tagline{font-size:10px;color:#aaa;letter-spacing:0.15em;margin-top:2px}
+#tabs{display:flex;overflow-x:auto;border-bottom:1px solid #e8e8e8;background:#fff;position:sticky;top:65px;z-index:99}
 #tabs::-webkit-scrollbar{display:none}
-.tab{padding:11px 16px;font-size:12px;font-weight:500;color:#aaa;border:none;background:none;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;letter-spacing:0.04em;font-family:'Noto Sans KR',sans-serif}
+.tab{padding:11px 16px;font-size:12px;font-weight:500;color:#aaa;border:none;background:none;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;font-family:'Noto Sans KR',sans-serif}
 .tab.active{color:#111;border-bottom-color:#111}
-#ai-toggle{display:flex;align-items:center;gap:8px;padding:10px 20px;background:#fafafa;border-bottom:1px solid var(--border);font-size:12px;color:#555;cursor:pointer}
-#ai-toggle input{accent-color:var(--accent)}
-#ai-label{font-weight:500}
-#ai-status{margin-left:auto;font-size:11px;color:#aaa}
 #news{max-width:680px;margin:0 auto;padding:0 20px}
-.card{padding:16px 0;border-bottom:1px solid var(--border);display:flex;gap:12px;cursor:pointer}
-.card:active{background:var(--hover)}
+.card{padding:16px 0;border-bottom:1px solid #e8e8e8;display:flex;gap:12px}
+.card-rank{font-size:22px;font-weight:700;color:#e8e8e8;font-family:Georgia,serif;flex-shrink:0;width:28px;text-align:center;padding-top:2px}
 .card-body{flex:1;min-width:0}
 .card-meta{display:flex;align-items:center;gap:6px;margin-bottom:5px}
-.source{font-size:10px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--accent)}
+.source{font-size:10px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:#c00000}
 .time{font-size:10px;color:#bbb}
 .card-title{font-size:15px;font-weight:700;line-height:1.45;color:#111;font-family:'Noto Serif KR',serif;word-break:keep-all}
-.card-title.ai-title{color:var(--accent)}
-.card-desc{font-size:12px;color:#888;margin-top:5px;line-height:1.55;font-weight:300;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.card-rank{font-size:22px;font-weight:700;color:#e8e8e8;font-family:Georgia,serif;flex-shrink:0;width:28px;text-align:center;padding-top:2px}
-.card.featured .card-title{font-size:19px;line-height:1.35}
+.card.featured .card-title{font-size:19px}
 .card.featured .card-rank{font-size:32px}
-#loading{text-align:center;padding:60px 20px;color:#ccc;font-size:13px}
+.card-desc{font-size:12px;color:#888;margin-top:5px;line-height:1.55}
+#loading{text-align:center;padding:60px;color:#ccc;font-size:13px}
 .spinner{display:inline-block;width:20px;height:20px;border:2px solid #eee;border-top-color:#111;border-radius:50%;animation:spin 0.8s linear infinite;margin-bottom:10px}
 @keyframes spin{to{transform:rotate(360deg)}}
-.ai-badge{display:inline-block;font-size:9px;background:#fff0f0;color:var(--accent);border:1px solid #fcc;padding:1px 5px;border-radius:2px;margin-left:6px;font-weight:500;vertical-align:middle;letter-spacing:0.05em}
-#footer{text-align:center;padding:30px 20px;color:#ccc;font-size:11px;border-top:1px solid var(--border);margin-top:20px;line-height:2}
-#load-more{display:block;width:100%;padding:14px;font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:500;background:#fff;border:1px solid #ddd;color:#555;cursor:pointer;margin:16px 0;letter-spacing:0.04em}
+#footer{text-align:center;padding:30px 20px;color:#ccc;font-size:11px;border-top:1px solid #e8e8e8;margin-top:20px;line-height:2}
+#load-more{display:block;width:100%;padding:14px;font-family:'Noto Sans KR',sans-serif;font-size:13px;background:#fff;border:1px solid #ddd;color:#555;cursor:pointer;margin:16px 0}
 </style>
 </head>
 <body>
@@ -62,27 +47,96 @@ a{text-decoration:none;color:inherit}
   <button class="tab" onclick="switchTab(3,this)">테크/AI</button>
   <button class="tab" onclick="switchTab(4,this)">증권/투자</button>
 </div>
-<div id="ai-toggle" onclick="toggleAI()">
-  <input type="checkbox" id="ai-check" checked>
-  <span id="ai-label">🤖 AI 제목 변환</span>
-  <span id="ai-status">뉴스 제목을 더 자극적으로</span>
-</div>
 <div id="news"><div id="loading"><div class="spinner"></div><br>뉴스 불러오는 중...</div></div>
-<div id="footer">
-  브리핑 · RSS 기반 뉴스 애그리게이터<br>
-  원문 저작권은 각 언론사에 귀속됩니다<br>
-  <span id="update-time"></span>
-</div>
+<div id="footer">브리핑 · RSS 기반 뉴스<br>원문 저작권은 각 언론사에 귀속<br><span id="update-time"></span></div>
 <script>
-const FEEDS={0:[{name:"Reuters",url:"https://feeds.reuters.com/reuters/businessNews"},{name:"연합뉴스",url:"https://www.yonhapnews.co.kr/rss/economy.xml"},{name:"TechCrunch",url:"https://techcrunch.com/feed/"},{name:"한국경제",url:"https://www.hankyung.com/feed/finance"},{name:"CNBC",url:"https://www.cnbc.com/id/10001147/device/rss/rss.html"}],1:[{name:"Reuters",url:"https://feeds.reuters.com/reuters/businessNews"},{name:"Yahoo Finance",url:"https://finance.yahoo.com/news/rssindex"},{name:"CNBC",url:"https://www.cnbc.com/id/10001147/device/rss/rss.html"},{name:"MarketWatch",url:"https://feeds.content.dowjones.io/public/rss/mw_topstories"}],2:[{name:"연합뉴스",url:"https://www.yonhapnews.co.kr/rss/economy.xml"},{name:"한국경제",url:"https://www.hankyung.com/feed/finance"},{name:"머니투데이",url:"https://rss.mt.co.kr/mt_news.xml"},{name:"이데일리",url:"https://rss.edaily.co.kr/edaily/section/economy.xml"},{name:"서울경제",url:"https://www.sedaily.com/RSS/S1"}],3:[{name:"TechCrunch",url:"https://techcrunch.com/feed/"},{name:"The Verge",url:"https://www.theverge.com/rss/index.xml"},{name:"Wired",url:"https://www.wired.com/feed/rss"},{name:"MIT Tech Review",url:"https://www.technologyreview.com/feed/"}],4:[{name:"Reuters Markets",url:"https://feeds.reuters.com/reuters/marketsnews"},{name:"한경 증권",url:"https://www.hankyung.com/feed/stock"},{name:"연합 증권",url:"https://www.yonhapnews.co.kr/rss/stock.xml"}]};
-let curTab=0,allArticles=[],aiEnabled=true,displayCount=15;
-function toggleAI(){const cb=document.getElementById('ai-check');cb.checked=!cb.checked;aiEnabled=cb.checked;document.getElementById('ai-status').textContent=aiEnabled?'뉴스 제목을 더 자극적으로':'원문 제목 표시 중';renderArticles();}
+const FEEDS={
+  0:[
+    {name:"Reuters",url:"https://feeds.reuters.com/reuters/businessNews"},
+    {name:"CNBC",url:"https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=10001147"},
+    {name:"TechCrunch",url:"https://techcrunch.com/feed/"},
+    {name:"연합뉴스",url:"https://www.yonhapnews.co.kr/rss/economy.xml"},
+    {name:"한국경제",url:"https://www.hankyung.com/feed/finance"}
+  ],
+  1:[
+    {name:"Reuters",url:"https://feeds.reuters.com/reuters/businessNews"},
+    {name:"CNBC",url:"https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=10001147"},
+    {name:"Yahoo Finance",url:"https://finance.yahoo.com/news/rssindex"},
+    {name:"MarketWatch",url:"https://feeds.content.dowjones.io/public/rss/mw_topstories"}
+  ],
+  2:[
+    {name:"연합뉴스",url:"https://www.yonhapnews.co.kr/rss/economy.xml"},
+    {name:"한국경제",url:"https://www.hankyung.com/feed/finance"},
+    {name:"머니투데이",url:"https://rss.mt.co.kr/mt_news.xml"},
+    {name:"이데일리",url:"https://rss.edaily.co.kr/edaily/section/economy.xml"}
+  ],
+  3:[
+    {name:"TechCrunch",url:"https://techcrunch.com/feed/"},
+    {name:"The Verge",url:"https://www.theverge.com/rss/index.xml"},
+    {name:"Wired",url:"https://www.wired.com/feed/rss"}
+  ],
+  4:[
+    {name:"Reuters Markets",url:"https://feeds.reuters.com/reuters/marketsnews"},
+    {name:"한경 증권",url:"https://www.hankyung.com/feed/stock"},
+    {name:"연합 증권",url:"https://www.yonhapnews.co.kr/rss/stock.xml"}
+  ]
+};
+let curTab=0,allArticles=[],displayCount=15;
 function switchTab(i,el){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');curTab=i;displayCount=15;loadFeeds();}
 function timeAgo(d){const m=Math.floor((Date.now()-new Date(d))/60000);if(m<1)return'방금';if(m<60)return m+'분 전';if(m<1440)return Math.floor(m/60)+'시간 전';return Math.floor(m/1440)+'일 전';}
 function strip(h){return h?h.replace(/<[^>]*>/g,'').replace(/&[a-z#0-9]+;/gi,' ').replace(/\s+/g,' ').trim():'';}
-async function transformTitles(articles){if(!aiEnabled)return articles;const titles=articles.map(a=>a.title).join('\n');try{const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:`다음 뉴스 제목들을 한국 독자가 클릭하고 싶게 자극적이고 흥미롭게 바꿔주세요.\n영어 제목은 한국어로 번역하면서 자극적으로 바꾸세요.\n반드시 JSON 배열만 반환하세요. 다른 텍스트 없이 배열만.\n예: ["제목1","제목2"]\n\n원본 제목들:\n${titles}`}]})});const data=await res.json();const text=data.content?.[0]?.text||'[]';const clean=text.replace(/```json|```/g,'').trim();const newTitles=JSON.parse(clean);return articles.map((a,i)=>({...a,aiTitle:newTitles[i]||a.title,hasAI:true}));}catch(e){return articles;}}
-async function loadFeeds(){document.getElementById('news').innerHTML='<div id="loading"><div class="spinner"></div><br>뉴스 불러오는 중...</div>';const sources=FEEDS[curTab];const all=[];await Promise.all(sources.map(async s=>{try{const r=await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(s.url)}&count=15`);const d=await r.json();if(d.status==='ok')(d.items||[]).forEach(item=>all.push({title:item.title,link:item.link,pubDate:item.pubDate,description:strip(item.description||item.content||''),sourceName:s.name,aiTitle:null,hasAI:false}));}catch(e){}}));all.sort((a,b)=>new Date(b.pubDate)-new Date(a.pubDate));allArticles=all;renderArticles();if(aiEnabled&&all.length>0){const top=all.slice(0,20);const transformed=await transformTitles(top);transformed.forEach((a,i)=>{allArticles[i]=a;});renderArticles();}document.getElementById('update-time').textContent='업데이트: '+new Date().toLocaleTimeString('ko-KR');}
-function renderArticles(){const container=document.getElementById('news');if(!allArticles.length){container.innerHTML='<div id="loading">기사를 불러오지 못했습니다.</div>';return;}const items=allArticles.slice(0,displayCount);let html='';items.forEach((a,i)=>{const title=(aiEnabled&&a.aiTitle)?a.aiTitle:a.title;const isAI=aiEnabled&&a.hasAI;html+=`<a href="${a.link}" target="_blank" rel="noopener"><div class="card${i===0?' featured':''}"><div class="card-rank">${i+1}</div><div class="card-body"><div class="card-meta"><span class="source">${a.sourceName}</span><span class="time">${timeAgo(a.pubDate)}</span>${isAI?'<span class="ai-badge">AI</span>':''}</div><div class="card-title${isAI?' ai-title':''}">${title}</div>${i<5&&a.description?`<div class="card-desc">${a.description.slice(0,100)}</div>`:''}</div></div></a>`;});if(allArticles.length>displayCount){html+=`<button id="load-more" onclick="loadMore()">더 보기 (${allArticles.length-displayCount}개 남음)</button>`;}container.innerHTML=html;}
+async function fetchRSS(url){
+  const proxy=`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+  const r=await fetch(proxy);
+  const d=await r.json();
+  const parser=new DOMParser();
+  const xml=parser.parseFromString(d.contents,'text/xml');
+  const items=xml.querySelectorAll('item');
+  const result=[];
+  items.forEach(item=>{
+    result.push({
+      title:item.querySelector('title')?.textContent||'',
+      link:item.querySelector('link')?.textContent||item.querySelector('guid')?.textContent||'',
+      pubDate:item.querySelector('pubDate')?.textContent||new Date().toISOString(),
+      description:strip(item.querySelector('description')?.textContent||'')
+    });
+  });
+  return result;
+}
+async function loadFeeds(){
+  document.getElementById('news').innerHTML='<div id="loading"><div class="spinner"></div><br>뉴스 불러오는 중...</div>';
+  const sources=FEEDS[curTab];
+  const all=[];
+  await Promise.all(sources.map(async s=>{
+    try{
+      const items=await fetchRSS(s.url);
+      items.forEach(item=>all.push({...item,sourceName:s.name}));
+    }catch(e){}
+  }));
+  all.sort((a,b)=>new Date(b.pubDate)-new Date(a.pubDate));
+  allArticles=all;
+  renderArticles();
+  document.getElementById('update-time').textContent='업데이트: '+new Date().toLocaleTimeString('ko-KR');
+}
+function renderArticles(){
+  const container=document.getElementById('news');
+  if(!allArticles.length){container.innerHTML='<div id="loading">기사를 불러오지 못했습니다.</div>';return;}
+  const items=allArticles.slice(0,displayCount);
+  let html='';
+  items.forEach((a,i)=>{
+    html+=`<a href="${a.link}" target="_blank" rel="noopener">
+    <div class="card${i===0?' featured':''}">
+      <div class="card-rank">${i+1}</div>
+      <div class="card-body">
+        <div class="card-meta"><span class="source">${a.sourceName}</span><span class="time">${timeAgo(a.pubDate)}</span></div>
+        <div class="card-title">${a.title}</div>
+        ${i<5&&a.description?`<div class="card-desc">${a.description.slice(0,100)}</div>`:''}
+      </div>
+    </div></a>`;
+  });
+  if(allArticles.length>displayCount)html+=`<button id="load-more" onclick="loadMore()">더 보기 (${allArticles.length-displayCount}개 남음)</button>`;
+  container.innerHTML=html;
+}
 function loadMore(){displayCount+=15;renderArticles();}
 loadFeeds();
 </script>
