@@ -1,17 +1,16 @@
-export default async function handler(req) {
-  const url = new URL(req.url).searchParams.get('url');
-  if (!url) return new Response('no url', { status: 400 });
+export default async function handler(req, res) {
+  const url = req.query.url;
+  if (!url) return res.status(400).send('no url');
   try {
-    const r = await fetch(url);
-    const text = await r.text();
-    return new Response(text, {
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'text/xml; charset=utf-8'
-      }
+    const response = await fetch(url, {
+      headers: { 'User-Agent': 'Mozilla/5.0' }
     });
+    const text = await response.text();
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Content-Type', 'text/xml; charset=utf-8');
+    res.send(text);
   } catch(e) {
-    return new Response(e.message, { status: 500 });
+    res.status(500).send(e.message);
   }
 }
 
