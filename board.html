@@ -88,8 +88,9 @@ a{text-decoration:none;color:inherit}
 #detail-body{font-size:14px;line-height:1.9;color:var(--text);white-space:pre-wrap;min-height:80px}
 #detail-actions{display:flex;gap:8px;margin-top:20px;padding-top:16px;border-top:1px solid var(--border);justify-content:center}
 .vote-btn{display:flex;align-items:center;gap:6px;padding:10px 24px;border-radius:40px;font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:700;cursor:pointer;border:2px solid var(--border);background:#fff;transition:all 0.15s;min-width:80px;justify-content:center}
-.vote-btn.up:hover,.vote-btn.up.voted{background:#fff0f2;border-color:var(--red);color:var(--red)}
-.vote-btn.down:hover,.vote-btn.down.voted{background:#f0f4ff;border-color:var(--blue);color:var(--blue)}
+.vote-btn.up.voted{background:#fff0f2;border-color:var(--red);color:var(--red)}
+.vote-btn.down.voted{background:#f0f4ff;border-color:var(--blue);color:var(--blue)}
+.vote-btn:not(.voted):hover{opacity:0.8}
 #comments-section{background:#f8f9fa;border-top:6px solid var(--bg)}
 #comments-header{padding:12px 16px;font-size:13px;font-weight:700;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px}
 #comment-cnt-badge{background:var(--red);color:#fff;font-size:10px;padding:1px 6px;border-radius:10px}
@@ -276,6 +277,7 @@ function updateCharCount(){document.getElementById('char-count').textContent=doc
 function setSort(sort,el){document.querySelectorAll('.board-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');currentSort=sort;currentPage=1;loadPosts();}
 function openWrite(){document.getElementById('write-modal').classList.add('show');document.body.style.overflow='hidden';}
 function closeWrite(){document.getElementById('write-modal').classList.remove('show');document.body.style.overflow='';}
+
 window.addEventListener('popstate',()=>{
   if(document.getElementById('detail-view').style.display==='block'){
     document.getElementById('detail-view').style.display='none';
@@ -283,6 +285,7 @@ window.addEventListener('popstate',()=>{
     loadPosts();loadHotPosts();
   }
 });
+
 function openAdminModal(action){
   adminAction=action;
   document.getElementById('admin-pw-input').value='';
@@ -306,29 +309,29 @@ function confirmAdmin(){
 function adminDeletePost(){isAdmin?deletePost():openAdminModal('post');}
 function adminDeleteComment(id){isAdmin?deleteComment(id):openAdminModal({type:'comment',id});}
 function adminDeleteReply(id){isAdmin?deleteReply(id):openAdminModal({type:'reply',id});}
+
 async function deletePost(){
   if(!confirm('이 글을 삭제할까요?'))return;
   const r=await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${currentPostId}`,{
     method:'DELETE',
     headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
   });
-  if(r.ok||r.status===204){showList();}
-  else alert('삭제 실패. 다시 시도해주세요.');
+  if(r.ok||r.status===204){
+    document.getElementById('detail-view').style.display='none';
+    document.getElementById('list-view').style.display='block';
+    history.pushState({page:'list'},'','');
+    setTimeout(()=>{loadPosts();loadHotPosts();},600);
+  }else alert('삭제 실패. 다시 시도해주세요.');
 }
 async function deleteComment(id){
-  await fetch(`${SUPABASE_URL}/rest/v1/comments?id=eq.${id}`,{
-    method:'DELETE',
-    headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
-  });
-  loadComments(currentPostId);
+  await fetch(`${SUPABASE_URL}/rest/v1/comments?id=eq.${id}`,{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}});
+  setTimeout(()=>loadComments(currentPostId),300);
 }
 async function deleteReply(id){
-  await fetch(`${SUPABASE_URL}/rest/v1/comments?id=eq.${id}`,{
-    method:'DELETE',
-    headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
-  });
-  loadComments(currentPostId);
+  await fetch(`${SUPABASE_URL}/rest/v1/comments?id=eq.${id}`,{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}});
+  setTimeout(()=>loadComments(currentPostId),300);
 }
+
 let touchStartY=0,isPulling=false;
 document.addEventListener('touchstart',e=>{if(window.scrollY===0)touchStartY=e.touches[0].clientY;},{passive:true});
 document.addEventListener('touchmove',e=>{
@@ -357,6 +360,7 @@ document.addEventListener('touchend',e=>{
   }else document.getElementById('ptr-indicator').classList.remove('visible');
   isPulling=false;touchStartY=0;
 },{passive:true});
+
 async function loadHotPosts(){
   try{
     const r=await fetch(`${SUPABASE_URL}/rest/v1/posts?select=*&order=likes.desc&limit=5`,{headers:H});
@@ -367,6 +371,7 @@ async function loadHotPosts(){
       :'<div style="padding:12px 16px;color:#ccc;font-size:12px">아직 인기글이 없어요!</div>';
   }catch(e){}
 }
+
 async function loadPosts(){
   document.getElementById('posts-container').innerHTML='<div class="loading"><div class="spinner"></div></div>';
   try{
@@ -411,8 +416,10 @@ async function loadPosts(){
     document.getElementById('pagination').innerHTML=pag;
   }catch(e){document.getElementById('posts-container').innerHTML='<div style="padding:20px;text-align:center;color:#ccc">불러오기 실패</div>';}
 }
+
 function goPage(p){currentPage=p;loadPosts();window.scrollTo(0,0);}
 function searchPosts(){searchQuery=document.getElementById('search-input').value.trim();currentPage=1;loadPosts();}
+
 async function submitPost(){
   const title=document.getElementById('post-title-input').value.trim();
   const content=document.getElementById('post-content-input').value.trim();
@@ -431,6 +438,7 @@ async function submitPost(){
   }catch(e){alert('오류가 발생했습니다.');}
   btn.textContent='게시하기';btn.disabled=false;
 }
+
 async function showPost(id){
   currentPostId=id;
   try{
@@ -443,7 +451,10 @@ async function showPost(id){
     document.getElementById('detail-body').textContent=p.content;
     document.getElementById('up-count').textContent=p.likes||0;
     document.getElementById('down-count').textContent=p.dislikes||0;
+    // 이전 투표 상태 복원
     document.querySelectorAll('.vote-btn').forEach(b=>b.classList.remove('voted'));
+    const savedVote=localStorage.getItem(`vote_${id}`);
+    if(savedVote) document.querySelector(`.vote-btn.${savedVote==='up'?'up':'down'}`).classList.add('voted');
     document.getElementById('list-view').style.display='none';
     document.getElementById('detail-view').style.display='block';
     history.pushState({page:'detail',id},'','');
@@ -451,15 +462,22 @@ async function showPost(id){
     window.scrollTo(0,0);
   }catch(e){}
 }
+
 function showList(){
   document.getElementById('detail-view').style.display='none';
   document.getElementById('list-view').style.display='block';
   history.pushState({page:'list'},'','');
   loadPosts();loadHotPosts();
 }
+
 async function vote(type){
+  const voteKey=`vote_${currentPostId}`;
+  const already=localStorage.getItem(voteKey);
+  if(already){
+    alert(already==='up'?'이미 추천한 글입니다.':'이미 비추천한 글입니다.');
+    return;
+  }
   const btn=document.querySelector(`.vote-btn.${type==='up'?'up':'down'}`);
-  if(btn.classList.contains('voted')){alert('이미 투표했습니다.');return;}
   btn.classList.add('voted');
   const r=await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${currentPostId}&select=likes,dislikes`,{headers:H});
   const p=(await r.json())[0];
@@ -467,8 +485,10 @@ async function vote(type){
   const val=(p[field]||0)+1;
   await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${currentPostId}`,{method:'PATCH',headers:H,body:JSON.stringify({[field]:val})});
   document.getElementById(type==='up'?'up-count':'down-count').textContent=val;
+  localStorage.setItem(voteKey,type);
   if(type==='up')loadHotPosts();
 }
+
 async function loadComments(postId){
   const r=await fetch(`${SUPABASE_URL}/rest/v1/comments?post_id=eq.${postId}&order=created_at.asc`,{headers:H});
   const all=await r.json();
@@ -508,12 +528,14 @@ async function loadComments(postId){
     </div>`;
   }).join('');
 }
+
 function toggleReplyForm(commentId){
   const form=document.getElementById(`reply-form-${commentId}`);
   const isOpen=form.classList.contains('open');
   document.querySelectorAll('.reply-form').forEach(f=>f.classList.remove('open'));
   if(!isOpen){form.classList.add('open');document.getElementById(`reply-input-${commentId}`).focus();}
 }
+
 async function submitReply(parentId){
   const input=document.getElementById(`reply-input-${parentId}`);
   const content=input.value.trim();
@@ -524,6 +546,7 @@ async function submitReply(parentId){
   await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${currentPostId}`,{method:'PATCH',headers:H,body:JSON.stringify({comment_count:(p.comment_count||0)+1})});
   await loadComments(currentPostId);
 }
+
 async function submitComment(){
   const content=document.getElementById('comment-input').value.trim();
   if(!content||content.length<2)return;
@@ -537,6 +560,7 @@ async function submitComment(){
   await loadComments(currentPostId);
   btn.textContent='등록';btn.disabled=false;
 }
+
 document.getElementById('comment-input').addEventListener('keydown',e=>{if(e.key==='Enter')submitComment();});
 loadPosts();
 loadHotPosts();
