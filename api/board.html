@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ETF레이더 — 커뮤니티</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+:root{
+  --red:#e8001a;
+  --navy:#0a1628;
+  --bg:#f4f4f6;
+  --white:#fff;
+  --border:#e2e2e8;
+  --text:#111827;
+  --sub:#6b7280;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;font-size:14px}
+a{text-decoration:none;color:inherit}
+
+#header{background:var(--navy);padding:14px 20px;text-align:center;border-bottom:3px solid var(--red);position:sticky;top:0;z-index:100}
+#header-inner{display:flex;align-items:center;justify-content:space-between;max-width:720px;margin:0 auto}
+#logo{font-family:'Noto Serif KR',serif;font-size:20px;font-weight:900;color:#fff}
+#logo em{color:var(--red);font-style:normal}
+#back-btn{font-size:12px;color:rgba(255,255,255,0.6);padding:5px 10px;border:1px solid rgba(255,255,255,0.2);border-radius:3px}
+#page-title{font-size:13px;color:rgba(255,255,255,0.5);letter-spacing:0.1em}
+
+#wrap{max-width:720px;margin:0 auto;padding:16px}
+
+/* 글쓰기 폼 */
+#write-box{background:#fff;border-radius:4px;padding:16px;margin-bottom:16px;border-left:4px solid var(--red);box-shadow:0 1px 3px rgba(0,0,0,0.06)}
+#write-box h3{font-size:13px;font-weight:700;margin-bottom:12px;color:var(--text)}
+.form-row{margin-bottom:10px}
+.form-row input,.form-row textarea{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:3px;font-family:'Noto Sans KR',sans-serif;font-size:13px;color:var(--text);outline:none;transition:border 0.15s}
+.form-row input:focus,.form-row textarea:focus{border-color:var(--red)}
+.form-row textarea{height:80px;resize:none;line-height:1.6}
+#submit-btn{background:var(--red);color:#fff;border:none;padding:10px 20px;font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:700;border-radius:3px;cursor:pointer;width:100%;letter-spacing:0.04em}
+#submit-btn:active{opacity:0.85}
+
+/* 게시글 목록 */
+.section-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.section-title{font-size:12px;font-weight:700;color:var(--sub);letter-spacing:0.12em;text-transform:uppercase}
+#post-count{font-size:12px;color:var(--sub)}
+#post-count strong{color:var(--red)}
+
+.post-card{background:#fff;border-radius:4px;padding:14px 16px;margin-bottom:3px;cursor:pointer;border-left:3px solid transparent;transition:all 0.15s;box-shadow:0 1px 2px rgba(0,0,0,0.04)}
+.post-card:hover{border-left-color:var(--red);background:#fafafa}
+.post-header{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:6px}
+.post-title{font-size:14px;font-weight:600;line-height:1.45;color:var(--text);font-family:'Noto Serif KR',serif;flex:1}
+.post-meta{display:flex;align-items:center;gap:8px;font-size:11px;color:#9ca3af;flex-shrink:0}
+.post-preview{font-size:12px;color:var(--sub);line-height:1.55;margin-bottom:8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.post-footer{display:flex;align-items:center;gap:12px;font-size:11px;color:#9ca3af}
+.post-footer span{display:flex;align-items:center;gap:3px}
+
+/* 글 상세 */
+#post-detail{display:none}
+#detail-back{background:none;border:none;color:var(--red);font-size:13px;font-family:'Noto Sans KR',sans-serif;cursor:pointer;padding:0;margin-bottom:12px;font-weight:500}
+#detail-box{background:#fff;border-radius:4px;padding:20px;margin-bottom:12px;border-left:4px solid var(--red)}
+#detail-title{font-family:'Noto Serif KR',serif;font-size:19px;font-weight:700;line-height:1.5;margin-bottom:10px}
+#detail-meta{font-size:11px;color:#9ca3af;margin-bottom:14px;display:flex;gap:12px}
+#detail-content{font-size:14px;line-height:1.8;color:var(--text);white-space:pre-wrap}
+#detail-actions{display:flex;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
+.action-btn{background:none;border:1px solid var(--border);padding:6px 14px;border-radius:20px;font-size:12px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;color:var(--sub);transition:all 0.15s}
+.action-btn:hover{border-color:var(--red);color:var(--red)}
+
+/* 댓글 */
+#comments-box{background:#fff;border-radius:4px;padding:16px}
+#comments-title{font-size:13px;font-weight:700;margin-bottom:12px;color:var(--text)}
+.comment-item{padding:12px 0;border-bottom:1px solid var(--border)}
+.comment-item:last-child{border-bottom:none}
+.comment-nick{font-size:11px;font-weight:700;color:var(--red);margin-bottom:4px}
+.comment-text{font-size:13px;line-height:1.6;color:var(--text)}
+.comment-time{font-size:10px;color:#9ca3af;margin-top:4px}
+#comment-form{margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
+#comment-input{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:3px;font-family:'Noto Sans KR',sans-serif;font-size:13px;outline:none;margin-bottom:8px;transition:border 0.15s}
+#comment-input:focus{border-color:var(--red)}
+#comment-btn{background:var(--navy);color:#fff;border:none;padding:8px 16px;font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:700;border-radius:3px;cursor:pointer}
+
+#loading-posts{text-align:center;padding:40px;color:#ccc;font-size:13px}
+.spinner{display:inline-block;width:18px;height:18px;border:2px solid #eee;border-top-color:var(--red);border-radius:50%;animation:spin 0.7s linear infinite;margin-bottom:8px}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<div id="header">
+  <div id="header-inner">
+    <a href="/" id="logo">ETF<em>레이더</em></a>
+    <span id="page-title">커뮤니티</span>
+    <a href="/" id="back-btn">← 뉴스</a>
+  </div>
+</div>
+
+<div id="wrap">
+
+  <!-- 목록 뷰 -->
+  <div id="post-list-view">
+    <div id="write-box">
+      <h3>✏️ 익명 글쓰기</h3>
+      <div class="form-row">
+        <input type="text" id="post-title" placeholder="제목을 입력하세요" maxlength="100">
+      </div>
+      <div class="form-row">
+        <textarea id="post-content" placeholder="내용을 입력하세요 (ETF, 펀드, 주식 관련 자유롭게)"></textarea>
+      </div>
+      <button id="submit-btn" onclick="submitPost()">게시하기</button>
+    </div>
+
+    <div class="section-bar">
+      <span class="section-title">전체 글</span>
+      <span id="post-count"></span>
+    </div>
+    <div id="posts-container">
+      <div id="loading-posts"><div class="spinner"></div><br>불러오는 중...</div>
+    </div>
+  </div>
+
+  <!-- 상세 뷰 -->
+  <div id="post-detail">
+    <button id="detail-back" onclick="showList()">← 목록으로</button>
+    <div id="detail-box">
+      <div id="detail-title"></div>
+      <div id="detail-meta"></div>
+      <div id="detail-content"></div>
+      <div id="detail-actions">
+        <button class="action-btn" onclick="likePost()">👍 좋아요 <span id="like-count">0</span></button>
+      </div>
+    </div>
+    <div id="comments-box">
+      <div id="comments-title">댓글 <span id="comment-count">0</span>개</div>
+      <div id="comments-container"></div>
+      <div id="comment-form">
+        <input type="text" id="comment-input" placeholder="댓글을 입력하세요 (익명)">
+        <button id="comment-btn" onclick="submitComment()">등록</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const SUPABASE_URL='https://aoqzohxljzghflkuuxhx.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFvcXpvaHhsanpnaGZsa3V1eGh4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ2MTEyNjMsImV4cCI6MjA5MDE4NzI2M30.cbSaSVWBPQZfMG5QqQRFAhCGb0VNMTX9YiRLqtrpHgM';
+
+const headers={
+  'Content-Type':'application/json',
+  'apikey':SUPABASE_KEY,
+  'Authorization':'Bearer '+SUPABASE_KEY,
+  'Prefer':'return=representation'
+};
+
+let currentPostId=null;
+
+function timeAgo(d){
+  const m=Math.floor((Date.now()-new Date(d))/60000);
+  if(m<1)return'방금';if(m<60)return m+'분 전';
+  if(m<1440)return Math.floor(m/60)+'시간 전';
+  return Math.floor(m/1440)+'일 전';
+}
+
+async function loadPosts(){
+  try{
+    const r=await fetch(`${SUPABASE_URL}/rest/v1/posts?select=*&order=created_at.desc`,{headers});
+    const posts=await r.json();
+    document.getElementById('post-count').innerHTML=`총 <strong>${posts.length}</strong>개`;
+    if(!posts.length){
+      document.getElementById('posts-container').innerHTML='<div id="loading-posts" style="color:#ccc">아직 게시글이 없어요. 첫 글을 남겨보세요!</div>';
+      return;
+    }
+    let html='';
+    posts.forEach(p=>{
+      html+=`<div class="post-card" onclick="showPost(${p.id})">
+        <div class="post-header">
+          <div class="post-title">${p.title}</div>
+          <div class="post-meta">${timeAgo(p.created_at)}</div>
+        </div>
+        <div class="post-preview">${p.content}</div>
+        <div class="post-footer">
+          <span>익명</span>
+          <span>👍 ${p.likes||0}</span>
+        </div>
+      </div>`;
+    });
+    document.getElementById('posts-container').innerHTML=html;
+  }catch(e){
+    document.getElementById('posts-container').innerHTML='<div id="loading-posts">불러오기 실패. 새로고침 해주세요.</div>';
+  }
+}
+
+async function submitPost(){
+  const title=document.getElementById('post-title').value.trim();
+  const content=document.getElementById('post-content').value.trim();
+  if(!title){alert('제목을 입력해주세요.');return;}
+  if(!content){alert('내용을 입력해주세요.');return;}
+  const btn=document.getElementById('submit-btn');
+  btn.textContent='게시 중...';btn.disabled=true;
+  try{
+    await fetch(`${SUPABASE_URL}/rest/v1/posts`,{
+      method:'POST',headers,
+      body:JSON.stringify({title,content,nickname:'익명'})
+    });
+    document.getElementById('post-title').value='';
+    document.getElementById('post-content').value='';
+    await loadPosts();
+  }catch(e){alert('오류가 발생했습니다.');}
+  btn.textContent='게시하기';btn.disabled=false;
+}
+
+async function showPost(id){
+  currentPostId=id;
+  // 조회수 증가
+  await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${id}`,{
+    method:'PATCH',headers,
+    body:JSON.stringify({views:1})
+  });
+  const r=await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${id}&select=*`,{headers});
+  const posts=await r.json();
+  const p=posts[0];
+  document.getElementById('detail-title').textContent=p.title;
+  document.getElementById('detail-meta').innerHTML=`<span>익명</span><span>${timeAgo(p.created_at)}</span>`;
+  document.getElementById('detail-content').textContent=p.content;
+  document.getElementById('like-count').textContent=p.likes||0;
+  document.getElementById('post-list-view').style.display='none';
+  document.getElementById('post-detail').style.display='block';
+  loadComments(id);
+  window.scrollTo(0,0);
+}
+
+function showList(){
+  document.getElementById('post-detail').style.display='none';
+  document.getElementById('post-list-view').style.display='block';
+  loadPosts();
+}
+
+async function likePost(){
+  const r=await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${currentPostId}&select=likes`,{headers});
+  const posts=await r.json();
+  const newLikes=(posts[0]?.likes||0)+1;
+  await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${currentPostId}`,{
+    method:'PATCH',headers,
+    body:JSON.stringify({likes:newLikes})
+  });
+  document.getElementById('like-count').textContent=newLikes;
+}
+
+async function loadComments(postId){
+  const r=await fetch(`${SUPABASE_URL}/rest/v1/comments?post_id=eq.${postId}&order=created_at.asc`,{headers});
+  const comments=await r.json();
+  document.getElementById('comment-count').textContent=comments.length;
+  if(!comments.length){
+    document.getElementById('comments-container').innerHTML='<div style="padding:16px 0;color:#ccc;font-size:13px;text-align:center">첫 댓글을 남겨보세요!</div>';
+    return;
+  }
+  let html='';
+  comments.forEach(c=>{
+    html+=`<div class="comment-item">
+      <div class="comment-nick">익명</div>
+      <div class="comment-text">${c.content}</div>
+      <div class="comment-time">${timeAgo(c.created_at)}</div>
+    </div>`;
+  });
+  document.getElementById('comments-container').innerHTML=html;
+}
+
+async function submitComment(){
+  const content=document.getElementById('comment-input').value.trim();
+  if(!content)return;
+  await fetch(`${SUPABASE_URL}/rest/v1/comments`,{
+    method:'POST',headers,
+    body:JSON.stringify({post_id:currentPostId,content,nickname:'익명'})
+  });
+  document.getElementById('comment-input').value='';
+  loadComments(currentPostId);
+}
+
+// 엔터로 댓글 등록
+document.getElementById('comment-input').addEventListener('keydown',e=>{
+  if(e.key==='Enter')submitComment();
+});
+
+loadPosts();
+</script>
+</body>
+</html>
