@@ -53,22 +53,19 @@ a{text-decoration:none;color:inherit}
 const FEEDS={
   0:[
     {name:"Reuters",url:"https://feeds.reuters.com/reuters/businessNews"},
-    {name:"CNBC",url:"https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=10001147"},
     {name:"TechCrunch",url:"https://techcrunch.com/feed/"},
     {name:"연합뉴스",url:"https://www.yonhapnews.co.kr/rss/economy.xml"},
     {name:"한국경제",url:"https://www.hankyung.com/feed/finance"}
   ],
   1:[
     {name:"Reuters",url:"https://feeds.reuters.com/reuters/businessNews"},
-    {name:"CNBC",url:"https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=10001147"},
     {name:"Yahoo Finance",url:"https://finance.yahoo.com/news/rssindex"},
     {name:"MarketWatch",url:"https://feeds.content.dowjones.io/public/rss/mw_topstories"}
   ],
   2:[
     {name:"연합뉴스",url:"https://www.yonhapnews.co.kr/rss/economy.xml"},
     {name:"한국경제",url:"https://www.hankyung.com/feed/finance"},
-    {name:"머니투데이",url:"https://rss.mt.co.kr/mt_news.xml"},
-    {name:"이데일리",url:"https://rss.edaily.co.kr/edaily/section/economy.xml"}
+    {name:"머니투데이",url:"https://rss.mt.co.kr/mt_news.xml"}
   ],
   3:[
     {name:"TechCrunch",url:"https://techcrunch.com/feed/"},
@@ -77,44 +74,48 @@ const FEEDS={
   ],
   4:[
     {name:"Reuters Markets",url:"https://feeds.reuters.com/reuters/marketsnews"},
-    {name:"한경 증권",url:"https://www.hankyung.com/feed/stock"},
-    {name:"연합 증권",url:"https://www.yonhapnews.co.kr/rss/stock.xml"}
+    {name:"한경 증권",url:"https://www.hankyung.com/feed/stock"}
   ]
 };
 let curTab=0,allArticles=[],displayCount=15;
 function switchTab(i,el){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');curTab=i;displayCount=15;loadFeeds();}
 function timeAgo(d){const m=Math.floor((Date.now()-new Date(d))/60000);if(m<1)return'방금';if(m<60)return m+'분 전';if(m<1440)return Math.floor(m/60)+'시간 전';return Math.floor(m/1440)+'일 전';}
 function strip(h){return h?h.replace(/<[^>]*>/g,'').replace(/&[a-z#0-9]+;/gi,' ').replace(/\s+/g,' ').trim():'';}
-
 async function fetchOne(s){
   try{
-    const r=await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(s.url)}&count=15`,{signal:AbortSignal.timeout(5000)});
-    const d=await r.json();
-    if(d.status==='ok')return(d.items||[]).map(item=>({title:item.title,link:item.link,pubDate:item.pubDate,description:strip(item.description||''),sourceName:s.name}));
-  }catch(e){}
-  return[];
+    const url=`https://corsproxy.io/?${encodeURIComponent(s.url)}`;
+    const r=await fetch(url,{signal:AbortSignal.timeout(8000)});
+    const text=await r.text();
+    const parser=new DOMParser();
+    const xml=parser.parseFromString(text,'text/xml');
+    const items=[...xml.querySelectorAll('item')];
+    return items.slice(0,15).map(item=>{
+      const title=item.querySelector('title')?.textContent?.trim()||'';
+      const link=item.querySelector('link')?.textContent?.trim()||item.querySelector('guid')?.textContent||'';
+      const pubDate=item.querySelector('pubDate')?.textContent||new Date().toISOString();
+      const desc=strip(item.querySelector('description')?.textContent||'');
+      return{title,link,pubDate,description:desc,sourceName:s.name};
+    }).filter(a=>a.title);
+  }catch(e){return[];}
 }
-
 async function loadFeeds(){
   document.getElementById('news').innerHTML='<div id="loading"><div class="spinner"></div><br>뉴스 불러오는 중...</div>';
   const sources=FEEDS[curTab];
   const all=[];
-  // 순차적으로 하나씩 받는 즉시 렌더링
-  const promises=sources.map(s=>fetchOne(s).then(items=>{
+  for(const s of sources){
+    const items=await fetchOne(s);
     items.forEach(item=>all.push(item));
     if(all.length>0){
       all.sort((a,b)=>new Date(b.pubDate)-new Date(a.pubDate));
       allArticles=[...all];
       renderArticles();
     }
-  }));
-  await Promise.all(promises);
+  }
+  if(!all.length)document.getElementById('news').innerHTML='<div id="loading">기사를 불러오지 못했습니다.</div>';
   document.getElementById('update-time').textContent='업데이트: '+new Date().toLocaleTimeString('ko-KR');
 }
-
 function renderArticles(){
   const container=document.getElementById('news');
-  if(!allArticles.length){container.innerHTML='<div id="loading">기사를 불러오지 못했습니다.</div>';return;}
   const items=allArticles.slice(0,displayCount);
   let html='';
   items.forEach((a,i)=>{
