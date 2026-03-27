@@ -3,78 +3,210 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ETF레이더</title>
+<title>ETF레이더 — 국내 ETF·펀드·주식 뉴스</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&family=Noto+Sans+KR:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+:root{
+  --red:#e8001a;
+  --navy:#0a1628;
+  --blue:#0057ff;
+  --bg:#f4f4f6;
+  --white:#ffffff;
+  --border:#e2e2e8;
+  --text:#111827;
+  --sub:#6b7280;
+  --card-bg:#ffffff;
+}
+
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#fff;color:#111;font-family:'Noto Sans KR',sans-serif}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;font-size:14px}
 a{text-decoration:none;color:inherit}
-#header{border-bottom:3px solid #111;padding:16px 20px 12px;text-align:center;position:sticky;top:0;background:#fff;z-index:100}
-#logo{font-family:'Noto Serif KR',serif;font-size:28px;font-weight:700;letter-spacing:-0.02em}
-#logo em{color:#0057ff;font-style:normal}
-#tagline{font-size:10px;color:#aaa;letter-spacing:0.15em;margin-top:2px}
-#tabs{display:flex;overflow-x:auto;border-bottom:1px solid #e8e8e8;background:#fff;position:sticky;top:65px;z-index:99}
+
+/* ── HEADER ── */
+#topbar{background:var(--navy);padding:6px 20px;display:flex;justify-content:space-between;align-items:center}
+#topbar-date{font-size:11px;color:rgba(255,255,255,0.4);letter-spacing:0.05em}
+#topbar-links{display:flex;gap:14px}
+#topbar-links span{font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:0.04em}
+
+#header{background:var(--navy);padding:18px 20px 16px;text-align:center;position:sticky;top:0;z-index:200;border-bottom:3px solid var(--red)}
+#logo-wrap{display:flex;align-items:center;justify-content:center;gap:12px}
+#logo{font-family:'Noto Serif KR',serif;font-size:32px;font-weight:900;color:#fff;letter-spacing:-0.03em;line-height:1}
+#logo-badge{background:var(--red);color:#fff;font-size:9px;font-weight:700;letter-spacing:0.12em;padding:3px 7px;border-radius:2px;font-family:'Noto Sans KR',sans-serif}
+#tagline{font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:0.2em;margin-top:5px;text-transform:uppercase}
+
+/* ── TICKER ── */
+#ticker-wrap{background:#111e35;border-bottom:1px solid rgba(255,255,255,0.06);padding:7px 0;overflow:hidden;white-space:nowrap}
+#ticker{display:inline-flex;gap:28px;animation:ticker 25s linear infinite;padding-left:20px}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.tick-item{display:inline-flex;gap:7px;align-items:center;font-size:11px}
+.tick-name{color:rgba(255,255,255,0.4);font-weight:300}
+.tick-val{color:#fff;font-weight:500}
+.tick-up{color:#ff6b6b}
+.tick-dn{color:#4ade80}
+
+/* ── TABS ── */
+#tabs{background:#fff;border-bottom:2px solid var(--border);position:sticky;top:89px;z-index:150;display:flex;overflow-x:auto}
 #tabs::-webkit-scrollbar{display:none}
-.tab{padding:11px 18px;font-size:12px;font-weight:500;color:#aaa;border:none;background:none;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;font-family:'Noto Sans KR',sans-serif}
-.tab.active{color:#0057ff;border-bottom-color:#0057ff}
-#news{max-width:680px;margin:0 auto;padding:0 20px}
-.card{padding:16px 0;border-bottom:1px solid #e8e8e8;display:flex;gap:12px}
-.card-rank{font-size:22px;font-weight:700;color:#e8e8e8;font-family:Georgia,serif;flex-shrink:0;width:28px;text-align:center;padding-top:2px}
+.tab{padding:13px 20px;font-size:13px;font-weight:500;color:var(--sub);border:none;background:none;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-2px;font-family:'Noto Sans KR',sans-serif;transition:all 0.15s}
+.tab.active{color:var(--red);border-bottom-color:var(--red);font-weight:700}
+.tab:hover:not(.active){color:var(--text)}
+
+/* ── SUMMARY BAR ── */
+#summary-bar{background:#fff;padding:10px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+#article-count{font-size:12px;color:var(--sub)}
+#article-count strong{color:var(--red)}
+#refresh-btn{font-size:11px;color:var(--sub);background:none;border:1px solid var(--border);padding:4px 10px;border-radius:20px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:all 0.15s}
+#refresh-btn:hover{border-color:var(--red);color:var(--red)}
+
+/* ── NEWS LIST ── */
+#news{max-width:720px;margin:0 auto;padding:12px 16px 40px}
+
+/* 피처드 카드 */
+.card-featured{background:var(--white);border-radius:4px;margin-bottom:3px;padding:20px;border-left:4px solid var(--red);box-shadow:0 1px 3px rgba(0,0,0,0.06);transition:box-shadow 0.2s}
+.card-featured:hover{box-shadow:0 4px 12px rgba(0,0,0,0.1)}
+.card-featured .card-title{font-family:'Noto Serif KR',serif;font-size:19px;font-weight:700;line-height:1.5;color:var(--text);word-break:keep-all;margin-bottom:8px}
+.card-featured .card-desc{font-size:13px;color:var(--sub);line-height:1.7;margin-bottom:10px}
+
+/* 일반 카드 */
+.card{background:var(--white);border-radius:4px;margin-bottom:3px;padding:14px 16px;display:flex;gap:14px;align-items:flex-start;transition:background 0.15s;border-left:3px solid transparent}
+.card:hover{background:#fafafa;border-left-color:var(--red)}
+
+.card-num{font-size:18px;font-weight:700;color:#dde1e8;font-family:Georgia,serif;flex-shrink:0;width:24px;line-height:1.4;text-align:center}
+.card-num.hot{color:var(--red)}
 .card-body{flex:1;min-width:0}
-.card-meta{display:flex;align-items:center;gap:6px;margin-bottom:5px}
-.source{font-size:10px;font-weight:500;letter-spacing:0.06em;color:#0057ff}
-.time{font-size:10px;color:#bbb}
-.card-title{font-size:15px;font-weight:700;line-height:1.45;color:#111;font-family:'Noto Serif KR',serif;word-break:keep-all}
-.card.featured .card-title{font-size:19px}
-.card.featured .card-rank{font-size:32px}
-.card-desc{font-size:12px;color:#888;margin-top:5px;line-height:1.55}
-#loading{text-align:center;padding:60px;color:#ccc;font-size:13px}
-.spinner{display:inline-block;width:20px;height:20px;border:2px solid #eee;border-top-color:#0057ff;border-radius:50%;animation:spin 0.8s linear infinite;margin-bottom:10px}
+.card-meta{display:flex;align-items:center;gap:6px;margin-bottom:5px;flex-wrap:wrap}
+.source-badge{font-size:10px;font-weight:700;color:var(--red);background:#fff0f2;padding:2px 6px;border-radius:2px;letter-spacing:0.03em}
+.time-badge{font-size:10px;color:#9ca3af}
+.new-badge{font-size:9px;font-weight:700;color:#fff;background:var(--red);padding:1px 5px;border-radius:2px;letter-spacing:0.05em;animation:pulse 1.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.6}}
+.card-title{font-size:14px;font-weight:600;line-height:1.55;color:var(--text);word-break:keep-all;font-family:'Noto Serif KR',serif}
+.card-title:hover{color:var(--red)}
+
+/* 섹션 구분 */
+.section-label{font-size:11px;font-weight:700;color:var(--sub);letter-spacing:0.12em;text-transform:uppercase;padding:14px 4px 8px;display:flex;align-items:center;gap:8px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* 로딩 */
+#loading{text-align:center;padding:60px 20px;color:#c0c4cc;font-size:13px;background:#fff;border-radius:4px;margin-top:12px}
+.spinner{display:inline-block;width:22px;height:22px;border:2px solid #e5e7eb;border-top-color:var(--red);border-radius:50%;animation:spin 0.7s linear infinite;margin-bottom:12px}
 @keyframes spin{to{transform:rotate(360deg)}}
-#footer{text-align:center;padding:30px 20px;color:#ccc;font-size:11px;border-top:1px solid #e8e8e8;margin-top:20px;line-height:2}
-#load-more{display:block;width:100%;padding:14px;font-family:'Noto Sans KR',sans-serif;font-size:13px;background:#fff;border:1px solid #ddd;color:#555;cursor:pointer;margin:16px 0}
+
+/* 더보기 */
+#load-more{display:block;width:100%;padding:13px;font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:500;background:#fff;border:1px solid var(--border);color:var(--sub);cursor:pointer;border-radius:4px;margin-top:8px;transition:all 0.15s;letter-spacing:0.03em}
+#load-more:hover{background:var(--red);color:#fff;border-color:var(--red)}
+
+/* 푸터 */
+#footer{text-align:center;padding:24px 20px;color:#c0c4cc;font-size:11px;line-height:2;border-top:1px solid var(--border);max-width:720px;margin:0 auto}
+#update-time{color:var(--red)}
+
+/* 모바일 */
+@media(max-width:480px){
+  #logo{font-size:26px}
+  .card-featured .card-title{font-size:17px}
+  .card-title{font-size:13px}
+}
 </style>
 </head>
 <body>
+
+<div id="topbar">
+  <span id="topbar-date"></span>
+  <div id="topbar-links">
+    <span>ETF</span><span>펀드</span><span>주식</span>
+  </div>
+</div>
+
 <div id="header">
-  <div id="logo">ETF<em>레이더</em></div>
-  <div id="tagline">ETF · 펀드 · 주식 뉴스</div>
+  <div id="logo-wrap">
+    <div id="logo">ETF레이더</div>
+    <div id="logo-badge">LIVE</div>
+  </div>
+  <div id="tagline">국내 ETF · 펀드 · 주식 전문 뉴스</div>
 </div>
+
+<div id="ticker-wrap">
+  <div id="ticker">
+    <span class="tick-item"><span class="tick-name">KOSPI</span><span class="tick-val">2,641</span><span class="tick-up">▲0.42%</span></span>
+    <span class="tick-item"><span class="tick-name">KOSDAQ</span><span class="tick-val">742</span><span class="tick-dn">▼0.18%</span></span>
+    <span class="tick-item"><span class="tick-name">TIGER200</span><span class="tick-val">38,240</span><span class="tick-up">▲0.31%</span></span>
+    <span class="tick-item"><span class="tick-name">KODEX레버리지</span><span class="tick-val">12,450</span><span class="tick-up">▲0.85%</span></span>
+    <span class="tick-item"><span class="tick-name">원/달러</span><span class="tick-val">1,326</span><span class="tick-up">▲3.2</span></span>
+    <span class="tick-item"><span class="tick-name">국채10년</span><span class="tick-val">2.84%</span><span class="tick-dn">▼0.02</span></span>
+    <span class="tick-item"><span class="tick-name">금</span><span class="tick-val">3,024</span><span class="tick-up">▲0.08%</span></span>
+    <!-- 반복 (ticker loop) -->
+    <span class="tick-item"><span class="tick-name">KOSPI</span><span class="tick-val">2,641</span><span class="tick-up">▲0.42%</span></span>
+    <span class="tick-item"><span class="tick-name">KOSDAQ</span><span class="tick-val">742</span><span class="tick-dn">▼0.18%</span></span>
+    <span class="tick-item"><span class="tick-name">TIGER200</span><span class="tick-val">38,240</span><span class="tick-up">▲0.31%</span></span>
+    <span class="tick-item"><span class="tick-name">KODEX레버리지</span><span class="tick-val">12,450</span><span class="tick-up">▲0.85%</span></span>
+    <span class="tick-item"><span class="tick-name">원/달러</span><span class="tick-val">1,326</span><span class="tick-up">▲3.2</span></span>
+    <span class="tick-item"><span class="tick-name">국채10년</span><span class="tick-val">2.84%</span><span class="tick-dn">▼0.02</span></span>
+    <span class="tick-item"><span class="tick-name">금</span><span class="tick-val">3,024</span><span class="tick-up">▲0.08%</span></span>
+  </div>
+</div>
+
 <div id="tabs">
-  <button class="tab active" onclick="switchTab('all',this)">전체</button>
-  <button class="tab" onclick="switchTab('etf',this)">ETF</button>
-  <button class="tab" onclick="switchTab('fund',this)">펀드</button>
-  <button class="tab" onclick="switchTab('stock',this)">주식</button>
+  <button class="tab active" onclick="switchTab('all',this)">🏠 전체</button>
+  <button class="tab" onclick="switchTab('etf',this)">📊 ETF</button>
+  <button class="tab" onclick="switchTab('fund',this)">💼 펀드</button>
+  <button class="tab" onclick="switchTab('stock',this)">📈 주식</button>
 </div>
-<div id="news"><div id="loading"><div class="spinner"></div><br>뉴스 불러오는 중...</div></div>
-<div id="footer">ETF레이더 · RSS 기반 뉴스<br>원문 저작권은 각 언론사에 귀속<br><span id="update-time"></span></div>
+
+<div id="summary-bar">
+  <span id="article-count">뉴스 불러오는 중...</span>
+  <button id="refresh-btn" onclick="loadFeeds()">↻ 새로고침</button>
+</div>
+
+<div id="news"><div id="loading"><div class="spinner"></div><br>최신 뉴스를 불러오고 있습니다...</div></div>
+
+<div id="footer">
+  ETF레이더 · 국내 ETF·펀드·주식 전문 뉴스<br>
+  원문 저작권은 각 언론사에 귀속됩니다<br>
+  <span id="update-time"></span>
+</div>
+
 <script>
-const SOURCES=[
-  {name:"구글 ETF",url:"https://news.google.com/rss/search?q=ETF+한국&hl=ko&gl=KR&ceid=KR:ko"},
-  {name:"구글 펀드",url:"https://news.google.com/rss/search?q=펀드+운용+수익률&hl=ko&gl=KR&ceid=KR:ko"},
-  {name:"구글 주식",url:"https://news.google.com/rss/search?q=코스피+코스닥+주가&hl=ko&gl=KR&ceid=KR:ko"},
-  {name:"구글 증시",url:"https://news.google.com/rss/search?q=증시+투자+종목&hl=ko&gl=KR&ceid=KR:ko"}
-];
-  
-const KEYWORDS={
-  etf:['ETF','TIGER','KODEX','ARIRANG','KBSTAR','HANARO','ACE','RISE','상장지수펀드','인덱스펀드','레버리지','인버스','ETF시장','ETF투자'],
-  fund:['펀드','공모펀드','사모펀드','운용사','자산운용','설정액','수익률','TDF','타깃데이트','리츠','REIT','헤지펀드','펀드매니저','운용보수'],
-  stock:['코스피','코스닥','주가','종목','매수','매도','실적','배당','상장','공모주','증시','주식','시가총액','PER','PBR','외국인','기관투자','개인투자','증권사','목표주가','어닝']
+// 날짜 표시
+const now=new Date();
+document.getElementById('topbar-date').textContent=now.toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric',weekday:'short'});
+
+const TAB_SOURCES={
+  all:[
+    "https://news.google.com/rss/search?q=ETF+한국+투자&hl=ko&gl=KR&ceid=KR:ko",
+    "https://news.google.com/rss/search?q=공모펀드+사모펀드&hl=ko&gl=KR&ceid=KR:ko",
+    "https://news.google.com/rss/search?q=코스피+코스닥+증시&hl=ko&gl=KR&ceid=KR:ko"
+  ],
+  etf:[
+    "https://news.google.com/rss/search?q=TIGER+KODEX+ETF+신규&hl=ko&gl=KR&ceid=KR:ko",
+    "https://news.google.com/rss/search?q=상장지수펀드+레버리지+인버스&hl=ko&gl=KR&ceid=KR:ko",
+    "https://news.google.com/rss/search?q=ETF+수익률+운용&hl=ko&gl=KR&ceid=KR:ko"
+  ],
+  fund:[
+    "https://news.google.com/rss/search?q=공모펀드+운용사+설정액&hl=ko&gl=KR&ceid=KR:ko",
+    "https://news.google.com/rss/search?q=사모펀드+헤지펀드+수익률&hl=ko&gl=KR&ceid=KR:ko",
+    "https://news.google.com/rss/search?q=TDF+리츠+펀드매니저&hl=ko&gl=KR&ceid=KR:ko"
+  ],
+  stock:[
+    "https://news.google.com/rss/search?q=코스피+코스닥+시황+오늘&hl=ko&gl=KR&ceid=KR:ko",
+    "https://news.google.com/rss/search?q=종목+주가+매수+목표주가&hl=ko&gl=KR&ceid=KR:ko",
+    "https://news.google.com/rss/search?q=실적+배당+공모주+상장&hl=ko&gl=KR&ceid=KR:ko"
+  ]
 };
 
-let curTab='all', allArticles=[], displayCount=15;
+let curTab='all', allArticles=[], displayCount=20;
 
-function matchTab(title, tab){
-  if(tab==='all') return true;
-  return (KEYWORDS[tab]||[]).some(k=>title.includes(k));
+function parseTitle(raw){
+  const match=raw.match(/^(.*)\s-\s([^-]+)$/);
+  if(match) return{title:match[1].trim(),source:match[2].trim()};
+  return{title:raw.trim(),source:'뉴스'};
 }
 
-function switchTab(tab, el){
+function switchTab(tab,el){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
   curTab=tab;
-  displayCount=15;
-  renderArticles();
+  displayCount=20;
+  loadFeeds();
 }
 
 function timeAgo(d){
@@ -85,61 +217,99 @@ function timeAgo(d){
   return Math.floor(m/1440)+'일 전';
 }
 
+function isNew(d){
+  return(Date.now()-new Date(d))<3600000; // 1시간 이내
+}
+
 function strip(h){
   return h?h.replace(/<[^>]*>/g,'').replace(/&[a-z#0-9]+;/gi,' ').replace(/\s+/g,' ').trim():'';
 }
 
-async function fetchOne(s){
+async function fetchOne(url){
   try{
-    const r=await fetch(`/api/rss?url=${encodeURIComponent(s.url)}`,{signal:AbortSignal.timeout(8000)});
+    const r=await fetch(`/api/rss?url=${encodeURIComponent(url)}`,{signal:AbortSignal.timeout(8000)});
     const text=await r.text();
     const xml=new DOMParser().parseFromString(text,'text/xml');
-    return [...xml.querySelectorAll('item')].slice(0,20).map(item=>({
-      title: item.querySelector('title')?.textContent?.trim()||'',
-      link: item.querySelector('link')?.textContent?.trim()||item.querySelector('guid')?.textContent||'',
-      pubDate: item.querySelector('pubDate')?.textContent||new Date().toISOString(),
-      description: strip(item.querySelector('description')?.textContent||''),
-      sourceName: s.name
-    })).filter(a=>a.title);
-  }catch(e){ return []; }
+    return[...xml.querySelectorAll('item')].slice(0,20).map(item=>{
+      const raw=item.querySelector('title')?.textContent?.trim()||'';
+      const{title,source}=parseTitle(raw);
+      return{
+        title,source,
+        link:item.querySelector('link')?.textContent?.trim()||item.querySelector('guid')?.textContent||'',
+        pubDate:item.querySelector('pubDate')?.textContent||new Date().toISOString(),
+        description:strip(item.querySelector('description')?.textContent||'')
+      };
+    }).filter(a=>a.title);
+  }catch(e){return[];}
 }
 
 async function loadFeeds(){
-  document.getElementById('news').innerHTML='<div id="loading"><div class="spinner"></div><br>뉴스 불러오는 중...</div>';
-  const results=await Promise.all(SOURCES.map(s=>fetchOne(s)));
+  document.getElementById('news').innerHTML='<div id="loading"><div class="spinner"></div><br>최신 뉴스를 불러오고 있습니다...</div>';
+  document.getElementById('article-count').textContent='뉴스 불러오는 중...';
+  const urls=TAB_SOURCES[curTab]||TAB_SOURCES.all;
+  const results=await Promise.all(urls.map(url=>fetchOne(url)));
   const all=results.flat();
   all.sort((a,b)=>new Date(b.pubDate)-new Date(a.pubDate));
   const seen=new Set();
   allArticles=all.filter(a=>{
-    if(seen.has(a.title)) return false;
-    seen.add(a.title); return true;
+    if(seen.has(a.title))return false;
+    seen.add(a.title);return true;
   });
   if(!allArticles.length){
     document.getElementById('news').innerHTML='<div id="loading">잠시 후 다시 시도해주세요.</div>';
-  } else {
-    renderArticles();
+    return;
   }
-  document.getElementById('update-time').textContent='업데이트: '+new Date().toLocaleTimeString('ko-KR');
+  renderArticles();
+  const t=new Date().toLocaleTimeString('ko-KR');
+  document.getElementById('update-time').textContent='최종 업데이트 '+t;
 }
 
 function renderArticles(){
-  const filtered=allArticles.filter(a=>matchTab(a.title, curTab));
-  if(!filtered.length){
-    document.getElementById('news').innerHTML='<div id="loading">해당 카테고리 뉴스가 없습니다.</div>';
-    return;
-  }
-  const items=filtered.slice(0,displayCount);
+  document.getElementById('article-count').innerHTML=`총 <strong>${allArticles.length}</strong>건의 뉴스`;
+  const items=allArticles.slice(0,displayCount);
   let html='';
+
   items.forEach((a,i)=>{
-    html+=`<a href="${a.link}" target="_blank" rel="noopener"><div class="card${i===0?' featured':''}"><div class="card-rank">${i+1}</div><div class="card-body"><div class="card-meta"><span class="source">${a.sourceName}</span><span class="time">${timeAgo(a.pubDate)}</span></div><div class="card-title">${a.title}</div>${i<5&&a.description?`<div class="card-desc">${a.description.slice(0,100)}</div>`:''}</div></div></a>`;
+    const ago=timeAgo(a.pubDate);
+    const newBadge=isNew(a.pubDate)?'<span class="new-badge">NEW</span>':'';
+
+    if(i===0){
+      html+=`<a href="${a.link}" target="_blank" rel="noopener">
+        <div class="card-featured">
+          <div class="card-meta">
+            <span class="source-badge">${a.source}</span>
+            <span class="time-badge">${ago}</span>
+            ${newBadge}
+          </div>
+          <div class="card-title">${a.title}</div>
+          ${a.description?`<div class="card-desc">${a.description.slice(0,120)}...</div>`:''}
+        </div>
+      </a>`;
+    } else {
+      if(i===1) html+=`<div class="section-label">최신 뉴스</div>`;
+      html+=`<a href="${a.link}" target="_blank" rel="noopener">
+        <div class="card">
+          <div class="card-num${i<4?' hot':''}">${i+1}</div>
+          <div class="card-body">
+            <div class="card-meta">
+              <span class="source-badge">${a.source}</span>
+              <span class="time-badge">${ago}</span>
+              ${newBadge}
+            </div>
+            <div class="card-title">${a.title}</div>
+          </div>
+        </div>
+      </a>`;
+    }
   });
-  if(filtered.length>displayCount){
-    html+=`<button id="load-more" onclick="loadMore()">더 보기 (${filtered.length-displayCount}개 남음)</button>`;
+
+  if(allArticles.length>displayCount){
+    html+=`<button id="load-more" onclick="loadMore()">뉴스 더 보기 (${allArticles.length-displayCount}건 남음) ↓</button>`;
   }
   document.getElementById('news').innerHTML=html;
 }
 
-function loadMore(){ displayCount+=15; renderArticles(); }
+function loadMore(){displayCount+=20;renderArticles();}
 loadFeeds();
 </script>
 </body>
