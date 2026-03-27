@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ETF레이더</title>
+<title>ETF 레이더</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&family=Noto+Sans+KR:wght@300;400;500&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -56,12 +56,12 @@ const FEEDS={
     {name:"머니투데이",url:"https://rss.mt.co.kr/mt_news.xml"}
   ],
   1:[
-    {name:"한국경제",url:"https://www.hankyung.com/feed/etf"},
-    {name:"연합뉴스",url:"https://www.yonhapnews.co.kr/rss/stock.xml"},
-    {name:"이데일리",url:"https://rss.edaily.co.kr/edaily/section/stock.xml"}
+    {name:"한국경제",url:"https://www.hankyung.com/feed/stock"},
+    {name:"이데일리",url:"https://rss.edaily.co.kr/edaily/section/stock.xml"},
+    {name:"연합뉴스",url:"https://www.yonhapnews.co.kr/rss/stock.xml"}
   ],
   2:[
-    {name:"한국경제",url:"https://www.hankyung.com/feed/fund"},
+    {name:"한국경제",url:"https://www.hankyung.com/feed/finance"},
     {name:"머니투데이",url:"https://rss.mt.co.kr/mt_news.xml"},
     {name:"연합뉴스",url:"https://www.yonhapnews.co.kr/rss/economy.xml"}
   ],
@@ -75,20 +75,24 @@ let curTab=0,allArticles=[],displayCount=15;
 function switchTab(i,el){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');curTab=i;displayCount=15;loadFeeds();}
 function timeAgo(d){const m=Math.floor((Date.now()-new Date(d))/60000);if(m<1)return'방금';if(m<60)return m+'분 전';if(m<1440)return Math.floor(m/60)+'시간 전';return Math.floor(m/1440)+'일 전';}
 function strip(h){return h?h.replace(/<[^>]*>/g,'').replace(/&[a-z#0-9]+;/gi,' ').replace(/\s+/g,' ').trim():'';}
+
 async function fetchOne(s){
   try{
-    const r=await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(s.url)}&count=20`,{signal:AbortSignal.timeout(8000)});
-    const d=await r.json();
-    if(d.status==='ok')return(d.items||[]).map(item=>({
-      title:item.title?.trim()||'',
-      link:item.link||'',
-      pubDate:item.pubDate||new Date().toISOString(),
-      description:strip(item.description||''),
-      sourceName:s.name
-    })).filter(a=>a.title);
-  }catch(e){}
-  return[];
+    const r=await fetch(`/api/rss?url=${encodeURIComponent(s.url)}`,{signal:AbortSignal.timeout(8000)});
+    const text=await r.text();
+    const parser=new DOMParser();
+    const xml=parser.parseFromString(text,'text/xml');
+    const items=[...xml.querySelectorAll('item')];
+    return items.slice(0,20).map(item=>{
+      const title=item.querySelector('title')?.textContent?.trim()||'';
+      const link=item.querySelector('link')?.textContent?.trim()||item.querySelector('guid')?.textContent||'';
+      const pubDate=item.querySelector('pubDate')?.textContent||new Date().toISOString();
+      const desc=strip(item.querySelector('description')?.textContent||'');
+      return{title,link,pubDate,description:desc,sourceName:s.name};
+    }).filter(a=>a.title);
+  }catch(e){return[];}
 }
+
 async function loadFeeds(){
   document.getElementById('news').innerHTML='<div id="loading"><div class="spinner"></div><br>뉴스 불러오는 중...</div>';
   const sources=FEEDS[curTab];
@@ -105,6 +109,7 @@ async function loadFeeds(){
   if(!all.length)document.getElementById('news').innerHTML='<div id="loading">잠시 후 다시 시도해주세요.</div>';
   document.getElementById('update-time').textContent='업데이트: '+new Date().toLocaleTimeString('ko-KR');
 }
+
 function renderArticles(){
   const items=allArticles.slice(0,displayCount);
   let html='';
