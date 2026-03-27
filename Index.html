@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BRIEFING</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0d0e11;color:#e8e6e0;font-family:Georgia,serif}
+#header{background:#070809;border-bottom:1px solid #1c1e22;padding:14px 20px;display:flex;justify-content:space-between;align-items:center}
+#logo{font-size:22px;font-weight:900;color:#fff;letter-spacing:-0.02em}
+#logo span{font-size:10px;color:#444;letter-spacing:0.2em;display:block;font-family:sans-serif;font-weight:300}
+#tabs{display:flex;border-bottom:1px solid #1c1e22;background:#0d0e11;overflow-x:auto}
+.tab{padding:12px 18px;font-family:sans-serif;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;border:none;background:none;color:#555;border-bottom:2px solid transparent;white-space:nowrap}
+.tab.active{color:#f0a500;border-bottom-color:#f0a500}
+#news{padding:16px;max-width:800px;margin:0 auto}
+.card{background:#111318;padding:16px;margin-bottom:2px;cursor:pointer;border-left:3px solid transparent;transition:all 0.2s}
+.card:hover{background:#161920}
+.card.featured{border-left-color:#f0a500}
+.card .source{font-family:sans-serif;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#f0a500;margin-bottom:6px}
+.card h2{font-size:18px;font-weight:700;line-height:1.35;color:#f0ede8;margin-bottom:8px}
+.card h3{font-size:14px;font-weight:700;line-height:1.4;color:#d0cdc8}
+.card p{font-family:sans-serif;font-size:12px;color:#555;line-height:1.6;margin-top:6px}
+.card .time{font-family:sans-serif;font-size:10px;color:#444;margin-top:4px}
+#loading{text-align:center;padding:60px;color:#444;font-family:sans-serif;font-size:13px}
+#refresh{background:none;border:1px solid #333;color:#888;padding:5px 12px;font-family:sans-serif;font-size:11px;cursor:pointer;border-radius:2px}
+</style>
+</head>
+<body>
+<div id="header">
+  <div id="logo">BRIEFING<span>Markets & Finance</span></div>
+  <button id="refresh" onclick="load()">↻ 새로고침</button>
+</div>
+<div id="tabs">
+  <button class="tab active" onclick="switchTab(0,this,'#f0a500')">글로벌 금융</button>
+  <button class="tab" onclick="switchTab(1,this,'#00c896')">경제/시장</button>
+  <button class="tab" onclick="switchTab(2,this,'#7b8cff')">테크/AI</button>
+</div>
+<div id="news"><div id="loading">불러오는 중...</div></div>
+
+<script>
+const FEEDS=[
+  [
+    {name:"Reuters",url:"https://feeds.reuters.com/reuters/businessNews"},
+    {name:"Yahoo Finance",url:"https://finance.yahoo.com/news/rssindex"},
+    {name:"MarketWatch",url:"https://feeds.content.dowjones.io/public/rss/mw_topstories"}
+  ],
+  [
+    {name:"연합뉴스 경제",url:"https://www.yonhapnews.co.kr/rss/economy.xml"},
+    {name:"한국경제",url:"https://www.hankyung.com/feed/finance"}
+  ],
+  [
+    {name:"TechCrunch",url:"https://techcrunch.com/feed/"},
+    {name:"The Verge",url:"https://www.theverge.com/rss/index.xml"}
+  ]
+];
+let cur=0,curColor='#f0a500';
+function timeAgo(d){const m=Math.floor((Date.now()-new Date(d))/60000);if(m<60)return m+'분 전';if(m<1440)return Math.floor(m/60)+'시간 전';return Math.floor(m/1440)+'일 전';}
+function strip(h){return h?h.replace(/<[^>]*>/g,'').replace(/&[a-z]+;/gi,' ').trim():'';}
+function switchTab(i,el,color){
+  document.querySelectorAll('.tab').forEach(t=>{t.classList.remove('active');t.style.color='#555';t.style.borderBottomColor='transparent'});
+  el.classList.add('active');el.style.color=color;el.style.borderBottomColor=color;
+  cur=i;curColor=color;load();
+}
+async function load(){
+  document.getElementById('news').innerHTML='<div id="loading">불러오는 중...</div>';
+  const sources=FEEDS[cur];
+  const all=[];
+  await Promise.all(sources.map(async s=>{
+    try{
+      const r=await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(s.url)}&count=10`);
+      const d=await r.json();
+      if(d.status==='ok')(d.items||[]).forEach(item=>all.push({...item,sourceName:s.name,description:strip(item.description||'')}));
+    }catch(e){}
+  }));
+  all.sort((a,b)=>new Date(b.pubDate)-new Date(a.pubDate));
+  if(!all.length){document.getElementById('news').innerHTML='<div id="loading">기사를 불러오지 못했습니다.</div>';return;}
+  let html='';
+  all.slice(0,20).forEach((a,i)=>{
+    html+=`<a href="${a.link}" target="_blank" style="text-decoration:none">
+    <div class="card${i===0?' featured':''}" style="${i===0?'border-left-color:'+curColor:''}">
+      <div class="source" style="color:${curColor}">${a.sourceName}</div>
+      ${i===0?`<h2>${a.title}</h2>`:`<h3>${a.title}</h3>`}
+      ${i===0&&a.description?`<p>${a.description.slice(0,150)}...</p>`:''}
+      <div class="time">${timeAgo(a.pubDate)}</div>
+    </div></a>`;
+  });
+  document.getElementById('news').innerHTML=html;
+}
+load();
+</script>
+</body>
+</html>
