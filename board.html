@@ -3,81 +3,132 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ETF레이더 — 커뮤니티</title>
+<title>ETF레이더 — 자유게시판</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
 :root{
   --red:#e8001a;
   --navy:#0a1628;
-  --bg:#f4f4f6;
+  --blue:#1a5dff;
+  --bg:#f0f2f5;
   --white:#fff;
-  --border:#e2e2e8;
-  --text:#111827;
-  --sub:#6b7280;
+  --border:#d9dbe0;
+  --text:#1a1a1a;
+  --sub:#666;
+  --hot:#ff4500;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;font-size:14px}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;font-size:13px}
 a{text-decoration:none;color:inherit}
 
-#header{background:var(--navy);padding:14px 20px;text-align:center;border-bottom:3px solid var(--red);position:sticky;top:0;z-index:100}
-#header-inner{display:flex;align-items:center;justify-content:space-between;max-width:720px;margin:0 auto}
-#logo{font-family:'Noto Serif KR',serif;font-size:20px;font-weight:900;color:#fff}
+#header{background:var(--navy);border-bottom:3px solid var(--red);position:sticky;top:0;z-index:200}
+#header-inner{max-width:800px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;justify-content:space-between}
+#logo{font-size:18px;font-weight:900;color:#fff;letter-spacing:-0.02em}
 #logo em{color:var(--red);font-style:normal}
-#back-btn{font-size:12px;color:rgba(255,255,255,0.6);padding:5px 10px;border:1px solid rgba(255,255,255,0.2);border-radius:3px}
-#page-title{font-size:13px;color:rgba(255,255,255,0.5);letter-spacing:0.1em}
+#board-name{font-size:11px;color:rgba(255,255,255,0.5);letter-spacing:0.1em}
+#news-link{font-size:11px;color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.2);padding:4px 10px;border-radius:2px}
 
-#wrap{max-width:720px;margin:0 auto;padding:16px}
+#board-header{background:#fff;border-bottom:2px solid var(--red);max-width:800px;margin:0 auto}
+#board-tabs{display:flex;padding:0 16px}
+.board-tab{padding:11px 16px;font-size:13px;font-weight:500;color:var(--sub);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap}
+.board-tab.active{color:var(--red);border-bottom-color:var(--red);font-weight:700}
 
-/* 글쓰기 폼 */
-#write-box{background:#fff;border-radius:4px;padding:16px;margin-bottom:16px;border-left:4px solid var(--red);box-shadow:0 1px 3px rgba(0,0,0,0.06)}
-#write-box h3{font-size:13px;font-weight:700;margin-bottom:12px;color:var(--text)}
-.form-row{margin-bottom:10px}
-.form-row input,.form-row textarea{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:3px;font-family:'Noto Sans KR',sans-serif;font-size:13px;color:var(--text);outline:none;transition:border 0.15s}
-.form-row input:focus,.form-row textarea:focus{border-color:var(--red)}
-.form-row textarea{height:80px;resize:none;line-height:1.6}
-#submit-btn{background:var(--red);color:#fff;border:none;padding:10px 20px;font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:700;border-radius:3px;cursor:pointer;width:100%;letter-spacing:0.04em}
-#submit-btn:active{opacity:0.85}
+#notice-bar{background:#fff8f8;border-bottom:1px solid #ffd0d0;padding:8px 16px;max-width:800px;margin:0 auto;display:flex;align-items:center;gap:8px}
+.notice-badge{background:var(--red);color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:2px;flex-shrink:0}
+.notice-text{font-size:12px;color:#c00;font-weight:500}
 
-/* 게시글 목록 */
-.section-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.section-title{font-size:12px;font-weight:700;color:var(--sub);letter-spacing:0.12em;text-transform:uppercase}
-#post-count{font-size:12px;color:var(--sub)}
-#post-count strong{color:var(--red)}
+#container{max-width:800px;margin:0 auto;padding:8px 0 40px}
 
-.post-card{background:#fff;border-radius:4px;padding:14px 16px;margin-bottom:3px;cursor:pointer;border-left:3px solid transparent;transition:all 0.15s;box-shadow:0 1px 2px rgba(0,0,0,0.04)}
-.post-card:hover{border-left-color:var(--red);background:#fafafa}
-.post-header{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:6px}
-.post-title{font-size:14px;font-weight:600;line-height:1.45;color:var(--text);font-family:'Noto Serif KR',serif;flex:1}
-.post-meta{display:flex;align-items:center;gap:8px;font-size:11px;color:#9ca3af;flex-shrink:0}
-.post-preview{font-size:12px;color:var(--sub);line-height:1.55;margin-bottom:8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.post-footer{display:flex;align-items:center;gap:12px;font-size:11px;color:#9ca3af}
-.post-footer span{display:flex;align-items:center;gap:3px}
+#hot-section{background:#fff;margin-bottom:4px;border-top:2px solid var(--hot)}
+#hot-header{padding:10px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border)}
+#hot-header span{font-size:12px;font-weight:700;color:var(--hot)}
+#hot-list{padding:4px 0}
+.hot-item{padding:8px 16px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:background 0.1s}
+.hot-item:hover{background:#fff8f0}
+.hot-num{font-size:11px;font-weight:700;color:var(--hot);width:16px;flex-shrink:0}
+.hot-title{font-size:13px;color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hot-count{font-size:11px;color:#ff6b35;flex-shrink:0}
 
-/* 글 상세 */
-#post-detail{display:none}
-#detail-back{background:none;border:none;color:var(--red);font-size:13px;font-family:'Noto Sans KR',sans-serif;cursor:pointer;padding:0;margin-bottom:12px;font-weight:500}
-#detail-box{background:#fff;border-radius:4px;padding:20px;margin-bottom:12px;border-left:4px solid var(--red)}
-#detail-title{font-family:'Noto Serif KR',serif;font-size:19px;font-weight:700;line-height:1.5;margin-bottom:10px}
-#detail-meta{font-size:11px;color:#9ca3af;margin-bottom:14px;display:flex;gap:12px}
-#detail-content{font-size:14px;line-height:1.8;color:var(--text);white-space:pre-wrap}
-#detail-actions{display:flex;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
-.action-btn{background:none;border:1px solid var(--border);padding:6px 14px;border-radius:20px;font-size:12px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;color:var(--sub);transition:all 0.15s}
-.action-btn:hover{border-color:var(--red);color:var(--red)}
+#post-list-section{background:#fff}
+#list-header{padding:10px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+#total-count{font-size:12px;color:var(--sub)}
+#total-count strong{color:var(--red)}
+#write-btn{background:var(--red);color:#fff;border:none;padding:7px 14px;font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:700;cursor:pointer;border-radius:2px}
 
-/* 댓글 */
-#comments-box{background:#fff;border-radius:4px;padding:16px}
-#comments-title{font-size:13px;font-weight:700;margin-bottom:12px;color:var(--text)}
-.comment-item{padding:12px 0;border-bottom:1px solid var(--border)}
-.comment-item:last-child{border-bottom:none}
-.comment-nick{font-size:11px;font-weight:700;color:var(--red);margin-bottom:4px}
-.comment-text{font-size:13px;line-height:1.6;color:var(--text)}
-.comment-time{font-size:10px;color:#9ca3af;margin-top:4px}
-#comment-form{margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
-#comment-input{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:3px;font-family:'Noto Sans KR',sans-serif;font-size:13px;outline:none;margin-bottom:8px;transition:border 0.15s}
+.post-row{padding:11px 16px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:8px;cursor:pointer;transition:background 0.1s}
+.post-row:hover{background:#f8f9ff}
+.post-row.hot-post .post-title{color:var(--hot)}
+.post-num{font-size:11px;color:#bbb;width:32px;flex-shrink:0;text-align:center}
+.post-title-wrap{flex:1;min-width:0;display:flex;align-items:center;gap:6px}
+.post-title{font-size:13px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.comment-cnt{font-size:11px;color:var(--blue);font-weight:700;flex-shrink:0}
+.post-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.post-nick{font-size:11px;color:var(--sub)}
+.post-time{font-size:11px;color:#bbb}
+.post-views{font-size:11px;color:#bbb}
+.post-likes{font-size:11px;color:var(--blue)}
+.new-dot{width:5px;height:5px;background:var(--red);border-radius:50%;flex-shrink:0;animation:blink 1.5s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+.cat-tag{font-size:10px;color:var(--red);background:#fff0f2;padding:1px 5px;border-radius:2px;flex-shrink:0}
+
+#pagination{display:flex;justify-content:center;gap:4px;padding:16px}
+.page-btn{padding:6px 10px;border:1px solid var(--border);background:#fff;font-family:'Noto Sans KR',sans-serif;font-size:12px;cursor:pointer;border-radius:2px;color:var(--sub)}
+.page-btn.active{background:var(--red);color:#fff;border-color:var(--red)}
+
+#search-bar{padding:10px 16px;background:#fff;border-top:1px solid var(--border);display:flex;gap:6px}
+#search-input{flex:1;padding:7px 10px;border:1px solid var(--border);border-radius:2px;font-family:'Noto Sans KR',sans-serif;font-size:12px;outline:none}
+#search-input:focus{border-color:var(--red)}
+#search-btn{background:var(--navy);color:#fff;border:none;padding:7px 14px;font-family:'Noto Sans KR',sans-serif;font-size:12px;cursor:pointer;border-radius:2px}
+
+#write-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:500;align-items:flex-end}
+#write-modal.show{display:flex}
+#write-box{background:#fff;width:100%;max-width:800px;margin:0 auto;border-radius:12px 12px 0 0;padding:20px 16px;max-height:85vh;overflow-y:auto}
+#write-title-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+#write-title-bar h3{font-size:15px;font-weight:700}
+#close-write{background:none;border:none;font-size:20px;cursor:pointer;color:var(--sub);padding:4px}
+.write-row{margin-bottom:10px}
+.write-row input,.write-row textarea,.write-row select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:4px;font-family:'Noto Sans KR',sans-serif;font-size:13px;outline:none;transition:border 0.15s}
+.write-row input:focus,.write-row textarea:focus{border-color:var(--red)}
+.write-row textarea{height:120px;resize:none;line-height:1.7}
+#submit-btn{background:var(--red);color:#fff;border:none;padding:12px;font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:700;border-radius:4px;cursor:pointer;width:100%}
+.char-count{font-size:11px;color:#bbb;text-align:right;margin-top:4px}
+
+#detail-view{display:none;background:#fff;max-width:800px;margin:0 auto}
+#detail-nav{padding:10px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+#back-btn{background:none;border:1px solid var(--border);padding:5px 12px;font-family:'Noto Sans KR',sans-serif;font-size:12px;cursor:pointer;border-radius:2px;color:var(--sub)}
+#detail-category{font-size:11px;color:var(--red);font-weight:700;background:#fff0f2;padding:2px 8px;border-radius:10px}
+#detail-content-box{padding:16px}
+#detail-title{font-size:18px;font-weight:700;line-height:1.5;margin-bottom:10px;word-break:keep-all}
+#detail-meta{display:flex;align-items:center;gap:10px;font-size:11px;color:#999;padding-bottom:12px;border-bottom:1px solid var(--border);margin-bottom:16px;flex-wrap:wrap}
+.comment-ip{font-size:10px;color:#ccc;background:#f5f5f5;padding:1px 5px;border-radius:2px}
+#detail-body{font-size:14px;line-height:1.9;color:var(--text);white-space:pre-wrap;min-height:80px}
+#detail-actions{display:flex;gap:8px;margin-top:20px;padding-top:16px;border-top:1px solid var(--border);justify-content:center}
+.vote-btn{display:flex;align-items:center;gap:6px;padding:10px 24px;border-radius:40px;font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:700;cursor:pointer;border:2px solid var(--border);background:#fff;transition:all 0.15s;min-width:80px;justify-content:center}
+.vote-btn.up:hover,.vote-btn.up.voted{background:#fff0f2;border-color:var(--red);color:var(--red)}
+.vote-btn.down:hover,.vote-btn.down.voted{background:#f0f4ff;border-color:var(--blue);color:var(--blue)}
+
+#comments-section{background:#f8f9fa;border-top:6px solid var(--bg)}
+#comments-header{padding:12px 16px;font-size:13px;font-weight:700;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px}
+#comment-cnt-badge{background:var(--red);color:#fff;font-size:10px;padding:1px 6px;border-radius:10px}
+.comment-item{padding:12px 16px;border-bottom:1px solid var(--border);background:#fff}
+.comment-item:nth-child(even){background:#fafafa}
+.comment-header{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.comment-nick{font-size:12px;font-weight:700;color:var(--navy)}
+.comment-time{font-size:11px;color:#bbb}
+.comment-body{font-size:13px;line-height:1.6;color:var(--text)}
+.comment-actions{display:flex;gap:12px;margin-top:6px}
+.comment-like-btn{background:none;border:none;font-size:11px;color:#bbb;cursor:pointer;font-family:'Noto Sans KR',sans-serif}
+.comment-like-btn:hover{color:var(--red)}
+#comment-write{padding:12px 16px;background:#fff;border-top:1px solid var(--border)}
+#comment-write-row{display:flex;gap:6px}
+#comment-input{flex:1;padding:10px 12px;border:1px solid var(--border);border-radius:4px;font-family:'Noto Sans KR',sans-serif;font-size:13px;outline:none}
 #comment-input:focus{border-color:var(--red)}
-#comment-btn{background:var(--navy);color:#fff;border:none;padding:8px 16px;font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:700;border-radius:3px;cursor:pointer}
+#comment-submit{background:var(--navy);color:#fff;border:none;padding:10px 16px;font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:700;border-radius:4px;cursor:pointer;white-space:nowrap}
 
-#loading-posts{text-align:center;padding:40px;color:#ccc;font-size:13px}
+#detail-nav-btns{display:flex;justify-content:space-between;padding:12px 16px;border-top:1px solid var(--border);background:#fff}
+.nav-post-btn{background:none;border:1px solid var(--border);padding:7px 14px;font-family:'Noto Sans KR',sans-serif;font-size:12px;cursor:pointer;border-radius:2px;color:var(--sub)}
+
+#loading{text-align:center;padding:40px;color:#ccc}
 .spinner{display:inline-block;width:18px;height:18px;border:2px solid #eee;border-top-color:var(--red);border-radius:50%;animation:spin 0.7s linear infinite;margin-bottom:8px}
 @keyframes spin{to{transform:rotate(360deg)}}
 </style>
@@ -86,200 +137,289 @@ a{text-decoration:none;color:inherit}
 
 <div id="header">
   <div id="header-inner">
-    <a href="/" id="logo">ETF<em>레이더</em></a>
-    <span id="page-title">커뮤니티</span>
-    <a href="/" id="back-btn">← 뉴스</a>
+    <div>
+      <div id="logo">ETF<em>레이더</em></div>
+      <div id="board-name">자유 게시판</div>
+    </div>
+    <a href="/" id="news-link">← 뉴스홈</a>
   </div>
 </div>
 
-<div id="wrap">
-
-  <!-- 목록 뷰 -->
-  <div id="post-list-view">
-    <div id="write-box">
-      <h3>✏️ 익명 글쓰기</h3>
-      <div class="form-row">
-        <input type="text" id="post-title" placeholder="제목을 입력하세요" maxlength="100">
-      </div>
-      <div class="form-row">
-        <textarea id="post-content" placeholder="내용을 입력하세요 (ETF, 펀드, 주식 관련 자유롭게)"></textarea>
-      </div>
-      <button id="submit-btn" onclick="submitPost()">게시하기</button>
-    </div>
-
-    <div class="section-bar">
-      <span class="section-title">전체 글</span>
-      <span id="post-count"></span>
-    </div>
-    <div id="posts-container">
-      <div id="loading-posts"><div class="spinner"></div><br>불러오는 중...</div>
+<div id="list-view">
+  <div id="board-header">
+    <div id="board-tabs">
+      <div class="board-tab active" onclick="setSort('latest',this)">최신순</div>
+      <div class="board-tab" onclick="setSort('hot',this)">인기순</div>
+      <div class="board-tab" onclick="setSort('comments',this)">댓글많은순</div>
     </div>
   </div>
-
-  <!-- 상세 뷰 -->
-  <div id="post-detail">
-    <button id="detail-back" onclick="showList()">← 목록으로</button>
-    <div id="detail-box">
-      <div id="detail-title"></div>
-      <div id="detail-meta"></div>
-      <div id="detail-content"></div>
-      <div id="detail-actions">
-        <button class="action-btn" onclick="likePost()">👍 좋아요 <span id="like-count">0</span></button>
-      </div>
+  <div id="notice-bar">
+    <span class="notice-badge">공지</span>
+    <span class="notice-text">ETF·펀드·주식 관련 자유롭게 이야기해요. 욕설·도배·광고는 삭제됩니다.</span>
+  </div>
+  <div id="container">
+    <div id="hot-section">
+      <div id="hot-header"><span>🔥 실시간 인기글</span></div>
+      <div id="hot-list"><div id="loading"><div class="spinner"></div></div></div>
     </div>
-    <div id="comments-box">
-      <div id="comments-title">댓글 <span id="comment-count">0</span>개</div>
-      <div id="comments-container"></div>
-      <div id="comment-form">
-        <input type="text" id="comment-input" placeholder="댓글을 입력하세요 (익명)">
-        <button id="comment-btn" onclick="submitComment()">등록</button>
+    <div id="post-list-section">
+      <div id="list-header">
+        <span id="total-count">불러오는 중...</span>
+        <button id="write-btn" onclick="openWrite()">✏️ 글쓰기</button>
+      </div>
+      <div id="posts-container"><div id="loading"><div class="spinner"></div></div></div>
+      <div id="pagination"></div>
+      <div id="search-bar">
+        <input type="text" id="search-input" placeholder="제목·내용 검색" onkeydown="if(event.key==='Enter')searchPosts()">
+        <button id="search-btn" onclick="searchPosts()">검색</button>
       </div>
     </div>
   </div>
+</div>
 
+<div id="detail-view">
+  <div id="detail-nav">
+    <button id="back-btn" onclick="showList()">← 목록</button>
+    <span id="detail-category"></span>
+  </div>
+  <div id="detail-content-box">
+    <div id="detail-title"></div>
+    <div id="detail-meta"></div>
+    <div id="detail-body"></div>
+    <div id="detail-actions">
+      <button class="vote-btn up" onclick="vote('up')">👍 추천 <span id="up-count">0</span></button>
+      <button class="vote-btn down" onclick="vote('down')">👎 비추 <span id="down-count">0</span></button>
+    </div>
+  </div>
+  <div id="comments-section">
+    <div id="comments-header">댓글 <span id="comment-cnt-badge">0</span></div>
+    <div id="comments-container"></div>
+    <div id="comment-write">
+      <div id="comment-write-row">
+        <input type="text" id="comment-input" placeholder="댓글을 입력하세요 (익명)" maxlength="200">
+        <button id="comment-submit" onclick="submitComment()">등록</button>
+      </div>
+    </div>
+  </div>
+  <div id="detail-nav-btns">
+    <button class="nav-post-btn" onclick="showList()">목록으로</button>
+    <button class="nav-post-btn" onclick="openWrite()">✏️ 글쓰기</button>
+  </div>
+</div>
+
+<div id="write-modal" onclick="if(event.target===this)closeWrite()">
+  <div id="write-box">
+    <div id="write-title-bar">
+      <h3>익명 글쓰기</h3>
+      <button id="close-write" onclick="closeWrite()">✕</button>
+    </div>
+    <div class="write-row">
+      <select id="post-category">
+        <option value="자유">💬 자유</option>
+        <option value="ETF">📊 ETF</option>
+        <option value="펀드">💼 펀드</option>
+        <option value="주식">📈 주식</option>
+        <option value="질문">❓ 질문</option>
+        <option value="정보">💡 정보</option>
+        <option value="유머">😂 유머</option>
+      </select>
+    </div>
+    <div class="write-row">
+      <input type="text" id="post-title-input" placeholder="제목 (최대 100자)" maxlength="100">
+    </div>
+    <div class="write-row">
+      <textarea id="post-content-input" placeholder="내용을 자유롭게 입력하세요&#10;&#10;ETF, 펀드, 주식 관련 정보나 질문, 일상 이야기 모두 환영합니다 😊" maxlength="2000" oninput="updateCharCount()"></textarea>
+      <div class="char-count"><span id="char-count">0</span>/2000</div>
+    </div>
+    <button id="submit-btn" onclick="submitPost()">게시하기</button>
+  </div>
 </div>
 
 <script>
 const SUPABASE_URL='https://aoqzohxljzghflkuuxhx.supabase.co';
 const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFvcXpvaHhsanpnaGZsa3V1eGh4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ2MTEyNjMsImV4cCI6MjA5MDE4NzI2M30.cbSaSVWBPQZfMG5QqQRFAhCGb0VNMTX9YiRLqtrpHgM';
+const H={'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=representation'};
 
-const headers={
-  'Content-Type':'application/json',
-  'apikey':SUPABASE_KEY,
-  'Authorization':'Bearer '+SUPABASE_KEY,
-  'Prefer':'return=representation'
-};
-
-let currentPostId=null;
-
+let currentPostId=null,currentSort='latest',searchQuery='',currentPage=1;
+const PAGE_SIZE=20;
+const NICKS=['익명의고양이','익명의개구리','익명의판다','익명의여우','익명의코알라','익명의수달','익명의너구리','익명의다람쥐','익명의부엉이','익명의펭귄','익명의햄스터','익명의토끼','익명의곰돌이','익명의오리','익명의사슴'];
+function randomNick(){return NICKS[Math.floor(Math.random()*NICKS.length)];}
+function fakeIp(){return Math.floor(Math.random()*255)+'.'+Math.floor(Math.random()*255)+'.*.*';}
 function timeAgo(d){
   const m=Math.floor((Date.now()-new Date(d))/60000);
   if(m<1)return'방금';if(m<60)return m+'분 전';
   if(m<1440)return Math.floor(m/60)+'시간 전';
-  return Math.floor(m/1440)+'일 전';
+  if(m<10080)return Math.floor(m/1440)+'일 전';
+  return new Date(d).toLocaleDateString('ko-KR',{month:'numeric',day:'numeric'});
+}
+function isNew(d){return(Date.now()-new Date(d))<3600000;}
+function updateCharCount(){document.getElementById('char-count').textContent=document.getElementById('post-content-input').value.length;}
+function setSort(sort,el){document.querySelectorAll('.board-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');currentSort=sort;currentPage=1;loadPosts();}
+function openWrite(){document.getElementById('write-modal').classList.add('show');document.body.style.overflow='hidden';}
+function closeWrite(){document.getElementById('write-modal').classList.remove('show');document.body.style.overflow='';}
+
+async function loadHotPosts(){
+  try{
+    const r=await fetch(`${SUPABASE_URL}/rest/v1/posts?select=*&order=likes.desc&limit=5`,{headers:H});
+    const posts=await r.json();
+    const hot=posts.filter(p=>(p.likes||0)>0).slice(0,5);
+    if(!hot.length){document.getElementById('hot-list').innerHTML='<div style="padding:12px 16px;color:#ccc;font-size:12px">아직 인기글이 없어요. 첫 글에 추천을 눌러주세요!</div>';return;}
+    document.getElementById('hot-list').innerHTML=hot.map((p,i)=>
+      `<div class="hot-item" onclick="showPost(${p.id})">
+        <span class="hot-num">${i+1}</span>
+        <span class="hot-title">[${p.category||'자유'}] ${p.title}</span>
+        <span class="hot-count">👍${p.likes}</span>
+      </div>`).join('');
+  }catch(e){}
 }
 
 async function loadPosts(){
+  document.getElementById('posts-container').innerHTML='<div id="loading"><div class="spinner"></div></div>';
   try{
-    const r=await fetch(`${SUPABASE_URL}/rest/v1/posts?select=*&order=created_at.desc`,{headers});
+    let url=`${SUPABASE_URL}/rest/v1/posts?select=*`;
+    if(searchQuery)url+=`&or=(title.ilike.*${encodeURIComponent(searchQuery)}*,content.ilike.*${encodeURIComponent(searchQuery)}*)`;
+    if(currentSort==='latest')url+=`&order=created_at.desc`;
+    else if(currentSort==='hot')url+=`&order=likes.desc`;
+    url+=`&limit=${PAGE_SIZE}&offset=${(currentPage-1)*PAGE_SIZE}`;
+    const r=await fetch(url,{headers:{...H,'Prefer':'count=exact'}});
     const posts=await r.json();
-    document.getElementById('post-count').innerHTML=`총 <strong>${posts.length}</strong>개`;
+    const total=parseInt(r.headers?.get('content-range')?.split('/')[1]||posts.length);
+    document.getElementById('total-count').innerHTML=`전체 <strong>${total}</strong>개의 글`;
     if(!posts.length){
-      document.getElementById('posts-container').innerHTML='<div id="loading-posts" style="color:#ccc">아직 게시글이 없어요. 첫 글을 남겨보세요!</div>';
+      document.getElementById('posts-container').innerHTML='<div style="padding:30px;text-align:center;color:#ccc;font-size:13px">아직 게시글이 없어요.<br>첫 글을 남겨보세요! 😊</div>';
       return;
     }
-    let html='';
-    posts.forEach(p=>{
-      html+=`<div class="post-card" onclick="showPost(${p.id})">
-        <div class="post-header">
-          <div class="post-title">${p.title}</div>
-          <div class="post-meta">${timeAgo(p.created_at)}</div>
+    document.getElementById('posts-container').innerHTML=posts.map((p,i)=>{
+      const num=(currentPage-1)*PAGE_SIZE+(i+1);
+      return`<div class="post-row${(p.likes||0)>=3?' hot-post':''}" onclick="showPost(${p.id})">
+        <span class="post-num">${num}</span>
+        <div class="post-title-wrap">
+          ${p.category?`<span class="cat-tag">${p.category}</span>`:''}
+          <span class="post-title">${p.title}</span>
+          ${(p.comment_count||0)>0?`<span class="comment-cnt">[${p.comment_count}]</span>`:''}
+          ${isNew(p.created_at)?'<span class="new-dot"></span>':''}
         </div>
-        <div class="post-preview">${p.content}</div>
-        <div class="post-footer">
-          <span>익명</span>
-          <span>👍 ${p.likes||0}</span>
+        <div class="post-right">
+          <span class="post-nick">${p.nickname||'익명'}</span>
+          <span class="post-time">${timeAgo(p.created_at)}</span>
+          <span class="post-views">👁${p.views||0}</span>
+          ${(p.likes||0)>0?`<span class="post-likes">👍${p.likes}</span>`:''}
         </div>
       </div>`;
-    });
-    document.getElementById('posts-container').innerHTML=html;
-  }catch(e){
-    document.getElementById('posts-container').innerHTML='<div id="loading-posts">불러오기 실패. 새로고침 해주세요.</div>';
-  }
+    }).join('');
+    const totalPages=Math.ceil(total/PAGE_SIZE);
+    let pag='';
+    for(let i=Math.max(1,currentPage-2);i<=Math.min(totalPages,currentPage+2);i++){
+      pag+=`<button class="page-btn${i===currentPage?' active':''}" onclick="goPage(${i})">${i}</button>`;
+    }
+    document.getElementById('pagination').innerHTML=pag;
+  }catch(e){document.getElementById('posts-container').innerHTML='<div style="padding:20px;text-align:center;color:#ccc">불러오기 실패</div>';}
 }
 
+function goPage(p){currentPage=p;loadPosts();window.scrollTo(0,0);}
+function searchPosts(){searchQuery=document.getElementById('search-input').value.trim();currentPage=1;loadPosts();}
+
 async function submitPost(){
-  const title=document.getElementById('post-title').value.trim();
-  const content=document.getElementById('post-content').value.trim();
+  const title=document.getElementById('post-title-input').value.trim();
+  const content=document.getElementById('post-content-input').value.trim();
+  const category=document.getElementById('post-category').value;
   if(!title){alert('제목을 입력해주세요.');return;}
-  if(!content){alert('내용을 입력해주세요.');return;}
+  if(content.length<5){alert('내용을 5자 이상 입력해주세요.');return;}
   const btn=document.getElementById('submit-btn');
   btn.textContent='게시 중...';btn.disabled=true;
   try{
     await fetch(`${SUPABASE_URL}/rest/v1/posts`,{
-      method:'POST',headers,
-      body:JSON.stringify({title,content,nickname:'익명'})
+      method:'POST',headers:H,
+      body:JSON.stringify({title,content,category,nickname:randomNick(),likes:0,dislikes:0,views:0,comment_count:0})
     });
-    document.getElementById('post-title').value='';
-    document.getElementById('post-content').value='';
-    await loadPosts();
+    document.getElementById('post-title-input').value='';
+    document.getElementById('post-content-input').value='';
+    document.getElementById('char-count').textContent='0';
+    closeWrite();
+    await Promise.all([loadPosts(),loadHotPosts()]);
   }catch(e){alert('오류가 발생했습니다.');}
   btn.textContent='게시하기';btn.disabled=false;
 }
 
 async function showPost(id){
   currentPostId=id;
-  // 조회수 증가
-  await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${id}`,{
-    method:'PATCH',headers,
-    body:JSON.stringify({views:1})
-  });
-  const r=await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${id}&select=*`,{headers});
-  const posts=await r.json();
-  const p=posts[0];
-  document.getElementById('detail-title').textContent=p.title;
-  document.getElementById('detail-meta').innerHTML=`<span>익명</span><span>${timeAgo(p.created_at)}</span>`;
-  document.getElementById('detail-content').textContent=p.content;
-  document.getElementById('like-count').textContent=p.likes||0;
-  document.getElementById('post-list-view').style.display='none';
-  document.getElementById('post-detail').style.display='block';
-  loadComments(id);
-  window.scrollTo(0,0);
+  try{
+    const r=await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${id}&select=*`,{headers:H});
+    const posts=await r.json();const p=posts[0];
+    await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${id}`,{method:'PATCH',headers:H,body:JSON.stringify({views:(p.views||0)+1})});
+    document.getElementById('detail-category').textContent=p.category||'자유';
+    document.getElementById('detail-title').textContent=p.title;
+    document.getElementById('detail-meta').innerHTML=`<span>${p.nickname||'익명'}</span><span class="comment-ip">${fakeIp()}</span><span>${timeAgo(p.created_at)}</span><span>조회 ${(p.views||0)+1}</span>`;
+    document.getElementById('detail-body').textContent=p.content;
+    document.getElementById('up-count').textContent=p.likes||0;
+    document.getElementById('down-count').textContent=p.dislikes||0;
+    document.querySelectorAll('.vote-btn').forEach(b=>b.classList.remove('voted'));
+    document.getElementById('list-view').style.display='none';
+    document.getElementById('detail-view').style.display='block';
+    loadComments(id);
+    window.scrollTo(0,0);
+  }catch(e){}
 }
 
 function showList(){
-  document.getElementById('post-detail').style.display='none';
-  document.getElementById('post-list-view').style.display='block';
-  loadPosts();
+  document.getElementById('detail-view').style.display='none';
+  document.getElementById('list-view').style.display='block';
+  loadPosts();loadHotPosts();
 }
 
-async function likePost(){
-  const r=await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${currentPostId}&select=likes`,{headers});
-  const posts=await r.json();
-  const newLikes=(posts[0]?.likes||0)+1;
-  await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${currentPostId}`,{
-    method:'PATCH',headers,
-    body:JSON.stringify({likes:newLikes})
-  });
-  document.getElementById('like-count').textContent=newLikes;
+async function vote(type){
+  const btn=document.querySelector(`.vote-btn.${type==='up'?'up':'down'}`);
+  if(btn.classList.contains('voted')){alert('이미 투표했습니다.');return;}
+  btn.classList.add('voted');
+  const r=await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${currentPostId}&select=likes,dislikes`,{headers:H});
+  const p=(await r.json())[0];
+  const field=type==='up'?'likes':'dislikes';
+  const val=(p[field]||0)+1;
+  await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${currentPostId}`,{method:'PATCH',headers:H,body:JSON.stringify({[field]:val})});
+  document.getElementById(type==='up'?'up-count':'down-count').textContent=val;
+  if(type==='up')loadHotPosts();
 }
 
 async function loadComments(postId){
-  const r=await fetch(`${SUPABASE_URL}/rest/v1/comments?post_id=eq.${postId}&order=created_at.asc`,{headers});
+  const r=await fetch(`${SUPABASE_URL}/rest/v1/comments?post_id=eq.${postId}&order=created_at.asc`,{headers:H});
   const comments=await r.json();
-  document.getElementById('comment-count').textContent=comments.length;
+  document.getElementById('comment-cnt-badge').textContent=comments.length;
   if(!comments.length){
-    document.getElementById('comments-container').innerHTML='<div style="padding:16px 0;color:#ccc;font-size:13px;text-align:center">첫 댓글을 남겨보세요!</div>';
+    document.getElementById('comments-container').innerHTML='<div style="padding:20px;text-align:center;color:#ccc;font-size:13px">첫 댓글을 남겨보세요!</div>';
     return;
   }
-  let html='';
-  comments.forEach(c=>{
-    html+=`<div class="comment-item">
-      <div class="comment-nick">익명</div>
-      <div class="comment-text">${c.content}</div>
-      <div class="comment-time">${timeAgo(c.created_at)}</div>
-    </div>`;
-  });
-  document.getElementById('comments-container').innerHTML=html;
+  document.getElementById('comments-container').innerHTML=comments.map(c=>`
+    <div class="comment-item">
+      <div class="comment-header">
+        <span class="comment-nick">${c.nickname||'익명'}</span>
+        <span class="comment-ip">${fakeIp()}</span>
+        <span class="comment-time">${timeAgo(c.created_at)}</span>
+      </div>
+      <div class="comment-body">${c.content}</div>
+    </div>`).join('');
 }
 
 async function submitComment(){
   const content=document.getElementById('comment-input').value.trim();
-  if(!content)return;
+  if(!content||content.length<2)return;
+  const btn=document.getElementById('comment-submit');
+  btn.textContent='...';btn.disabled=true;
   await fetch(`${SUPABASE_URL}/rest/v1/comments`,{
-    method:'POST',headers,
-    body:JSON.stringify({post_id:currentPostId,content,nickname:'익명'})
+    method:'POST',headers:H,
+    body:JSON.stringify({post_id:currentPostId,content,nickname:randomNick()})
   });
+  // 댓글 수 업데이트
+  const r=await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${currentPostId}&select=comment_count`,{headers:H});
+  const p=(await r.json())[0];
+  await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${currentPostId}`,{method:'PATCH',headers:H,body:JSON.stringify({comment_count:(p.comment_count||0)+1})});
   document.getElementById('comment-input').value='';
-  loadComments(currentPostId);
+  await loadComments(currentPostId);
+  btn.textContent='등록';btn.disabled=false;
 }
 
-// 엔터로 댓글 등록
-document.getElementById('comment-input').addEventListener('keydown',e=>{
-  if(e.key==='Enter')submitComment();
-});
-
+document.getElementById('comment-input').addEventListener('keydown',e=>{if(e.key==='Enter')submitComment();});
 loadPosts();
+loadHotPosts();
 </script>
 </body>
 </html>
