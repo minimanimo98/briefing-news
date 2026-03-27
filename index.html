@@ -6,28 +6,21 @@
 <title>ETF레이더 — 국내 ETF·펀드·주식 뉴스</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
-
 :root{
   --red:#e8001a;
   --navy:#0a1628;
-  --blue:#0057ff;
   --bg:#f4f4f6;
   --white:#ffffff;
   --border:#e2e2e8;
   --text:#111827;
   --sub:#6b7280;
-  --card-bg:#ffffff;
 }
-
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;font-size:14px}
 a{text-decoration:none;color:inherit}
 
-/* ── HEADER ── */
 #topbar{background:var(--navy);padding:6px 20px;display:flex;justify-content:space-between;align-items:center}
 #topbar-date{font-size:11px;color:rgba(255,255,255,0.4);letter-spacing:0.05em}
-#topbar-links{display:flex;gap:14px}
-#topbar-links span{font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:0.04em}
 
 #header{background:var(--navy);padding:18px 20px 16px;text-align:center;position:sticky;top:0;z-index:200;border-bottom:3px solid var(--red)}
 #logo-wrap{display:flex;align-items:center;justify-content:center;gap:12px}
@@ -35,7 +28,6 @@ a{text-decoration:none;color:inherit}
 #logo-badge{background:var(--red);color:#fff;font-size:9px;font-weight:700;letter-spacing:0.12em;padding:3px 7px;border-radius:2px;font-family:'Noto Sans KR',sans-serif}
 #tagline{font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:0.2em;margin-top:5px;text-transform:uppercase}
 
-/* ── TICKER ── */
 #ticker-wrap{background:#111e35;border-bottom:1px solid rgba(255,255,255,0.06);padding:7px 0;overflow:hidden;white-space:nowrap}
 #ticker{display:inline-flex;gap:28px;animation:ticker 25s linear infinite;padding-left:20px}
 @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
@@ -45,33 +37,27 @@ a{text-decoration:none;color:inherit}
 .tick-up{color:#ff6b6b}
 .tick-dn{color:#4ade80}
 
-/* ── TABS ── */
 #tabs{background:#fff;border-bottom:2px solid var(--border);position:sticky;top:89px;z-index:150;display:flex;overflow-x:auto}
 #tabs::-webkit-scrollbar{display:none}
-.tab{padding:13px 20px;font-size:13px;font-weight:500;color:var(--sub);border:none;background:none;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-2px;font-family:'Noto Sans KR',sans-serif;transition:all 0.15s}
+.tab{padding:13px 22px;font-size:13px;font-weight:500;color:var(--sub);border:none;background:none;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-2px;font-family:'Noto Sans KR',sans-serif;transition:all 0.15s;letter-spacing:0.02em}
 .tab.active{color:var(--red);border-bottom-color:var(--red);font-weight:700}
 .tab:hover:not(.active){color:var(--text)}
 
-/* ── SUMMARY BAR ── */
 #summary-bar{background:#fff;padding:10px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
 #article-count{font-size:12px;color:var(--sub)}
 #article-count strong{color:var(--red)}
 #refresh-btn{font-size:11px;color:var(--sub);background:none;border:1px solid var(--border);padding:4px 10px;border-radius:20px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:all 0.15s}
 #refresh-btn:hover{border-color:var(--red);color:var(--red)}
 
-/* ── NEWS LIST ── */
 #news{max-width:720px;margin:0 auto;padding:12px 16px 40px}
 
-/* 피처드 카드 */
 .card-featured{background:var(--white);border-radius:4px;margin-bottom:3px;padding:20px;border-left:4px solid var(--red);box-shadow:0 1px 3px rgba(0,0,0,0.06);transition:box-shadow 0.2s}
 .card-featured:hover{box-shadow:0 4px 12px rgba(0,0,0,0.1)}
 .card-featured .card-title{font-family:'Noto Serif KR',serif;font-size:19px;font-weight:700;line-height:1.5;color:var(--text);word-break:keep-all;margin-bottom:8px}
 .card-featured .card-desc{font-size:13px;color:var(--sub);line-height:1.7;margin-bottom:10px}
 
-/* 일반 카드 */
 .card{background:var(--white);border-radius:4px;margin-bottom:3px;padding:14px 16px;display:flex;gap:14px;align-items:flex-start;transition:background 0.15s;border-left:3px solid transparent}
 .card:hover{background:#fafafa;border-left-color:var(--red)}
-
 .card-num{font-size:18px;font-weight:700;color:#dde1e8;font-family:Georgia,serif;flex-shrink:0;width:24px;line-height:1.4;text-align:center}
 .card-num.hot{color:var(--red)}
 .card-body{flex:1;min-width:0}
@@ -81,26 +67,20 @@ a{text-decoration:none;color:inherit}
 .new-badge{font-size:9px;font-weight:700;color:#fff;background:var(--red);padding:1px 5px;border-radius:2px;letter-spacing:0.05em;animation:pulse 1.5s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.6}}
 .card-title{font-size:14px;font-weight:600;line-height:1.55;color:var(--text);word-break:keep-all;font-family:'Noto Serif KR',serif}
-.card-title:hover{color:var(--red)}
 
-/* 섹션 구분 */
 .section-label{font-size:11px;font-weight:700;color:var(--sub);letter-spacing:0.12em;text-transform:uppercase;padding:14px 4px 8px;display:flex;align-items:center;gap:8px}
 .section-label::after{content:'';flex:1;height:1px;background:var(--border)}
 
-/* 로딩 */
 #loading{text-align:center;padding:60px 20px;color:#c0c4cc;font-size:13px;background:#fff;border-radius:4px;margin-top:12px}
 .spinner{display:inline-block;width:22px;height:22px;border:2px solid #e5e7eb;border-top-color:var(--red);border-radius:50%;animation:spin 0.7s linear infinite;margin-bottom:12px}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* 더보기 */
-#load-more{display:block;width:100%;padding:13px;font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:500;background:#fff;border:1px solid var(--border);color:var(--sub);cursor:pointer;border-radius:4px;margin-top:8px;transition:all 0.15s;letter-spacing:0.03em}
+#load-more{display:block;width:100%;padding:13px;font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:500;background:#fff;border:1px solid var(--border);color:var(--sub);cursor:pointer;border-radius:4px;margin-top:8px;transition:all 0.15s}
 #load-more:hover{background:var(--red);color:#fff;border-color:var(--red)}
 
-/* 푸터 */
 #footer{text-align:center;padding:24px 20px;color:#c0c4cc;font-size:11px;line-height:2;border-top:1px solid var(--border);max-width:720px;margin:0 auto}
 #update-time{color:var(--red)}
 
-/* 모바일 */
 @media(max-width:480px){
   #logo{font-size:26px}
   .card-featured .card-title{font-size:17px}
@@ -112,9 +92,6 @@ a{text-decoration:none;color:inherit}
 
 <div id="topbar">
   <span id="topbar-date"></span>
-  <div id="topbar-links">
-    <span>ETF</span><span>펀드</span><span>주식</span>
-  </div>
 </div>
 
 <div id="header">
@@ -134,7 +111,6 @@ a{text-decoration:none;color:inherit}
     <span class="tick-item"><span class="tick-name">원/달러</span><span class="tick-val">1,326</span><span class="tick-up">▲3.2</span></span>
     <span class="tick-item"><span class="tick-name">국채10년</span><span class="tick-val">2.84%</span><span class="tick-dn">▼0.02</span></span>
     <span class="tick-item"><span class="tick-name">금</span><span class="tick-val">3,024</span><span class="tick-up">▲0.08%</span></span>
-    <!-- 반복 (ticker loop) -->
     <span class="tick-item"><span class="tick-name">KOSPI</span><span class="tick-val">2,641</span><span class="tick-up">▲0.42%</span></span>
     <span class="tick-item"><span class="tick-name">KOSDAQ</span><span class="tick-val">742</span><span class="tick-dn">▼0.18%</span></span>
     <span class="tick-item"><span class="tick-name">TIGER200</span><span class="tick-val">38,240</span><span class="tick-up">▲0.31%</span></span>
@@ -146,10 +122,10 @@ a{text-decoration:none;color:inherit}
 </div>
 
 <div id="tabs">
-  <button class="tab active" onclick="switchTab('all',this)">🏠 전체</button>
-  <button class="tab" onclick="switchTab('etf',this)">📊 ETF</button>
-  <button class="tab" onclick="switchTab('fund',this)">💼 펀드</button>
-  <button class="tab" onclick="switchTab('stock',this)">📈 주식</button>
+  <button class="tab active" onclick="switchTab('all',this)">전체</button>
+  <button class="tab" onclick="switchTab('etf',this)">ETF</button>
+  <button class="tab" onclick="switchTab('fund',this)">펀드</button>
+  <button class="tab" onclick="switchTab('stock',this)">주식</button>
 </div>
 
 <div id="summary-bar">
@@ -166,9 +142,7 @@ a{text-decoration:none;color:inherit}
 </div>
 
 <script>
-// 날짜 표시
-const now=new Date();
-document.getElementById('topbar-date').textContent=now.toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric',weekday:'short'});
+document.getElementById('topbar-date').textContent=new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric',weekday:'short'});
 
 const TAB_SOURCES={
   all:[
@@ -177,9 +151,9 @@ const TAB_SOURCES={
     "https://news.google.com/rss/search?q=코스피+코스닥+증시&hl=ko&gl=KR&ceid=KR:ko"
   ],
   etf:[
-    "https://news.google.com/rss/search?q=TIGER+KODEX+ETF+신규&hl=ko&gl=KR&ceid=KR:ko",
+    "https://news.google.com/rss/search?q=TIGER+KODEX+ETF&hl=ko&gl=KR&ceid=KR:ko",
     "https://news.google.com/rss/search?q=상장지수펀드+레버리지+인버스&hl=ko&gl=KR&ceid=KR:ko",
-    "https://news.google.com/rss/search?q=ETF+수익률+운용&hl=ko&gl=KR&ceid=KR:ko"
+    "https://news.google.com/rss/search?q=ETF+수익률+신규상장&hl=ko&gl=KR&ceid=KR:ko"
   ],
   fund:[
     "https://news.google.com/rss/search?q=공모펀드+운용사+설정액&hl=ko&gl=KR&ceid=KR:ko",
@@ -193,13 +167,67 @@ const TAB_SOURCES={
   ]
 };
 
-let curTab='all', allArticles=[], displayCount=20;
+// 도메인 → 언론사명 매핑
+const SOURCE_MAP={
+  'hankyung.com':'한국경제',
+  'mk.co.kr':'매일경제',
+  'chosun.com':'조선일보',
+  'joongang.co.kr':'중앙일보',
+  'donga.com':'동아일보',
+  'hani.co.kr':'한겨레',
+  'yonhapnews.co.kr':'연합뉴스',
+  'yna.co.kr':'연합뉴스',
+  'mt.co.kr':'머니투데이',
+  'edaily.co.kr':'이데일리',
+  'sedaily.com':'서울경제',
+  'fnnews.com':'파이낸셜뉴스',
+  'heraldcorp.com':'헤럴드경제',
+  'asiae.co.kr':'아시아경제',
+  'news1.kr':'뉴스1',
+  'newsis.com':'뉴시스',
+  'jtbc.co.kr':'JTBC',
+  'mbc.co.kr':'MBC',
+  'sbs.co.kr':'SBS',
+  'kbs.co.kr':'KBS',
+  'etnews.com':'전자신문',
+  'zdnet.co.kr':'ZDNet',
+  'bloter.net':'블로터',
+  'khan.co.kr':'경향신문',
+  'hankookilbo.com':'한국일보',
+  'kmib.co.kr':'국민일보',
+  'seoul.co.kr':'서울신문',
+};
+
+function cleanSource(raw){
+  // 도메인 포함된 경우
+  for(const [domain, name] of Object.entries(SOURCE_MAP)){
+    if(raw.toLowerCase().includes(domain)) return name;
+  }
+  // ".co.kr" ".com" 같은 도메인 형태면 그냥 도메인 앞부분만
+  if(raw.includes('.')){
+    return raw.split('.')[0].toUpperCase();
+  }
+  return raw;
+}
 
 function parseTitle(raw){
-  const match=raw.match(/^(.*)\s-\s([^-]+)$/);
-  if(match) return{title:match[1].trim(),source:match[2].trim()};
-  return{title:raw.trim(),source:'뉴스'};
+  // "제목 - 언론사" 형태 파싱
+  const match=raw.match(/^(.*?)\s+-\s+(.+)$/);
+  if(match){
+    return{
+      title:cleanTitle(match[1].trim()),
+      source:cleanSource(match[2].trim())
+    };
+  }
+  return{title:cleanTitle(raw.trim()),source:'뉴스'};
 }
+
+function cleanTitle(t){
+  // 깨진 특수문자 제거 (□, 유니코드 replacement char 등)
+  return t.replace(/[\uFFFD\u25A1\u25A0]/g,'').replace(/\s+/g,' ').trim();
+}
+
+let curTab='all', allArticles=[], displayCount=20;
 
 function switchTab(tab,el){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
@@ -211,18 +239,16 @@ function switchTab(tab,el){
 
 function timeAgo(d){
   const m=Math.floor((Date.now()-new Date(d))/60000);
-  if(m<1) return'방금';
-  if(m<60) return m+'분 전';
-  if(m<1440) return Math.floor(m/60)+'시간 전';
+  if(m<1)return'방금';
+  if(m<60)return m+'분 전';
+  if(m<1440)return Math.floor(m/60)+'시간 전';
   return Math.floor(m/1440)+'일 전';
 }
 
-function isNew(d){
-  return(Date.now()-new Date(d))<3600000; // 1시간 이내
-}
+function isNew(d){return(Date.now()-new Date(d))<3600000;}
 
 function strip(h){
-  return h?h.replace(/<[^>]*>/g,'').replace(/&[a-z#0-9]+;/gi,' ').replace(/\s+/g,' ').trim():'';
+  return h?h.replace(/<[^>]*>/g,'').replace(/&[a-z#0-9]+;/gi,' ').replace(/[\uFFFD\u25A1\u25A0]/g,'').replace(/\s+/g,' ').trim():'';
 }
 
 async function fetchOne(url){
@@ -239,7 +265,7 @@ async function fetchOne(url){
         pubDate:item.querySelector('pubDate')?.textContent||new Date().toISOString(),
         description:strip(item.querySelector('description')?.textContent||'')
       };
-    }).filter(a=>a.title);
+    }).filter(a=>a.title&&a.title.length>2);
   }catch(e){return[];}
 }
 
@@ -260,49 +286,41 @@ async function loadFeeds(){
     return;
   }
   renderArticles();
-  const t=new Date().toLocaleTimeString('ko-KR');
-  document.getElementById('update-time').textContent='최종 업데이트 '+t;
+  document.getElementById('update-time').textContent='최종 업데이트 '+new Date().toLocaleTimeString('ko-KR');
 }
 
 function renderArticles(){
   document.getElementById('article-count').innerHTML=`총 <strong>${allArticles.length}</strong>건의 뉴스`;
   const items=allArticles.slice(0,displayCount);
   let html='';
-
   items.forEach((a,i)=>{
     const ago=timeAgo(a.pubDate);
     const newBadge=isNew(a.pubDate)?'<span class="new-badge">NEW</span>':'';
-
     if(i===0){
       html+=`<a href="${a.link}" target="_blank" rel="noopener">
         <div class="card-featured">
           <div class="card-meta">
             <span class="source-badge">${a.source}</span>
-            <span class="time-badge">${ago}</span>
-            ${newBadge}
+            <span class="time-badge">${ago}</span>${newBadge}
           </div>
           <div class="card-title">${a.title}</div>
           ${a.description?`<div class="card-desc">${a.description.slice(0,120)}...</div>`:''}
-        </div>
-      </a>`;
+        </div></a>`;
     } else {
-      if(i===1) html+=`<div class="section-label">최신 뉴스</div>`;
+      if(i===1)html+=`<div class="section-label">최신 뉴스</div>`;
       html+=`<a href="${a.link}" target="_blank" rel="noopener">
         <div class="card">
           <div class="card-num${i<4?' hot':''}">${i+1}</div>
           <div class="card-body">
             <div class="card-meta">
               <span class="source-badge">${a.source}</span>
-              <span class="time-badge">${ago}</span>
-              ${newBadge}
+              <span class="time-badge">${ago}</span>${newBadge}
             </div>
             <div class="card-title">${a.title}</div>
           </div>
-        </div>
-      </a>`;
+        </div></a>`;
     }
   });
-
   if(allArticles.length>displayCount){
     html+=`<button id="load-more" onclick="loadMore()">뉴스 더 보기 (${allArticles.length-displayCount}건 남음) ↓</button>`;
   }
