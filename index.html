@@ -29,21 +29,21 @@ a{text-decoration:none;color:inherit}
 #tagline{font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:0.2em;margin-top:5px;text-transform:uppercase}
 
 #ticker-wrap{background:#111e35;border-bottom:1px solid rgba(255,255,255,0.06);padding:7px 0;overflow:hidden;white-space:nowrap}
-#ticker{display:inline-flex;gap:28px;padding-left:20px}
-#ticker.animate{animation:ticker 25s linear infinite}
+#ticker{display:inline-flex;gap:28px;padding-left:20px;animation:ticker 30s linear infinite}
 @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 .tick-item{display:inline-flex;gap:7px;align-items:center;font-size:11px}
 .tick-name{color:rgba(255,255,255,0.4);font-weight:300}
 .tick-val{color:#fff;font-weight:500}
 .tick-up{color:#ff6b6b}
 .tick-dn{color:#4ade80}
-.tick-flat{color:rgba(255,255,255,0.4)}
 
 #tabs{background:#fff;border-bottom:2px solid var(--border);position:sticky;top:89px;z-index:150;display:flex;overflow-x:auto}
 #tabs::-webkit-scrollbar{display:none}
-.tab{padding:13px 22px;font-size:13px;font-weight:500;color:var(--sub);border:none;background:none;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-2px;font-family:'Noto Sans KR',sans-serif;transition:all 0.15s;letter-spacing:0.02em}
+.tab{padding:13px 22px;font-size:13px;font-weight:500;color:var(--sub);border:none;background:none;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-2px;font-family:'Noto Sans KR',sans-serif;transition:all 0.15s;letter-spacing:0.02em;display:inline-block}
 .tab.active{color:var(--red);border-bottom-color:var(--red);font-weight:700}
 .tab:hover:not(.active){color:var(--text)}
+.tab.community{color:#0057ff}
+.tab.community:hover{color:#003fcc}
 
 #summary-bar{background:#fff;padding:10px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
 #article-count{font-size:12px;color:var(--sub)}
@@ -56,7 +56,7 @@ a{text-decoration:none;color:inherit}
 .card-featured{background:var(--white);border-radius:4px;margin-bottom:3px;padding:20px;border-left:4px solid var(--red);box-shadow:0 1px 3px rgba(0,0,0,0.06);transition:box-shadow 0.2s}
 .card-featured:hover{box-shadow:0 4px 12px rgba(0,0,0,0.1)}
 .card-featured .card-title{font-family:'Noto Serif KR',serif;font-size:19px;font-weight:700;line-height:1.5;color:var(--text);word-break:keep-all;margin-bottom:8px}
-.card-featured .card-desc{font-size:13px;color:var(--sub);line-height:1.7;margin-bottom:10px}
+.card-featured .card-desc{font-size:13px;color:var(--sub);line-height:1.7}
 
 .card{background:var(--white);border-radius:4px;margin-bottom:3px;padding:14px 16px;display:flex;gap:14px;align-items:flex-start;transition:background 0.15s;border-left:3px solid transparent}
 .card:hover{background:#fafafa;border-left-color:var(--red)}
@@ -106,7 +106,22 @@ a{text-decoration:none;color:inherit}
 
 <div id="ticker-wrap">
   <div id="ticker">
-    <span class="tick-item"><span class="tick-name">시세 로딩중...</span></span>
+    <span class="tick-item"><span class="tick-name">KOSPI</span><span class="tick-val">2,558</span><span class="tick-dn">▼0.81%</span></span>
+    <span class="tick-item"><span class="tick-name">KOSDAQ</span><span class="tick-val">718</span><span class="tick-dn">▼1.24%</span></span>
+    <span class="tick-item"><span class="tick-name">S&P500</span><span class="tick-val">5,580</span><span class="tick-dn">▼0.33%</span></span>
+    <span class="tick-item"><span class="tick-name">나스닥</span><span class="tick-val">17,322</span><span class="tick-dn">▼0.53%</span></span>
+    <span class="tick-item"><span class="tick-name">원/달러</span><span class="tick-val">1,463원</span><span class="tick-up">▲2.1</span></span>
+    <span class="tick-item"><span class="tick-name">금(달러)</span><span class="tick-val">3,085</span><span class="tick-up">▲0.62%</span></span>
+    <span class="tick-item"><span class="tick-name">미국채10년</span><span class="tick-val">4.38%</span><span class="tick-dn">▼0.03</span></span>
+    <span class="tick-item"><span class="tick-name">TIGER200</span><span class="tick-val">35,820</span><span class="tick-dn">▼0.79%</span></span>
+    <span class="tick-item"><span class="tick-name">KOSPI</span><span class="tick-val">2,558</span><span class="tick-dn">▼0.81%</span></span>
+    <span class="tick-item"><span class="tick-name">KOSDAQ</span><span class="tick-val">718</span><span class="tick-dn">▼1.24%</span></span>
+    <span class="tick-item"><span class="tick-name">S&P500</span><span class="tick-val">5,580</span><span class="tick-dn">▼0.33%</span></span>
+    <span class="tick-item"><span class="tick-name">나스닥</span><span class="tick-val">17,322</span><span class="tick-dn">▼0.53%</span></span>
+    <span class="tick-item"><span class="tick-name">원/달러</span><span class="tick-val">1,463원</span><span class="tick-up">▲2.1</span></span>
+    <span class="tick-item"><span class="tick-name">금(달러)</span><span class="tick-val">3,085</span><span class="tick-up">▲0.62%</span></span>
+    <span class="tick-item"><span class="tick-name">미국채10년</span><span class="tick-val">4.38%</span><span class="tick-dn">▼0.03</span></span>
+    <span class="tick-item"><span class="tick-name">TIGER200</span><span class="tick-val">35,820</span><span class="tick-dn">▼0.79%</span></span>
   </div>
 </div>
 
@@ -115,6 +130,7 @@ a{text-decoration:none;color:inherit}
   <button class="tab" onclick="switchTab('etf',this)">ETF</button>
   <button class="tab" onclick="switchTab('fund',this)">펀드</button>
   <button class="tab" onclick="switchTab('stock',this)">주식</button>
+  <a href="/board.html" class="tab community">커뮤니티</a>
 </div>
 
 <div id="summary-bar">
@@ -133,51 +149,6 @@ a{text-decoration:none;color:inherit}
 <script>
 document.getElementById('topbar-date').textContent=new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric',weekday:'short'});
 
-// ── 시세 티커 ──
-const TICK_LABELS={
-  '^KS11':'KOSPI',
-  '^KQ11':'KOSDAQ',
-  'KRW=X':'원/달러',
-  'GC=F':'금(달러)',
-  '^TNX':'미국채10년'
-};
-
-async function loadTicker(){
-  try{
-    const r=await fetch('/api/quote');
-    const data=await r.json();
-    const quotes=data?.quoteResponse?.result||[];
-    if(!quotes.length) return;
-
-    let items='';
-    quotes.forEach(q=>{
-      const name=TICK_LABELS[q.symbol]||q.symbol;
-      const price=q.regularMarketPrice;
-      const change=q.regularMarketChangePercent;
-      let val='';
-      if(name==='KOSPI'||name==='KOSDAQ'){
-        val=price?.toLocaleString('ko-KR',{maximumFractionDigits:2});
-      } else if(name==='원/달러'){
-        val=price?.toLocaleString('ko-KR',{maximumFractionDigits:1})+'원';
-      } else {
-        val=price?.toLocaleString('en-US',{maximumFractionDigits:2});
-      }
-      const changeStr=change!=null?(change>=0?`▲${change.toFixed(2)}%`:`▼${Math.abs(change).toFixed(2)}%`):'';
-      const cls=change>0?'tick-up':change<0?'tick-dn':'tick-flat';
-      items+=`<span class="tick-item"><span class="tick-name">${name}</span><span class="tick-val">${val}</span><span class="${cls}">${changeStr}</span></span>`;
-    });
-
-    // 루프를 위해 2배 복제
-    const doubled=items+items;
-    const ticker=document.getElementById('ticker');
-    ticker.innerHTML=doubled;
-    ticker.classList.add('animate');
-  }catch(e){
-    document.getElementById('ticker').innerHTML='<span class="tick-item"><span class="tick-name" style="color:rgba(255,255,255,0.3)">시세 불러오기 실패</span></span>';
-  }
-}
-
-// ── 뉴스 ──
 const TAB_SOURCES={
   all:[
     "https://news.google.com/rss/search?q=ETF+한국+투자&hl=ko&gl=KR&ceid=KR:ko",
@@ -209,7 +180,8 @@ const SOURCE_MAP={
   'heraldcorp.com':'헤럴드경제','asiae.co.kr':'아시아경제','news1.kr':'뉴스1',
   'newsis.com':'뉴시스','etnews.com':'전자신문','zdnet.co.kr':'ZDNet',
   'bloter.net':'블로터','khan.co.kr':'경향신문','hankookilbo.com':'한국일보',
-  'kmib.co.kr':'국민일보','seoul.co.kr':'서울신문'
+  'kmib.co.kr':'국민일보','seoul.co.kr':'서울신문','jtbc.co.kr':'JTBC',
+  'mbc.co.kr':'MBC','sbs.co.kr':'SBS','kbs.co.kr':'KBS'
 };
 
 function cleanSource(raw){
@@ -246,7 +218,10 @@ function timeAgo(d){
 }
 
 function isNew(d){return(Date.now()-new Date(d))<3600000;}
-function strip(h){return h?h.replace(/<[^>]*>/g,'').replace(/&[a-z#0-9]+;/gi,' ').replace(/[\uFFFD\u25A1\u25A0]/g,'').replace(/\s+/g,' ').trim():'';}
+
+function strip(h){
+  return h?h.replace(/<[^>]*>/g,'').replace(/&[a-z#0-9]+;/gi,' ').replace(/[\uFFFD\u25A1\u25A0]/g,'').replace(/\s+/g,' ').trim():'';
+}
 
 async function fetchOne(url){
   try{
@@ -291,7 +266,7 @@ function renderArticles(){
     const newBadge=isNew(a.pubDate)?'<span class="new-badge">NEW</span>':'';
     if(i===0){
       html+=`<a href="${a.link}" target="_blank" rel="noopener"><div class="card-featured"><div class="card-meta"><span class="source-badge">${a.source}</span><span class="time-badge">${ago}</span>${newBadge}</div><div class="card-title">${a.title}</div>${a.description?`<div class="card-desc">${a.description.slice(0,120)}...</div>`:''}</div></a>`;
-    } else {
+    }else{
       if(i===1)html+=`<div class="section-label">최신 뉴스</div>`;
       html+=`<a href="${a.link}" target="_blank" rel="noopener"><div class="card"><div class="card-num${i<4?' hot':''}">${i+1}</div><div class="card-body"><div class="card-meta"><span class="source-badge">${a.source}</span><span class="time-badge">${ago}</span>${newBadge}</div><div class="card-title">${a.title}</div></div></div></a>`;
     }
@@ -301,12 +276,7 @@ function renderArticles(){
 }
 
 function loadMore(){displayCount+=20;renderArticles();}
-
-// 시세 + 뉴스 동시 로드
-loadTicker();
 loadFeeds();
-// 1분마다 시세 갱신
-setInterval(loadTicker, 60000);
 </script>
 </body>
 </html>
