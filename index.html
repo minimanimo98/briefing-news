@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ETF 레이더</title>
+<title>ETF레이더</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&family=Noto+Sans+KR:wght@300;400;500&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -41,68 +41,83 @@ a{text-decoration:none;color:inherit}
   <div id="tagline">ETF · 펀드 · 주식 뉴스</div>
 </div>
 <div id="tabs">
-  <button class="tab active" onclick="switchTab(0,this)">전체</button>
-  <button class="tab" onclick="switchTab(1,this)">ETF</button>
-  <button class="tab" onclick="switchTab(2,this)">펀드</button>
-  <button class="tab" onclick="switchTab(3,this)">주식</button>
+  <button class="tab active" onclick="switchTab('all',this)">전체</button>
+  <button class="tab" onclick="switchTab('etf',this)">ETF</button>
+  <button class="tab" onclick="switchTab('fund',this)">펀드</button>
+  <button class="tab" onclick="switchTab('stock',this)">주식</button>
 </div>
 <div id="news"><div id="loading"><div class="spinner"></div><br>뉴스 불러오는 중...</div></div>
 <div id="footer">ETF레이더 · RSS 기반 뉴스<br>원문 저작권은 각 언론사에 귀속<br><span id="update-time"></span></div>
 <script>
-const FEEDS={
-  0:[
-    {name:"한국경제",url:"https://www.hankyung.com/feed/stock"},
-    {name:"연합뉴스",url:"https://www.yonhapnews.co.kr/rss/stock.xml"},
-    {name:"머니투데이",url:"https://rss.mt.co.kr/mt_news.xml"}
-  ],
-  1:[
-    {name:"한국경제",url:"https://www.hankyung.com/feed/stock"},
-    {name:"연합뉴스",url:"https://www.yonhapnews.co.kr/rss/economy.xml"},
-    {name:"머니투데이",url:"https://rss.mt.co.kr/mt_news.xml"}
-  ],
-  2:[
-    {name:"한국경제",url:"https://www.hankyung.com/feed/finance"},
-    {name:"머니투데이",url:"https://rss.mt.co.kr/mt_news.xml"},
-    {name:"연합뉴스",url:"https://www.yonhapnews.co.kr/rss/economy.xml"}
-  ],
-  3:[
-    {name:"한국경제",url:"https://www.hankyung.com/feed/stock"},
-    {name:"연합뉴스",url:"https://www.yonhapnews.co.kr/rss/stock.xml"},
-    {name:"머니투데이",url:"https://rss.mt.co.kr/mt_news.xml"}
-  ]
+// 동작 확인된 RSS URL만 사용
+const SOURCES=[
+  {name:"한국경제",url:"https://www.hankyung.com/feed/stock"},
+  {name:"연합뉴스",url:"https://www.yonhapnews.co.kr/rss/stock.xml"},
+  {name:"머니투데이",url:"https://rss.mt.co.kr/mt_news.xml"},
+  {name:"연합 경제",url:"https://www.yonhapnews.co.kr/rss/economy.xml"},
+  {name:"한경 경제",url:"https://www.hankyung.com/feed/finance"}
+];
+
+// 탭별 키워드 필터
+const KEYWORDS={
+  etf:['ETF','etf','상장지수','인덱스펀드'],
+  fund:['펀드','fund','운용','자산운용','설정액'],
+  stock:['주식','종목','코스피','코스닥','상장','증시','주가']
 };
-let curTab=0,allArticles=[],displayCount=15;
-function switchTab(i,el){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');curTab=i;displayCount=15;loadFeeds();}
-function timeAgo(d){const m=Math.floor((Date.now()-new Date(d))/60000);if(m<1)return'방금';if(m<60)return m+'분 전';if(m<1440)return Math.floor(m/60)+'시간 전';return Math.floor(m/1440)+'일 전';}
+
+let curTab='all',allArticles=[],displayCount=15;
+
+function matchTab(title,tab){
+  if(tab==='all')return true;
+  const kws=KEYWORDS[tab]||[];
+  return kws.some(k=>title.includes(k));
+}
+
+function switchTab(tab,el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  curTab=tab;
+  displayCount=15;
+  renderArticles();
+}
+
+function timeAgo(d){
+  const m=Math.floor((Date.now()-new Date(d))/60000);
+  if(m<1)return'방금';if(m<60)return m+'분 전';
+  if(m<1440)return Math.floor(m/60)+'시간 전';
+  return Math.floor(m/1440)+'일 전';
+}
 function strip(h){return h?h.replace(/<[^>]*>/g,'').replace(/&[a-z#0-9]+;/gi,' ').replace(/\s+/g,' ').trim():'';}
 
 async function fetchOne(s){
   try{
     const r=await fetch(`/api/rss?url=${encodeURIComponent(s.url)}`,{signal:AbortSignal.timeout(8000)});
     const text=await r.text();
-    const parser=new DOMParser();
-    const xml=parser.parseFromString(text,'text/xml');
-    const items=[...xml.querySelectorAll('item')];
-    return items.slice(0,20).map(item=>{
-      const title=item.querySelector('title')?.textContent?.trim()||'';
-      const link=item.querySelector('link')?.textContent?.trim()||item.querySelector('guid')?.textContent||'';
-      const pubDate=item.querySelector('pubDate')?.textContent||new Date().toISOString();
-      const desc=strip(item.querySelector('description')?.textContent||'');
-      return{title,link,pubDate,description:desc,sourceName:s.name};
-    }).filter(a=>a.title);
+    const xml=new DOMParser().parseFromString(text,'text/xml');
+    return[...xml.querySelectorAll('item')].slice(0,20).map(item=>({
+      title:item.querySelector('title')?.textContent?.trim()||'',
+      link:item.querySelector('link')?.textContent?.trim()||item.querySelector('guid')?.textContent||'',
+      pubDate:item.querySelector('pubDate')?.textContent||new Date().toISOString(),
+      description:strip(item.querySelector('description')?.textContent||''),
+      sourceName:s.name
+    })).filter(a=>a.title);
   }catch(e){return[];}
 }
 
 async function loadFeeds(){
   document.getElementById('news').innerHTML='<div id="loading"><div class="spinner"></div><br>뉴스 불러오는 중...</div>';
-  const sources=FEEDS[curTab];
   const all=[];
-  for(const s of sources){
+  for(const s of SOURCES){
     const items=await fetchOne(s);
     items.forEach(item=>all.push(item));
     if(all.length>0){
       all.sort((a,b)=>new Date(b.pubDate)-new Date(a.pubDate));
-      allArticles=[...all];
+      // 중복 제거
+      const seen=new Set();
+      allArticles=all.filter(a=>{
+        if(seen.has(a.title))return false;
+        seen.add(a.title);return true;
+      });
       renderArticles();
     }
   }
@@ -111,12 +126,17 @@ async function loadFeeds(){
 }
 
 function renderArticles(){
-  const items=allArticles.slice(0,displayCount);
+  const filtered=allArticles.filter(a=>matchTab(a.title,curTab));
+  if(!filtered.length){
+    document.getElementById('news').innerHTML='<div id="loading">해당 카테고리 뉴스가 없습니다.</div>';
+    return;
+  }
+  const items=filtered.slice(0,displayCount);
   let html='';
   items.forEach((a,i)=>{
     html+=`<a href="${a.link}" target="_blank" rel="noopener"><div class="card${i===0?' featured':''}"><div class="card-rank">${i+1}</div><div class="card-body"><div class="card-meta"><span class="source">${a.sourceName}</span><span class="time">${timeAgo(a.pubDate)}</span></div><div class="card-title">${a.title}</div>${i<5&&a.description?`<div class="card-desc">${a.description.slice(0,100)}</div>`:''}</div></div></a>`;
   });
-  if(allArticles.length>displayCount)html+=`<button id="load-more" onclick="loadMore()">더 보기 (${allArticles.length-displayCount}개 남음)</button>`;
+  if(filtered.length>displayCount)html+=`<button id="load-more" onclick="loadMore()">더 보기 (${filtered.length-displayCount}개 남음)</button>`;
   document.getElementById('news').innerHTML=html;
 }
 function loadMore(){displayCount+=15;renderArticles();}
