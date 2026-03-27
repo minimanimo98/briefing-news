@@ -1,7 +1,1 @@
-{
-  "functions": {
-    "api/rss.js": {
-      "runtime": "edge"
-    }
-  }
-}
+{}
