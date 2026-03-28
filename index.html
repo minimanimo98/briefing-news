@@ -29,6 +29,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="ETF레이더">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
 <!-- 검색엔진 인증 -->
 <meta name="naver-site-verification" content="0ad4b1e46be201bee88db754753e99bd00d5bfd0">
 <meta name="google-site-verification" content="yOaipuFYPn0Icw0l-tdF4urAaGpM8IMy6L9KcCwlGLg">
@@ -654,6 +656,12 @@ function renderArticles() {
 function loadMore() { displayCount += 20; renderArticles(); }
 
 loadFeeds();
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js');
+  });
+}
 </script>
 </body>
 </html>
