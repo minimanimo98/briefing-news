@@ -2,130 +2,428 @@
 <html lang="ko">
 <head>
 <!-- SEO -->
-<meta name="description" content="국내 ETF·펀드·주식 최신 뉴스를 한곳에서. 실시간 시세와 커뮤니티까지 — ETF레이더">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ETF레이더 — 국내 ETF·펀드·주식 뉴스</title>
+<meta name="description" content="국내 ETF·펀드·주식 최신 뉴스를 한곳에서. 커뮤니티까지 — ETF레이더">
 <meta name="keywords" content="ETF,펀드,주식,코스피,코스닥,ETF뉴스,펀드뉴스,주식뉴스,TIGER,KODEX,투자,증시">
 <meta name="author" content="ETF레이더">
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="https://etfradar.kr">
-
-<!-- 오픈그래프 (카카오톡·SNS 공유) -->
+<!-- 오픈그래프 -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ETF레이더">
 <meta property="og:title" content="ETF레이더 — 국내 ETF·펀드·주식 뉴스">
-<meta property="og:description" content="국내 ETF·펀드·주식 최신 뉴스를 한곳에서. 실시간 시세와 커뮤니티까지">
+<meta property="og:description" content="국내 ETF·펀드·주식 최신 뉴스를 한곳에서. 커뮤니티까지">
 <meta property="og:url" content="https://etfradar.kr">
 <meta property="og:image" content="https://etfradar.kr/og-image.png">
 <meta property="og:locale" content="ko_KR">
-
 <!-- 트위터 카드 -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="ETF레이더 — 국내 ETF·펀드·주식 뉴스">
 <meta name="twitter:description" content="국내 ETF·펀드·주식 최신 뉴스를 한곳에서">
 <meta name="twitter:image" content="https://etfradar.kr/og-image.png">
-
-<!-- 모바일 앱 관련 -->
+<!-- PWA / 앱 -->
 <meta name="theme-color" content="#0a1628">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="ETF레이더">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-<title>ETF레이더 — 국내 ETF·펀드·주식 뉴스</title>
-<meta name="naver-site-verification" content="0ad4b1e46be201bee88db754753e99bd00d5bfd0" />
-<meta name="google-site-verification" content="yOaipuFYPn0Icw0l-tdF4urAaGpM8IMy6L9KcCwlGLg" />
+<!-- 검색엔진 인증 -->
+<meta name="naver-site-verification" content="0ad4b1e46be201bee88db754753e99bd00d5bfd0">
+<meta name="google-site-verification" content="yOaipuFYPn0Icw0l-tdF4urAaGpM8IMy6L9KcCwlGLg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
-:root{
-  --red:#e8001a;
-  --navy:#0a1628;
-  --bg:#f4f4f6;
-  --white:#ffffff;
-  --border:#e2e2e8;
-  --text:#111827;
-  --sub:#6b7280;
+:root {
+  --red: #e8001a;
+  --navy: #0a1628;
+  --navy-light: #122040;
+  --bg: #f0f2f5;
+  --white: #ffffff;
+  --border: #e2e6ed;
+  --text: #111827;
+  --sub: #6b7280;
+  --card-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  --card-shadow-hover: 0 6px 20px rgba(0,0,0,0.12);
 }
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;font-size:14px}
-a{text-decoration:none;color:inherit}
 
-#topbar{background:var(--navy);padding:6px 20px;display:flex;justify-content:space-between;align-items:center}
-#topbar-date{font-size:11px;color:rgba(255,255,255,0.4);letter-spacing:0.05em}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Noto Sans KR', sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }
+a { text-decoration: none; color: inherit; }
 
-#header{background:var(--navy);padding:18px 20px 16px;text-align:center;position:sticky;top:0;z-index:200;border-bottom:3px solid var(--red)}
-#logo-wrap{display:flex;align-items:center;justify-content:center;gap:12px}
-#logo{font-family:'Noto Serif KR',serif;font-size:32px;font-weight:900;color:#fff;letter-spacing:-0.03em;line-height:1}
-#logo-badge{background:var(--red);color:#fff;font-size:9px;font-weight:700;letter-spacing:0.12em;padding:3px 7px;border-radius:2px;font-family:'Noto Sans KR',sans-serif}
-#tagline{font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:0.2em;margin-top:5px;text-transform:uppercase}
+/* ── TOPBAR ── */
+#topbar {
+  background: var(--navy-light);
+  padding: 5px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 0.05em;
+}
+#topbar-right { display: flex; gap: 14px; align-items: center; }
+#topbar-right a { color: rgba(255,255,255,0.35); transition: color 0.15s; font-size: 10px; }
+#topbar-right a:hover { color: rgba(255,255,255,0.7); }
 
-#ticker-wrap{background:#111e35;border-bottom:1px solid rgba(255,255,255,0.06);padding:7px 0;overflow:hidden;white-space:nowrap}
-#ticker{display:inline-flex;gap:28px;padding-left:20px;animation:ticker 30s linear infinite}
-@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.tick-item{display:inline-flex;gap:7px;align-items:center;font-size:11px}
-.tick-name{color:rgba(255,255,255,0.4);font-weight:300}
-.tick-val{color:#fff;font-weight:500}
-.tick-up{color:#ff6b6b}
-.tick-dn{color:#4ade80}
+/* ── HEADER ── */
+#header {
+  background: var(--navy);
+  padding: 14px 20px 12px;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  border-bottom: 3px solid var(--red);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+}
+#logo-wrap { display: flex; align-items: center; justify-content: center; gap: 10px; }
+#logo {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 28px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+#logo-badge {
+  background: var(--red);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  padding: 3px 7px;
+  border-radius: 2px;
+  font-family: 'Noto Sans KR', sans-serif;
+  animation: pulse-badge 2s ease-in-out infinite;
+}
+@keyframes pulse-badge { 0%,100%{opacity:1} 50%{opacity:0.7} }
+#tagline {
+  font-size: 10px;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.22em;
+  margin-top: 4px;
+  text-transform: uppercase;
+}
 
-#tabs{background:#fff;border-bottom:2px solid var(--border);position:sticky;top:89px;z-index:150;display:flex;overflow-x:auto}
-#tabs::-webkit-scrollbar{display:none}
-.tab{padding:13px 22px;font-size:13px;font-weight:500;color:var(--sub);border:none;background:none;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-2px;font-family:'Noto Sans KR',sans-serif;transition:all 0.15s;letter-spacing:0.02em;display:inline-block}
-.tab.active{color:var(--red);border-bottom-color:var(--red);font-weight:700}
-.tab:hover:not(.active){color:var(--text)}
-.tab.community{color:#0057ff}
-.tab.community:hover{color:#003fcc}
+/* ── 카카오 애드핏 — 상단 배너 (승인 후 활성화) ── */
+#ad-top {
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60px;
+  /* 애드핏 승인 전: display:none 처리, 승인 후 display:flex 으로 변경 */
+  display: none;
+}
 
-#summary-bar{background:#fff;padding:10px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
-#article-count{font-size:12px;color:var(--sub)}
-#article-count strong{color:var(--red)}
-#refresh-btn{font-size:11px;color:var(--sub);background:none;border:1px solid var(--border);padding:4px 10px;border-radius:20px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:all 0.15s}
-#refresh-btn:hover{border-color:var(--red);color:var(--red)}
+/* ── TABS ── */
+#tabs {
+  background: #fff;
+  border-bottom: 2px solid var(--border);
+  position: sticky;
+  top: 68px;
+  z-index: 150;
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+#tabs::-webkit-scrollbar { display: none; }
 
-#news{max-width:720px;margin:0 auto;padding:12px 16px 40px}
+.tab {
+  padding: 12px 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--sub);
+  border: none;
+  background: none;
+  cursor: pointer;
+  white-space: nowrap;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  font-family: 'Noto Sans KR', sans-serif;
+  transition: all 0.15s;
+  letter-spacing: 0.02em;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.tab.active { color: var(--red); border-bottom-color: var(--red); font-weight: 700; }
+.tab:hover:not(.active) { color: var(--text); background: #fafafa; }
+.tab.community { color: #0057ff; border-left: 1px solid var(--border); margin-left: auto; }
+.tab.community:hover { color: #003fcc; background: #f0f4ff; }
 
-.card-featured{background:var(--white);border-radius:4px;margin-bottom:3px;padding:20px;border-left:4px solid var(--red);box-shadow:0 1px 3px rgba(0,0,0,0.06);transition:box-shadow 0.2s}
-.card-featured:hover{box-shadow:0 4px 12px rgba(0,0,0,0.1)}
-.card-featured .card-title{font-family:'Noto Serif KR',serif;font-size:19px;font-weight:700;line-height:1.5;color:var(--text);word-break:keep-all;margin-bottom:8px}
-.card-featured .card-desc{font-size:13px;color:var(--sub);line-height:1.7}
+/* ── SUMMARY BAR ── */
+#summary-bar {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 9px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#article-count { font-size: 12px; color: var(--sub); }
+#article-count strong { color: var(--red); font-weight: 700; }
+#refresh-btn {
+  font-size: 11px;
+  color: var(--sub);
+  background: #fff;
+  border: 1px solid var(--border);
+  padding: 5px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: 'Noto Sans KR', sans-serif;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+#refresh-btn:hover { border-color: var(--red); color: var(--red); }
+#refresh-icon { display: inline-block; transition: transform 0.4s; }
+#refresh-btn:hover #refresh-icon { transform: rotate(180deg); }
 
-.card{background:var(--white);border-radius:4px;margin-bottom:3px;padding:14px 16px;display:flex;gap:14px;align-items:flex-start;transition:background 0.15s;border-left:3px solid transparent}
-.card:hover{background:#fafafa;border-left-color:var(--red)}
-.card-num{font-size:18px;font-weight:700;color:#dde1e8;font-family:Georgia,serif;flex-shrink:0;width:24px;line-height:1.4;text-align:center}
-.card-num.hot{color:var(--red)}
-.card-body{flex:1;min-width:0}
-.card-meta{display:flex;align-items:center;gap:6px;margin-bottom:5px;flex-wrap:wrap}
-.source-badge{font-size:10px;font-weight:700;color:var(--red);background:#fff0f2;padding:2px 6px;border-radius:2px;letter-spacing:0.03em}
-.time-badge{font-size:10px;color:#9ca3af}
-.new-badge{font-size:9px;font-weight:700;color:#fff;background:var(--red);padding:1px 5px;border-radius:2px;letter-spacing:0.05em;animation:pulse 1.5s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.6}}
-.card-title{font-size:14px;font-weight:600;line-height:1.55;color:var(--text);word-break:keep-all;font-family:'Noto Serif KR',serif}
+/* ── NEWS CONTAINER ── */
+#news { max-width: 760px; margin: 0 auto; padding: 4px 12px 60px; }
 
-.section-label{font-size:11px;font-weight:700;color:var(--sub);letter-spacing:0.12em;text-transform:uppercase;padding:14px 4px 8px;display:flex;align-items:center;gap:8px}
-.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+/* ── FEATURED CARD ── */
+.card-featured {
+  background: var(--white);
+  border-radius: 6px;
+  margin-bottom: 4px;
+  padding: 22px 20px;
+  border-left: 5px solid var(--red);
+  box-shadow: var(--card-shadow);
+  transition: box-shadow 0.2s, transform 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.card-featured::before {
+  content: 'TOP';
+  position: absolute;
+  top: 0; right: 0;
+  background: var(--red);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 3px 8px;
+  border-bottom-left-radius: 4px;
+}
+.card-featured:hover { box-shadow: var(--card-shadow-hover); transform: translateY(-1px); }
+.card-featured .card-title {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.55;
+  color: var(--text);
+  word-break: keep-all;
+  margin-bottom: 8px;
+}
+.card-featured .card-desc {
+  font-size: 13px;
+  color: var(--sub);
+  line-height: 1.75;
+  margin-top: 6px;
+}
 
-#loading{text-align:center;padding:60px 20px;color:#c0c4cc;font-size:13px;background:#fff;border-radius:4px;margin-top:12px}
-.spinner{display:inline-block;width:22px;height:22px;border:2px solid #e5e7eb;border-top-color:var(--red);border-radius:50%;animation:spin 0.7s linear infinite;margin-bottom:12px}
-@keyframes spin{to{transform:rotate(360deg)}}
+/* ── REGULAR CARD ── */
+.card {
+  background: var(--white);
+  border-radius: 6px;
+  margin-bottom: 4px;
+  padding: 13px 16px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  transition: all 0.15s;
+  border-left: 3px solid transparent;
+  box-shadow: var(--card-shadow);
+}
+.card:hover { box-shadow: var(--card-shadow-hover); border-left-color: var(--red); transform: translateY(-1px); }
 
-#load-more{display:block;width:100%;padding:13px;font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:500;background:#fff;border:1px solid var(--border);color:var(--sub);cursor:pointer;border-radius:4px;margin-top:8px;transition:all 0.15s}
-#load-more:hover{background:var(--red);color:#fff;border-color:var(--red)}
+.card-num {
+  font-size: 17px;
+  font-weight: 700;
+  color: #d1d5db;
+  font-family: Georgia, serif;
+  flex-shrink: 0;
+  width: 26px;
+  line-height: 1.4;
+  text-align: center;
+  padding-top: 1px;
+}
+.card-num.hot { color: var(--red); }
 
-#footer{text-align:center;padding:24px 20px;color:#c0c4cc;font-size:11px;line-height:2;border-top:1px solid var(--border);max-width:720px;margin:0 auto}
-#update-time{color:var(--red)}
+.card-body { flex: 1; min-width: 0; }
 
-@media(max-width:480px){
-  #logo{font-size:26px}
-  .card-featured .card-title{font-size:17px}
-  .card-title{font-size:13px}
+/* ── META BADGES ── */
+.card-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 5px;
+  flex-wrap: wrap;
+}
+.source-badge {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--red);
+  background: #fff0f2;
+  padding: 2px 6px;
+  border-radius: 3px;
+  letter-spacing: 0.03em;
+}
+.time-badge { font-size: 10px; color: #9ca3af; }
+.new-badge {
+  font-size: 9px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--red);
+  padding: 1px 5px;
+  border-radius: 2px;
+  letter-spacing: 0.05em;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.55} }
+
+.card-title {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--text);
+  word-break: keep-all;
+  font-family: 'Noto Serif KR', serif;
+}
+
+/* ── SECTION LABEL ── */
+.section-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #9ca3af;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 16px 2px 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+/* ── 카카오 애드핏 — 중간 광고 자리 ── */
+.ad-middle {
+  background: #fff;
+  border-radius: 6px;
+  border: 1px dashed #d1d5db;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100px;
+  margin: 8px 0;
+  color: #c0c4cc;
+  font-size: 11px;
+  /* 애드핏 승인 후 이 클래스에 실제 광고 코드 삽입 */
+  display: none;
+}
+
+/* ── LOADING ── */
+#loading {
+  text-align: center;
+  padding: 60px 20px;
+  color: #c0c4cc;
+  font-size: 13px;
+  background: #fff;
+  border-radius: 6px;
+  margin-top: 8px;
+  box-shadow: var(--card-shadow);
+}
+.spinner {
+  display: inline-block;
+  width: 24px; height: 24px;
+  border: 2px solid #e5e7eb;
+  border-top-color: var(--red);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin-bottom: 12px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── LOAD MORE ── */
+#load-more {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  background: #fff;
+  border: 1px solid var(--border);
+  color: var(--sub);
+  cursor: pointer;
+  border-radius: 6px;
+  margin-top: 6px;
+  transition: all 0.15s;
+  box-shadow: var(--card-shadow);
+}
+#load-more:hover { background: var(--red); color: #fff; border-color: var(--red); }
+
+/* ── FOOTER ── */
+#footer {
+  text-align: center;
+  padding: 28px 20px;
+  color: #b0b7c3;
+  font-size: 11px;
+  line-height: 2;
+  border-top: 1px solid var(--border);
+  max-width: 760px;
+  margin: 0 auto;
+}
+#footer a { color: #b0b7c3; }
+#footer a:hover { color: var(--red); }
+#update-time { color: var(--red); }
+
+/* ── 카카오 애드핏 — 하단 고정 배너 (승인 후 활성화) ── */
+#ad-fixed-bottom {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: #fff;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50px;
+  z-index: 500;
+  box-shadow: 0 -2px 12px rgba(0,0,0,0.08);
+  /* 애드핏 승인 후 display:flex 로 변경 */
+  display: none;
+}
+
+/* ── MOBILE ── */
+@media(max-width: 480px) {
+  #logo { font-size: 24px; }
+  .card-featured .card-title { font-size: 16px; }
+  .card-title { font-size: 13px; }
+  #summary-bar { padding: 8px 12px; }
+  .tab { padding: 11px 15px; font-size: 12px; }
 }
 </style>
 </head>
 <body>
 
+<!-- 상단 얇은 바 -->
 <div id="topbar">
   <span id="topbar-date"></span>
+  <div id="topbar-right">
+    <a href="/board.html">커뮤니티</a>
+    <span>etfradar.kr</span>
+  </div>
 </div>
 
+<!-- 헤더 -->
 <div id="header">
   <div id="logo-wrap">
     <div id="logo">ETF레이더</div>
@@ -134,27 +432,12 @@ a{text-decoration:none;color:inherit}
   <div id="tagline">국내 ETF · 펀드 · 주식 전문 뉴스</div>
 </div>
 
-<div id="ticker-wrap">
-  <div id="ticker">
-    <span class="tick-item"><span class="tick-name">KOSPI</span><span class="tick-val">2,558</span><span class="tick-dn">▼0.81%</span></span>
-    <span class="tick-item"><span class="tick-name">KOSDAQ</span><span class="tick-val">718</span><span class="tick-dn">▼1.24%</span></span>
-    <span class="tick-item"><span class="tick-name">S&P500</span><span class="tick-val">5,580</span><span class="tick-dn">▼0.33%</span></span>
-    <span class="tick-item"><span class="tick-name">나스닥</span><span class="tick-val">17,322</span><span class="tick-dn">▼0.53%</span></span>
-    <span class="tick-item"><span class="tick-name">원/달러</span><span class="tick-val">1,463원</span><span class="tick-up">▲2.1</span></span>
-    <span class="tick-item"><span class="tick-name">금(달러)</span><span class="tick-val">3,085</span><span class="tick-up">▲0.62%</span></span>
-    <span class="tick-item"><span class="tick-name">미국채10년</span><span class="tick-val">4.38%</span><span class="tick-dn">▼0.03</span></span>
-    <span class="tick-item"><span class="tick-name">TIGER200</span><span class="tick-val">35,820</span><span class="tick-dn">▼0.79%</span></span>
-    <span class="tick-item"><span class="tick-name">KOSPI</span><span class="tick-val">2,558</span><span class="tick-dn">▼0.81%</span></span>
-    <span class="tick-item"><span class="tick-name">KOSDAQ</span><span class="tick-val">718</span><span class="tick-dn">▼1.24%</span></span>
-    <span class="tick-item"><span class="tick-name">S&P500</span><span class="tick-val">5,580</span><span class="tick-dn">▼0.33%</span></span>
-    <span class="tick-item"><span class="tick-name">나스닥</span><span class="tick-val">17,322</span><span class="tick-dn">▼0.53%</span></span>
-    <span class="tick-item"><span class="tick-name">원/달러</span><span class="tick-val">1,463원</span><span class="tick-up">▲2.1</span></span>
-    <span class="tick-item"><span class="tick-name">금(달러)</span><span class="tick-val">3,085</span><span class="tick-up">▲0.62%</span></span>
-    <span class="tick-item"><span class="tick-name">미국채10년</span><span class="tick-val">4.38%</span><span class="tick-dn">▼0.03</span></span>
-    <span class="tick-item"><span class="tick-name">TIGER200</span><span class="tick-val">35,820</span><span class="tick-dn">▼0.79%</span></span>
-  </div>
+<!-- 카카오 애드핏 상단 배너 — 승인 후 아래 주석 해제 후 코드 삽입 -->
+<div id="ad-top">
+  <!-- ins class="kakao_ad_area" ... -->
 </div>
 
+<!-- 탭 -->
 <div id="tabs">
   <button class="tab active" onclick="switchTab('all',this)">전체</button>
   <button class="tab" onclick="switchTab('etf',this)">ETF</button>
@@ -163,46 +446,66 @@ a{text-decoration:none;color:inherit}
   <a href="/board.html" class="tab community">커뮤니티</a>
 </div>
 
+<!-- 요약 바 -->
 <div id="summary-bar">
   <span id="article-count">뉴스 불러오는 중...</span>
-  <button id="refresh-btn" onclick="loadFeeds()">↻ 새로고침</button>
+  <button id="refresh-btn" onclick="loadFeeds()">
+    <span id="refresh-icon">↻</span> 새로고침
+  </button>
 </div>
 
-<div id="news"><div id="loading"><div class="spinner"></div><br>최신 뉴스를 불러오고 있습니다...</div></div>
+<!-- 뉴스 목록 -->
+<div id="news">
+  <div id="loading">
+    <div class="spinner"></div><br>
+    최신 뉴스를 불러오고 있습니다...
+  </div>
+</div>
 
+<!-- 푸터 -->
 <div id="footer">
   ETF레이더 · 국내 ETF·펀드·주식 전문 뉴스<br>
   원문 저작권은 각 언론사에 귀속됩니다<br>
+  <a href="/board.html">커뮤니티</a> · <a href="mailto:admin@etfradar.kr">문의</a><br>
   <span id="update-time"></span>
 </div>
 
-<script>
-document.getElementById('topbar-date').textContent=new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric',weekday:'short'});
+<!-- 카카오 애드핏 하단 고정 배너 — 승인 후 활성화 -->
+<div id="ad-fixed-bottom">
+  <!-- ins class="kakao_ad_area" ... -->
+</div>
 
-const TAB_SOURCES={
-  all:[
+<script>
+/* ── 날짜 ── */
+document.getElementById('topbar-date').textContent = new Date().toLocaleDateString('ko-KR', {
+  year: 'numeric', month: 'long', day: 'numeric', weekday: 'short'
+});
+
+/* ── RSS 소스 ── */
+const TAB_SOURCES = {
+  all: [
     "https://news.google.com/rss/search?q=ETF+한국+투자&hl=ko&gl=KR&ceid=KR:ko",
     "https://news.google.com/rss/search?q=공모펀드+사모펀드&hl=ko&gl=KR&ceid=KR:ko",
     "https://news.google.com/rss/search?q=코스피+코스닥+증시&hl=ko&gl=KR&ceid=KR:ko"
   ],
-  etf:[
+  etf: [
     "https://news.google.com/rss/search?q=TIGER+KODEX+ETF&hl=ko&gl=KR&ceid=KR:ko",
     "https://news.google.com/rss/search?q=상장지수펀드+레버리지+인버스&hl=ko&gl=KR&ceid=KR:ko",
     "https://news.google.com/rss/search?q=ETF+수익률+신규상장&hl=ko&gl=KR&ceid=KR:ko"
   ],
-  fund:[
+  fund: [
     "https://news.google.com/rss/search?q=공모펀드+운용사+설정액&hl=ko&gl=KR&ceid=KR:ko",
     "https://news.google.com/rss/search?q=사모펀드+헤지펀드+수익률&hl=ko&gl=KR&ceid=KR:ko",
     "https://news.google.com/rss/search?q=TDF+리츠+펀드매니저&hl=ko&gl=KR&ceid=KR:ko"
   ],
-  stock:[
+  stock: [
     "https://news.google.com/rss/search?q=코스피+코스닥+시황+오늘&hl=ko&gl=KR&ceid=KR:ko",
     "https://news.google.com/rss/search?q=종목+주가+매수+목표주가&hl=ko&gl=KR&ceid=KR:ko",
     "https://news.google.com/rss/search?q=실적+배당+공모주+상장&hl=ko&gl=KR&ceid=KR:ko"
   ]
 };
 
-const SOURCE_MAP={
+const SOURCE_MAP = {
   'hankyung.com':'한국경제','mk.co.kr':'매일경제','chosun.com':'조선일보',
   'joongang.co.kr':'중앙일보','donga.com':'동아일보','hani.co.kr':'한겨레',
   'yonhapnews.co.kr':'연합뉴스','yna.co.kr':'연합뉴스','mt.co.kr':'머니투데이',
@@ -214,98 +517,142 @@ const SOURCE_MAP={
   'mbc.co.kr':'MBC','sbs.co.kr':'SBS','kbs.co.kr':'KBS'
 };
 
-function cleanSource(raw){
-  for(const[domain,name]of Object.entries(SOURCE_MAP)){
-    if(raw.toLowerCase().includes(domain))return name;
+function cleanSource(raw) {
+  for (const [domain, name] of Object.entries(SOURCE_MAP)) {
+    if (raw.toLowerCase().includes(domain)) return name;
   }
-  if(raw.includes('.'))return raw.split('.')[0].toUpperCase();
+  if (raw.includes('.')) return raw.split('.')[0].toUpperCase();
   return raw;
 }
 
-function parseTitle(raw){
-  const match=raw.match(/^(.*?)\s+-\s+(.+)$/);
-  if(match)return{title:cleanTitle(match[1].trim()),source:cleanSource(match[2].trim())};
-  return{title:cleanTitle(raw.trim()),source:'뉴스'};
+function parseTitle(raw) {
+  const match = raw.match(/^(.*?)\s+-\s+(.+)$/);
+  if (match) return { title: cleanTitle(match[1].trim()), source: cleanSource(match[2].trim()) };
+  return { title: cleanTitle(raw.trim()), source: '뉴스' };
 }
 
-function cleanTitle(t){
-  return t.replace(/[\uFFFD\u25A1\u25A0]/g,'').replace(/\s+/g,' ').trim();
+function cleanTitle(t) {
+  return t.replace(/[\uFFFD\u25A1\u25A0]/g, '').replace(/\s+/g, ' ').trim();
 }
 
-let curTab='all',allArticles=[],displayCount=20;
+let curTab = 'all', allArticles = [], displayCount = 20;
 
-function switchTab(tab,el){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+function switchTab(tab, el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
-  curTab=tab;displayCount=20;loadFeeds();
+  curTab = tab;
+  displayCount = 20;
+  loadFeeds();
 }
 
-function timeAgo(d){
-  const m=Math.floor((Date.now()-new Date(d))/60000);
-  if(m<1)return'방금';if(m<60)return m+'분 전';
-  if(m<1440)return Math.floor(m/60)+'시간 전';
-  return Math.floor(m/1440)+'일 전';
+function timeAgo(d) {
+  const m = Math.floor((Date.now() - new Date(d)) / 60000);
+  if (m < 1) return '방금';
+  if (m < 60) return m + '분 전';
+  if (m < 1440) return Math.floor(m / 60) + '시간 전';
+  return Math.floor(m / 1440) + '일 전';
 }
 
-function isNew(d){return(Date.now()-new Date(d))<3600000;}
+function isNew(d) { return (Date.now() - new Date(d)) < 3600000; }
 
-function strip(h){
-  return h?h.replace(/<[^>]*>/g,'').replace(/&[a-z#0-9]+;/gi,' ').replace(/[\uFFFD\u25A1\u25A0]/g,'').replace(/\s+/g,' ').trim():'';
+function strip(h) {
+  return h ? h.replace(/<[^>]*>/g, '').replace(/&[a-z#0-9]+;/gi, ' ')
+              .replace(/[\uFFFD\u25A1\u25A0]/g, '').replace(/\s+/g, ' ').trim() : '';
 }
 
-async function fetchOne(url){
-  try{
-    const r=await fetch(`/api/rss?url=${encodeURIComponent(url)}`,{signal:AbortSignal.timeout(8000)});
-    const text=await r.text();
-    const xml=new DOMParser().parseFromString(text,'text/xml');
-    return[...xml.querySelectorAll('item')].slice(0,20).map(item=>{
-      const raw=item.querySelector('title')?.textContent?.trim()||'';
-      const{title,source}=parseTitle(raw);
-      return{title,source,
-        link:item.querySelector('link')?.textContent?.trim()||item.querySelector('guid')?.textContent||'',
-        pubDate:item.querySelector('pubDate')?.textContent||new Date().toISOString(),
-        description:strip(item.querySelector('description')?.textContent||'')
+async function fetchOne(url) {
+  try {
+    const r = await fetch(`/api/rss?url=${encodeURIComponent(url)}`, { signal: AbortSignal.timeout(8000) });
+    const text = await r.text();
+    const xml = new DOMParser().parseFromString(text, 'text/xml');
+    return [...xml.querySelectorAll('item')].slice(0, 20).map(item => {
+      const raw = item.querySelector('title')?.textContent?.trim() || '';
+      const { title, source } = parseTitle(raw);
+      return {
+        title, source,
+        link: item.querySelector('link')?.textContent?.trim() || item.querySelector('guid')?.textContent || '',
+        pubDate: item.querySelector('pubDate')?.textContent || new Date().toISOString(),
+        description: strip(item.querySelector('description')?.textContent || '')
       };
-    }).filter(a=>a.title&&a.title.length>2);
-  }catch(e){return[];}
+    }).filter(a => a.title && a.title.length > 2);
+  } catch (e) { return []; }
 }
 
-async function loadFeeds(){
-  document.getElementById('news').innerHTML='<div id="loading"><div class="spinner"></div><br>최신 뉴스를 불러오고 있습니다...</div>';
-  document.getElementById('article-count').textContent='뉴스 불러오는 중...';
-  const urls=TAB_SOURCES[curTab]||TAB_SOURCES.all;
-  const results=await Promise.all(urls.map(url=>fetchOne(url)));
-  const all=results.flat();
-  all.sort((a,b)=>new Date(b.pubDate)-new Date(a.pubDate));
-  const seen=new Set();
-  allArticles=all.filter(a=>{if(seen.has(a.title))return false;seen.add(a.title);return true;});
-  if(!allArticles.length){
-    document.getElementById('news').innerHTML='<div id="loading">잠시 후 다시 시도해주세요.</div>';
+async function loadFeeds() {
+  document.getElementById('news').innerHTML = '<div id="loading"><div class="spinner"></div><br>최신 뉴스를 불러오고 있습니다...</div>';
+  document.getElementById('article-count').textContent = '뉴스 불러오는 중...';
+
+  const urls = TAB_SOURCES[curTab] || TAB_SOURCES.all;
+  const results = await Promise.all(urls.map(url => fetchOne(url)));
+  const all = results.flat();
+  all.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+
+  const seen = new Set();
+  allArticles = all.filter(a => { if (seen.has(a.title)) return false; seen.add(a.title); return true; });
+
+  if (!allArticles.length) {
+    document.getElementById('news').innerHTML = '<div id="loading">잠시 후 다시 시도해주세요.</div>';
     return;
   }
+
   renderArticles();
-  document.getElementById('update-time').textContent='최종 업데이트 '+new Date().toLocaleTimeString('ko-KR');
+  document.getElementById('update-time').textContent = '최종 업데이트 ' + new Date().toLocaleTimeString('ko-KR');
 }
 
-function renderArticles(){
-  document.getElementById('article-count').innerHTML=`총 <strong>${allArticles.length}</strong>건의 뉴스`;
-  const items=allArticles.slice(0,displayCount);
-  let html='';
-  items.forEach((a,i)=>{
-    const ago=timeAgo(a.pubDate);
-    const newBadge=isNew(a.pubDate)?'<span class="new-badge">NEW</span>':'';
-    if(i===0){
-      html+=`<a href="${a.link}" target="_blank" rel="noopener"><div class="card-featured"><div class="card-meta"><span class="source-badge">${a.source}</span><span class="time-badge">${ago}</span>${newBadge}</div><div class="card-title">${a.title}</div>${a.description?`<div class="card-desc">${a.description.slice(0,120)}...</div>`:''}</div></a>`;
-    }else{
-      if(i===1)html+=`<div class="section-label">최신 뉴스</div>`;
-      html+=`<a href="${a.link}" target="_blank" rel="noopener"><div class="card"><div class="card-num${i<4?' hot':''}">${i+1}</div><div class="card-body"><div class="card-meta"><span class="source-badge">${a.source}</span><span class="time-badge">${ago}</span>${newBadge}</div><div class="card-title">${a.title}</div></div></div></a>`;
+function renderArticles() {
+  document.getElementById('article-count').innerHTML = `총 <strong>${allArticles.length}</strong>건의 뉴스`;
+  const items = allArticles.slice(0, displayCount);
+  let html = '';
+
+  items.forEach((a, i) => {
+    const ago = timeAgo(a.pubDate);
+    const newBadge = isNew(a.pubDate) ? '<span class="new-badge">NEW</span>' : '';
+
+    if (i === 0) {
+      html += `
+        <a href="${a.link}" target="_blank" rel="noopener">
+          <div class="card-featured">
+            <div class="card-meta">
+              <span class="source-badge">${a.source}</span>
+              <span class="time-badge">${ago}</span>
+              ${newBadge}
+            </div>
+            <div class="card-title">${a.title}</div>
+            ${a.description ? `<div class="card-desc">${a.description.slice(0, 130)}...</div>` : ''}
+          </div>
+        </a>`;
+    } else {
+      if (i === 1) html += `<div class="section-label">최신 뉴스</div>`;
+
+      /* 10번째 뉴스 뒤에 광고 자리 (애드핏 승인 후 display:flex 로 변경) */
+      if (i === 10) html += `<div class="ad-middle"><!-- 카카오 애드핏 중간 광고 --></div>`;
+
+      html += `
+        <a href="${a.link}" target="_blank" rel="noopener">
+          <div class="card">
+            <div class="card-num${i < 4 ? ' hot' : ''}">${i + 1}</div>
+            <div class="card-body">
+              <div class="card-meta">
+                <span class="source-badge">${a.source}</span>
+                <span class="time-badge">${ago}</span>
+                ${newBadge}
+              </div>
+              <div class="card-title">${a.title}</div>
+            </div>
+          </div>
+        </a>`;
     }
   });
-  if(allArticles.length>displayCount)html+=`<button id="load-more" onclick="loadMore()">뉴스 더 보기 (${allArticles.length-displayCount}건 남음) ↓</button>`;
-  document.getElementById('news').innerHTML=html;
+
+  if (allArticles.length > displayCount) {
+    html += `<button id="load-more" onclick="loadMore()">뉴스 더 보기 (${allArticles.length - displayCount}건 남음) ↓</button>`;
+  }
+
+  document.getElementById('news').innerHTML = html;
 }
 
-function loadMore(){displayCount+=20;renderArticles();}
+function loadMore() { displayCount += 20; renderArticles(); }
+
 loadFeeds();
 </script>
 </body>
