@@ -31,7 +31,7 @@ module.exports = async function handler(req, res) {
     });
 
     const data = await response.json();
-    const summary = data?.content?.[0]?.text || JSON.stringify(data);
+    const summary = data?.content?.[0]?.text || '요약 실패';
     return res.status(200).json({ summary });
   } catch (e) {
     return res.status(500).json({ error: e.message });
