@@ -876,13 +876,12 @@ function renderArticles() {
 
 function loadMore() { displayCount += 20; renderArticles(); }
 
-// 중요도 점수 계산 - 키워드 중복 언론사 수 기반
+// 중요도 점수 계산 - 키워드 중복 + 시간 가중치
 function scoreArticles(articles) {
-  // 각 기사에서 핵심 키워드 추출 (2글자 이상 명사)
   function getKeywords(title) {
     return title
-      .replace(/[^가-힣a-zA-Z0-9\s]/g, ' ')
-      .split(/\s+/)
+      .replace(/[^가-힣a-zA-Z0-9 ]/g, ' ')
+      .split(' ')
       .filter(w => w.length >= 2)
       .slice(0, 5);
   }
@@ -890,25 +889,32 @@ function scoreArticles(articles) {
   // 키워드별 등장 횟수 카운트
   const keywordCount = {};
   articles.forEach(a => {
-    const kws = getKeywords(a.title);
-    kws.forEach(kw => {
+    getKeywords(a.title).forEach(kw => {
       keywordCount[kw] = (keywordCount[kw] || 0) + 1;
     });
   });
 
-  // 각 기사 점수 계산
+  const now = Date.now();
   articles.forEach(a => {
-    const kws = getKeywords(a.title);
-    let score = 0;
-    kws.forEach(kw => {
-      if (keywordCount[kw] > 1) score += keywordCount[kw];
+    // 키워드 중복 점수
+    let kwScore = 0;
+    getKeywords(a.title).forEach(kw => {
+      if (keywordCount[kw] > 1) kwScore += keywordCount[kw];
     });
-    a.score = score;
-    // 최신 뉴스 보너스 (1시간 이내)
-    if (isNew(a.pubDate)) a.score += 3;
+
+    // 시간 점수 - 최신일수록 높음 (핵심!)
+    const ageMin = (now - new Date(a.pubDate)) / 60000;
+    let timeScore = 0;
+    if (ageMin < 60)   timeScore = 100;  // 1시간 이내
+    else if (ageMin < 180)  timeScore = 60;   // 3시간 이내
+    else if (ageMin < 360)  timeScore = 30;   // 6시간 이내
+    else if (ageMin < 720)  timeScore = 10;   // 12시간 이내
+    else timeScore = 0;
+
+    // 최종 점수 = 시간 점수 * 2 + 키워드 점수
+    a.score = (timeScore * 2) + kwScore;
   });
 
-  // 점수 높은 순으로 정렬
   return articles.sort((a, b) => b.score - a.score);
 }
 
