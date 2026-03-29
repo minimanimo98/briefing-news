@@ -60,7 +60,7 @@ a { text-decoration: none; color: inherit; }
 /* ── TOPBAR ── */
 #topbar {
   background: var(--navy-light);
-  padding: 5px 20px;
+  padding: 5px 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -68,9 +68,25 @@ a { text-decoration: none; color: inherit; }
   color: rgba(255,255,255,0.35);
   letter-spacing: 0.05em;
 }
-#topbar-right { display: flex; gap: 14px; align-items: center; }
+#topbar-right { display: flex; gap: 14px; align-items: center; flex-shrink: 0; }
 #topbar-right a { color: rgba(255,255,255,0.35); transition: color 0.15s; font-size: 10px; }
 #topbar-right a:hover { color: rgba(255,255,255,0.7); }
+#ticker-wrap { flex: 1; overflow: hidden; position: relative; }
+#ticker-track {
+  display: flex; gap: 0; white-space: nowrap;
+  animation: ticker-scroll 30s linear infinite;
+}
+#ticker-track:hover { animation-play-state: paused; }
+@keyframes ticker-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.index-item { display: inline-flex; align-items: center; gap: 4px; padding: 0 14px; border-right: 1px solid rgba(255,255,255,0.08); }
+.index-name { font-size: 10px; color: rgba(255,255,255,0.4); font-weight: 500; }
+.index-price { font-size: 11px; color: rgba(255,255,255,0.85); font-weight: 700; }
+.index-change { font-size: 10px; font-weight: 600; }
+.index-change.up { color: #ff6b6b; }
+.index-change.dn { color: #74b9ff; }
 
 /* ── HEADER ── */
 #header {
@@ -540,10 +556,15 @@ a { text-decoration: none; color: inherit; }
 
 <!-- 상단 얇은 바 -->
 <div id="topbar">
-  <span id="topbar-date"></span>
+  <div id="ticker-wrap">
+    <div id="ticker-track">
+      <!-- JS로 채워짐 (2번 반복해서 무한 루프) -->
+    </div>
+  </div>
   <div id="topbar-right">
     <a href="/board.html">커뮤니티</a>
-    <span>etfradar.kr</span>
+    <span style="color:rgba(255,255,255,0.2)">|</span>
+    <span id="topbar-date"></span>
   </div>
 </div>
 
@@ -628,8 +649,30 @@ a { text-decoration: none; color: inherit; }
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="text/javascript">
 /* ── 날짜 ── */
 document.getElementById('topbar-date').textContent = new Date().toLocaleDateString('ko-KR', {
-  year: 'numeric', month: 'long', day: 'numeric', weekday: 'short'
+  month: 'long', day: 'numeric', weekday: 'short'
 });
+
+/* ── 지수 티커 ── */
+async function loadIndices() {
+  try {
+    const res = await fetch('/api/indices');
+    const data = await res.json();
+    const order = ['kospi','kosdaq','nikkei','topix','shanghai','hk','sp500','nasdaq','dow'];
+    const items = order.filter(k => data[k]).map(k => {
+      const d = data[k];
+      const cls = d.up ? 'up' : 'dn';
+      return `<div class="index-item">
+        <span class="index-name">${d.name}</span>
+        <span class="index-price">${d.price}</span>
+        <span class="index-change ${cls}">${d.pct}</span>
+      </div>`;
+    }).join('');
+    // 2번 반복해서 무한 스크롤 효과
+    document.getElementById('ticker-track').innerHTML = items + items;
+  } catch(e) {}
+}
+loadIndices();
+setInterval(loadIndices, 60000);
 
 /* ── RSS 소스 ── */
 const TAB_SOURCES = {
