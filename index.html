@@ -810,6 +810,9 @@ async function loadFeeds() {
     return;
   }
 
+  // 중요도 점수 계산 (여러 언론사에서 나온 키워드 기반)
+  allArticles = scoreArticles(allArticles);
+
   renderArticles();
   document.getElementById('update-time').textContent = '최종 업데이트 ' + new Date().toLocaleTimeString('ko-KR');
 
@@ -871,6 +874,42 @@ function renderArticles() {
 }
 
 function loadMore() { displayCount += 20; renderArticles(); }
+
+// 중요도 점수 계산 - 키워드 중복 언론사 수 기반
+function scoreArticles(articles) {
+  // 각 기사에서 핵심 키워드 추출 (2글자 이상 명사)
+  function getKeywords(title) {
+    return title
+      .replace(/[^가-힣a-zA-Z0-9\s]/g, ' ')
+      .split(/\s+/)
+      .filter(w => w.length >= 2)
+      .slice(0, 5);
+  }
+
+  // 키워드별 등장 횟수 카운트
+  const keywordCount = {};
+  articles.forEach(a => {
+    const kws = getKeywords(a.title);
+    kws.forEach(kw => {
+      keywordCount[kw] = (keywordCount[kw] || 0) + 1;
+    });
+  });
+
+  // 각 기사 점수 계산
+  articles.forEach(a => {
+    const kws = getKeywords(a.title);
+    let score = 0;
+    kws.forEach(kw => {
+      if (keywordCount[kw] > 1) score += keywordCount[kw];
+    });
+    a.score = score;
+    // 최신 뉴스 보너스 (1시간 이내)
+    if (isNew(a.pubDate)) a.score += 3;
+  });
+
+  // 점수 높은 순으로 정렬
+  return articles.sort((a, b) => b.score - a.score);
+}
 
 // 뉴스 클릭 추적
 function trackClick(url, title) {
