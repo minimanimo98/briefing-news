@@ -215,6 +215,73 @@ a { text-decoration: none; color: inherit; }
   flex-shrink: 0;
 }
 
+/* ── 핫뉴스 섹션 ── */
+#hot-news {
+  max-width: 760px;
+  margin: 8px auto 0;
+  padding: 0 12px;
+  display: none;
+}
+#hot-news-inner {
+  background: var(--white);
+  border-radius: 6px;
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+}
+#hot-news-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px 8px;
+  border-bottom: 1px solid var(--border);
+}
+.hot-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--red);
+  padding: 2px 7px;
+  border-radius: 2px;
+  letter-spacing: 0.1em;
+}
+.hot-sub {
+  font-size: 10px;
+  color: var(--sub);
+}
+.hot-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.hot-item:last-child { border-bottom: none; }
+.hot-item:hover { background: #fafafa; }
+.hot-rank {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--red);
+  width: 18px;
+  flex-shrink: 0;
+  font-family: Georgia, serif;
+}
+.hot-rank.gray { color: #d1d5db; }
+.hot-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.5;
+  word-break: keep-all;
+  flex: 1;
+}
+.hot-clicks {
+  font-size: 10px;
+  color: var(--sub);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
 /* ── SUMMARY BAR ── */
 #summary-bar {
   max-width: 760px;
@@ -518,6 +585,17 @@ a { text-decoration: none; color: inherit; }
   </div>
 </div>
 
+<!-- 핫뉴스 섹션 -->
+<div id="hot-news">
+  <div id="hot-news-inner">
+    <div id="hot-news-header">
+      <span class="hot-label">HOT</span>
+      <span class="hot-sub">오늘 많이 본 뉴스</span>
+    </div>
+    <div id="hot-news-list"></div>
+  </div>
+</div>
+
 <!-- 요약 바 -->
 <div id="summary-bar">
   <span id="article-count">뉴스 불러오는 중...</span>
@@ -561,19 +639,19 @@ const TAB_SOURCES = {
     "https://news.google.com/rss/search?q=코스피+코스닥+증시&hl=ko&gl=KR&ceid=KR:ko"
   ],
   etf: [
-    "https://news.google.com/rss/search?q=ETF+국내&hl=ko&gl=KR&ceid=KR:ko",
-    "https://news.google.com/rss/search?q=ETF+상장지수펀드+오늘&hl=ko&gl=KR&ceid=KR:ko",
-    "https://news.google.com/rss/search?q=ETF+수익률+레버리지&hl=ko&gl=KR&ceid=KR:ko"
+    "https://news.google.com/rss/search?q=TIGER+KODEX+ETF&hl=ko&gl=KR&ceid=KR:ko",
+    "https://news.google.com/rss/search?q=상장지수펀드+레버리지+인버스&hl=ko&gl=KR&ceid=KR:ko",
+    "https://news.google.com/rss/search?q=ETF+수익률+신규상장&hl=ko&gl=KR&ceid=KR:ko"
   ],
   fund: [
-    "https://news.google.com/rss/search?q=공모펀드+펀드+오늘&hl=ko&gl=KR&ceid=KR:ko",
-    "https://news.google.com/rss/search?q=사모펀드+헤지펀드&hl=ko&gl=KR&ceid=KR:ko",
-    "https://news.google.com/rss/search?q=펀드+운용사+수익률&hl=ko&gl=KR&ceid=KR:ko"
+    "https://news.google.com/rss/search?q=공모펀드+운용사+설정액&hl=ko&gl=KR&ceid=KR:ko",
+    "https://news.google.com/rss/search?q=사모펀드+헤지펀드+수익률&hl=ko&gl=KR&ceid=KR:ko",
+    "https://news.google.com/rss/search?q=TDF+리츠+펀드매니저&hl=ko&gl=KR&ceid=KR:ko"
   ],
   stock: [
-    "https://news.google.com/rss/search?q=코스피+코스닥+오늘&hl=ko&gl=KR&ceid=KR:ko",
-    "https://news.google.com/rss/search?q=주식+주가+종목+오늘&hl=ko&gl=KR&ceid=KR:ko",
-    "https://news.google.com/rss/search?q=증시+실적+배당&hl=ko&gl=KR&ceid=KR:ko"
+    "https://news.google.com/rss/search?q=코스피+코스닥+시황+오늘&hl=ko&gl=KR&ceid=KR:ko",
+    "https://news.google.com/rss/search?q=종목+주가+매수+목표주가&hl=ko&gl=KR&ceid=KR:ko",
+    "https://news.google.com/rss/search?q=실적+배당+공모주+상장&hl=ko&gl=KR&ceid=KR:ko"
   ]
 };
 
@@ -680,8 +758,9 @@ async function loadFeeds() {
   renderArticles();
   document.getElementById('update-time').textContent = '최종 업데이트 ' + new Date().toLocaleTimeString('ko-KR');
 
-  // AI 요약 호출
+  // AI 요약 + 핫뉴스 호출
   loadAISummary(allArticles.map(a => a.title));
+  loadHotNews();
 }
 
 function renderArticles() {
@@ -695,7 +774,7 @@ function renderArticles() {
 
     if (i === 0) {
       html += `
-        <a href="${a.link}" target="_blank" rel="noopener">
+        <a href="${a.link}" target="_blank" rel="noopener" onclick="trackClick('${a.link.replace(/'/g,"\\'")}','${a.title.replace(/'/g,"\\'")}')">
           <div class="card-featured">
             <div class="card-meta">
               <span class="source-badge">${a.source}</span>
@@ -713,7 +792,7 @@ function renderArticles() {
       if (i === 10) html += `<div class="ad-middle"><!-- 카카오 애드핏 중간 광고 --></div>`;
 
       html += `
-        <a href="${a.link}" target="_blank" rel="noopener">
+        <a href="${a.link}" target="_blank" rel="noopener" onclick="trackClick('${a.link.replace(/'/g,"\\'")}','${a.title.replace(/'/g,"\\'")}')">
           <div class="card">
             <div class="card-num${i < 4 ? ' hot' : ''}">${i + 1}</div>
             <div class="card-body">
@@ -738,6 +817,37 @@ function renderArticles() {
 
 function loadMore() { displayCount += 20; renderArticles(); }
 
+// 뉴스 클릭 추적
+function trackClick(url, title) {
+  fetch('/api/hot', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ url, title }),
+  }).catch(() => {});
+}
+
+// 핫뉴스 로드
+async function loadHotNews() {
+  try {
+    const res = await fetch('/api/hot');
+    const data = await res.json();
+    const hot = data.hot || [];
+    if (!hot.length) return;
+
+    const list = hot.map((item, i) => `
+      <a href="${item.url}" target="_blank" rel="noopener" onclick="trackClick('${item.url.replace(/'/g,"\\'")}','')">
+        <div class="hot-item">
+          <span class="hot-rank${i >= 3 ? ' gray' : ''}">${i + 1}</span>
+          <span class="hot-title">${item.title}</span>
+          <span class="hot-clicks">${item.clicks}회</span>
+        </div>
+      </a>`).join('');
+
+    document.getElementById('hot-news-list').innerHTML = list;
+    document.getElementById('hot-news').style.display = 'block';
+  } catch(e) {}
+}
+
 // AI 요약 호출
 async function loadAISummary(titles) {
   try {
@@ -760,9 +870,9 @@ async function loadAISummary(titles) {
       if (stock || news || etf) {
         document.getElementById('ai-summary-text').innerHTML = `
           <div style="display:flex;flex-direction:column;gap:10px;">
-            ${stock ? `<div style="display:flex;gap:8px;align-items:flex-start;"><span style="color:#e8001a;font-weight:700;font-size:10px;letter-spacing:0.05em;white-space:nowrap;padding-top:2px;">주식시장</span><span>${stock}</span></div>` : ''}
-            ${news  ? `<div style="display:flex;gap:8px;align-items:flex-start;border-top:1px solid rgba(255,255,255,0.08);padding-top:10px;"><span style="color:#e8001a;font-weight:700;font-size:10px;letter-spacing:0.05em;white-space:nowrap;padding-top:2px;">주요뉴스</span><span>${news}</span></div>` : ''}
-            ${etf   ? `<div style="display:flex;gap:8px;align-items:flex-start;border-top:1px solid rgba(255,255,255,0.08);padding-top:10px;"><span style="color:#e8001a;font-weight:700;font-size:10px;letter-spacing:0.05em;white-space:nowrap;padding-top:2px;">ETF</span><span>${etf}</span></div>` : ''}
+            ${stock ? `<div style="display:flex;gap:0;align-items:flex-start;"><span style="color:#e8001a;font-weight:700;font-size:10px;letter-spacing:0.05em;white-space:nowrap;padding-top:3px;min-width:52px;">주식시장</span><span style="flex:1;">${stock}</span></div>` : ''}
+            ${news  ? `<div style="display:flex;gap:0;align-items:flex-start;border-top:1px solid rgba(255,255,255,0.08);padding-top:10px;"><span style="color:#e8001a;font-weight:700;font-size:10px;letter-spacing:0.05em;white-space:nowrap;padding-top:3px;min-width:52px;">주요뉴스</span><span style="flex:1;">${news}</span></div>` : ''}
+            ${etf   ? `<div style="display:flex;gap:0;align-items:flex-start;border-top:1px solid rgba(255,255,255,0.08);padding-top:10px;"><span style="color:#e8001a;font-weight:700;font-size:10px;letter-spacing:0.05em;white-space:nowrap;padding-top:3px;min-width:52px;">ETF</span><span style="flex:1;">${etf}</span></div>` : ''}
           </div>`;
       } else {
         document.getElementById('ai-summary-text').textContent = text;
