@@ -160,6 +160,61 @@ a { text-decoration: none; color: inherit; }
 .tab.community { color: #0057ff; border-left: 1px solid var(--border); margin-left: auto; }
 .tab.community:hover { color: #003fcc; background: #f0f4ff; }
 
+/* ── AI 요약 박스 ── */
+#ai-summary {
+  max-width: 760px;
+  margin: 8px auto 0;
+  padding: 0 12px;
+}
+#ai-summary-inner {
+  background: linear-gradient(135deg, #0a1628 0%, #122040 100%);
+  border-radius: 8px;
+  padding: 16px 18px;
+  border-left: 4px solid var(--red);
+  box-shadow: var(--card-shadow);
+}
+#ai-summary-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+#ai-summary-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--red);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+#ai-summary-date {
+  font-size: 10px;
+  color: rgba(255,255,255,0.3);
+  margin-left: auto;
+}
+#ai-summary-text {
+  font-size: 13px;
+  color: rgba(255,255,255,0.88);
+  line-height: 1.9;
+  font-family: 'Noto Serif KR', serif;
+  word-break: keep-all;
+}
+#ai-summary-loading {
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ai-spinner {
+  display: inline-block;
+  width: 14px; height: 14px;
+  border: 2px solid rgba(255,255,255,0.15);
+  border-top-color: var(--red);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
 /* ── SUMMARY BAR ── */
 #summary-bar {
   max-width: 760px;
@@ -448,6 +503,21 @@ a { text-decoration: none; color: inherit; }
   <a href="/board.html" class="tab community">커뮤니티</a>
 </div>
 
+<!-- AI 요약 박스 -->
+<div id="ai-summary">
+  <div id="ai-summary-inner">
+    <div id="ai-summary-header">
+      <span id="ai-summary-label">AI 시장 브리핑</span>
+      <span id="ai-summary-date"></span>
+    </div>
+    <div id="ai-summary-text">
+      <div id="ai-summary-loading">
+        <div class="ai-spinner"></div> 오늘의 시장 핵심을 분석하고 있습니다...
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- 요약 바 -->
 <div id="summary-bar">
   <span id="article-count">뉴스 불러오는 중...</span>
@@ -468,7 +538,7 @@ a { text-decoration: none; color: inherit; }
 <div id="footer">
   ETF레이더 · 국내 ETF·펀드·주식 전문 뉴스<br>
   원문 저작권은 각 언론사에 귀속됩니다<br>
-  <a href="/board.html">커뮤니티</a> · <a href="mailto:admin@etfradar.kr">문의</a><br>
+  <a href="/board.html">커뮤니티</a> · <a href="/cdn-cgi/l/email-protection#1071747d797e5075647662717471623e7b62">문의</a><br>
   <span id="update-time"></span>
 </div>
 
@@ -477,7 +547,7 @@ a { text-decoration: none; color: inherit; }
   <!-- ins class="kakao_ad_area" ... -->
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ── 날짜 ── */
 document.getElementById('topbar-date').textContent = new Date().toLocaleDateString('ko-KR', {
   year: 'numeric', month: 'long', day: 'numeric', weekday: 'short'
@@ -599,6 +669,9 @@ async function loadFeeds() {
 
   renderArticles();
   document.getElementById('update-time').textContent = '최종 업데이트 ' + new Date().toLocaleTimeString('ko-KR');
+
+  // AI 요약 호출
+  loadAISummary(allArticles.map(a => a.title));
 }
 
 function renderArticles() {
@@ -655,13 +728,28 @@ function renderArticles() {
 
 function loadMore() { displayCount += 20; renderArticles(); }
 
+// AI 요약 호출
+async function loadAISummary(titles) {
+  try {
+    const res = await fetch('/api/summarize', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ titles: titles.slice(0, 7) }),
+    });
+    const data = await res.json();
+    if (data.summary) {
+      document.getElementById('ai-summary-text').innerHTML =
+        data.summary.replace(/①|②|③/g, m => `<strong style="color:#e8001a">${m}</strong>`);
+    }
+  } catch (e) {
+    document.getElementById('ai-summary-text').textContent = '요약을 불러오지 못했습니다.';
+  }
+}
+
+// 날짜 표시
+document.getElementById('ai-summary-date').textContent =
+  new Date().toLocaleDateString('ko-KR', { month: 'long', day: 'numeric', weekday: 'short' });
+
 loadFeeds();
 
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js');
-  });
-}
-</script>
-</body>
-</html>
+if ('service
