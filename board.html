@@ -267,10 +267,14 @@ function setSort(sort,el){document.querySelectorAll('.board-tab').forEach(t=>t.c
 function openWrite(){document.getElementById('write-modal').classList.add('show');document.body.style.overflow='hidden';}
 function closeWrite(){document.getElementById('write-modal').classList.remove('show');document.body.style.overflow='';}
 window.addEventListener('popstate',e=>{
-  if(e.state?.page==='list'&&document.getElementById('detail-view').style.display==='block'){
-    document.getElementById('detail-view').style.display='none';
-    document.getElementById('list-view').style.display='block';
-    loadPosts();loadHotPosts();
+  if(document.getElementById('detail-view').style.display==='block'){
+    // 상세뷰에서 뒤로가기 막기 - 상태 다시 push
+    history.pushState({page:'detail',id:currentPostId},'','');
+  } else {
+    if(document.getElementById('detail-view').style.display==='none'){
+      document.getElementById('list-view').style.display='block';
+      loadPosts();loadHotPosts();
+    }
   }
 });
 function openAdminModal(action){adminAction=action;document.getElementById('admin-pw-input').value='';document.getElementById('admin-error').style.display='none';document.getElementById('admin-modal').classList.add('show');setTimeout(()=>document.getElementById('admin-pw-input').focus(),100);}
