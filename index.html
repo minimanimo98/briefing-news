@@ -828,7 +828,11 @@ function switchTab(tab, el) {
   el.classList.add('active');
   curTab = tab;
   displayCount = 20;
-  // 다크모드
+  loadFeeds();
+  loadHotNews();
+}
+
+// 다크모드
 function toggleDark() {
   const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
   if (isDark) {
@@ -845,10 +849,6 @@ function toggleDark() {
 if (localStorage.getItem('theme') === 'dark') {
   document.documentElement.setAttribute('data-theme', 'dark');
   document.getElementById('dark-toggle').textContent = '☀️';
-}
-
-loadFeeds();
-  loadHotNews();
 }
 
 function timeAgo(d) {
