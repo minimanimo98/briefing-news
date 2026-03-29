@@ -4,11 +4,19 @@ const GOOGLE_RSS = "https://news.google.com/rss/search?q=ETF+한국+투자&hl=ko
 async function fetchLatestNews() {
   const res = await fetch(`https://etfradar.kr/api/rss?url=${encodeURIComponent(GOOGLE_RSS)}`);
   const text = await res.text();
-  const titles = [...text.matchAll(/<title><!\[CDATA\[(.*?)\]\]><\/title>/g)].map(m => m[1]);
-  const links  = [...text.matchAll(/<link>(.*?)<\/link>/g)].map(m => m[1]);
+
+  // CDATA 방식과 일반 방식 둘 다 시도
+  let titles = [...text.matchAll(/<title><!\[CDATA\[(.*?)\]\]><\/title>/g)].map(m => m[1]);
+  let links = [...text.matchAll(/<link>(.*?)<\/link>/g)].map(m => m[1]);
+
+  // CDATA 없으면 일반 title 태그로 시도
+  if (titles.length <= 1) {
+    titles = [...text.matchAll(/<title>(.*?)<\/title>/g)].map(m => m[1]);
+  }
+
   if (titles.length > 1) {
     const title = titles[1].replace(/\s+-\s+.+$/, '').trim();
-    const link  = links[1] || 'https://etfradar.kr';
+    const link = links[1] || 'https://etfradar.kr';
     return { title, link };
   }
   return null;
