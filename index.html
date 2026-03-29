@@ -748,6 +748,7 @@ function switchTab(tab, el) {
   curTab = tab;
   displayCount = 20;
   loadFeeds();
+  loadHotNews();
 }
 
 function timeAgo(d) {
@@ -911,19 +912,19 @@ function scoreArticles(articles) {
   return articles.sort((a, b) => b.score - a.score);
 }
 
-// 뉴스 클릭 추적
+// 뉴스 클릭 추적 (탭 정보 포함)
 function trackClick(url, title) {
   fetch('/api/hot', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url, title }),
+    body: JSON.stringify({ url, title, tab: curTab }),
   }).catch(() => {});
 }
 
-// 핫뉴스 로드
+// 핫뉴스 로드 (탭별)
 async function loadHotNews() {
   try {
-    const res = await fetch('/api/hot');
+    const res = await fetch(`/api/hot?tab=${curTab}`);
     const data = await res.json();
     const hot = data.hot || [];
     if (!hot.length) return;
