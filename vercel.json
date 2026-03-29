@@ -1,33 +1,8 @@
-// /api/rss.js
-const https = require('https');
-const http = require('http');
-
-module.exports = function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Cache-Control', 's-maxage=300');
-
-  const url = req.query.url;
-  if (!url) return res.status(400).send('no url');
-
-  const client = url.startsWith('https') ? https : http;
-
-  const options = {
-    headers: {
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-      'Accept': 'application/rss+xml, application/xml, text/xml, */*',
-      'Accept-Language': 'ko-KR,ko;q=0.9',
-      'Cache-Control': 'no-cache',
+{
+  "crons": [
+    {
+      "path": "/api/tweet",
+      "schedule": "0 21 * * *"
     }
-  };
-
-  client.get(url, options, (r) => {
-    let data = '';
-    r.on('data', chunk => data += chunk);
-    r.on('end', () => {
-      res.setHeader('Content-Type', 'text/xml; charset=utf-8');
-      res.send(data);
-    });
-  }).on('error', (e) => {
-    res.status(500).send(e.message);
-  });
-};
+  ]
+}
