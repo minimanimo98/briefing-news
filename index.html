@@ -848,7 +848,7 @@ async function loadHotNews() {
   } catch(e) {}
 }
 
-// AI 요약 호출
+// AI 요약 호출 (서버 캐시 1시간)
 async function loadAISummary(titles) {
   try {
     const payload = JSON.stringify({ titles: titles.slice(0, 7) });
@@ -862,27 +862,30 @@ async function loadAISummary(titles) {
     });
     const data = await res.json();
     if (data.summary) {
-      const text = data.summary;
-      const stock = text.match(/\[주식시장\]\s*(.+)/)?.[1]?.trim() || '';
-      const news  = text.match(/\[주요뉴스\]\s*(.+)/)?.[1]?.trim() || '';
-      const etf   = text.match(/\[ETF\]\s*(.+)/)?.[1]?.trim() || '';
-
-      if (stock || news || etf) {
-        document.getElementById('ai-summary-text').innerHTML = `
-          <div style="display:flex;flex-direction:column;gap:10px;">
-            ${stock ? `<div style="display:flex;gap:0;align-items:flex-start;"><span style="color:#e8001a;font-weight:700;font-size:10px;letter-spacing:0.05em;white-space:nowrap;padding-top:3px;min-width:52px;">주식시장</span><span style="flex:1;">${stock}</span></div>` : ''}
-            ${news  ? `<div style="display:flex;gap:0;align-items:flex-start;border-top:1px solid rgba(255,255,255,0.08);padding-top:10px;"><span style="color:#e8001a;font-weight:700;font-size:10px;letter-spacing:0.05em;white-space:nowrap;padding-top:3px;min-width:52px;">주요뉴스</span><span style="flex:1;">${news}</span></div>` : ''}
-            ${etf   ? `<div style="display:flex;gap:0;align-items:flex-start;border-top:1px solid rgba(255,255,255,0.08);padding-top:10px;"><span style="color:#e8001a;font-weight:700;font-size:10px;letter-spacing:0.05em;white-space:nowrap;padding-top:3px;min-width:52px;">ETF</span><span style="flex:1;">${etf}</span></div>` : ''}
-          </div>`;
-      } else {
-        document.getElementById('ai-summary-text').textContent = text;
-      }
+      renderSummary(data.summary);
     } else {
       document.getElementById('ai-summary-text').textContent = data.error || '요약 실패';
     }
   } catch (e) {
     document.getElementById('ai-summary-text').textContent = '요약을 불러오지 못했습니다.';
   }
+}
+
+function renderSummary(text) {
+    const stock = text.match(/\[주식시장\]\s*(.+)/)?.[1]?.trim() || '';
+    const news  = text.match(/\[주요뉴스\]\s*(.+)/)?.[1]?.trim() || '';
+    const etf   = text.match(/\[ETF\]\s*(.+)/)?.[1]?.trim() || '';
+
+    if (stock || news || etf) {
+      document.getElementById('ai-summary-text').innerHTML = `
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          ${stock ? `<div style="display:flex;gap:0;align-items:flex-start;"><span style="color:#e8001a;font-weight:700;font-size:10px;letter-spacing:0.05em;white-space:nowrap;padding-top:3px;min-width:52px;">주식시장</span><span style="flex:1;">${stock}</span></div>` : ''}
+          ${news  ? `<div style="display:flex;gap:0;align-items:flex-start;border-top:1px solid rgba(255,255,255,0.08);padding-top:10px;"><span style="color:#e8001a;font-weight:700;font-size:10px;letter-spacing:0.05em;white-space:nowrap;padding-top:3px;min-width:52px;">주요뉴스</span><span style="flex:1;">${news}</span></div>` : ''}
+          ${etf   ? `<div style="display:flex;gap:0;align-items:flex-start;border-top:1px solid rgba(255,255,255,0.08);padding-top:10px;"><span style="color:#e8001a;font-weight:700;font-size:10px;letter-spacing:0.05em;white-space:nowrap;padding-top:3px;min-width:52px;">ETF</span><span style="flex:1;">${etf}</span></div>` : ''}
+        </div>`;
+    } else {
+      document.getElementById('ai-summary-text').textContent = text;
+    }
 }
 
 // 날짜 표시
