@@ -1,4 +1,4 @@
-const CACHE_NAME = 'etfradar-v1';
+const CACHE_NAME = 'etfradar-v3';
 
 // 앱 껍데기(shell)만 캐시 — 뉴스는 항상 네트워크 우선
 const STATIC_ASSETS = [
