@@ -68,22 +68,32 @@ a { text-decoration: none; color: inherit; }
   color: rgba(255,255,255,0.35);
   letter-spacing: 0.05em;
 }
-#topbar-right { display: flex; gap: 14px; align-items: center; flex-shrink: 0; }
+#topbar-right { display: flex; gap: 14px; align-items: center; }
 #topbar-right a { color: rgba(255,255,255,0.35); transition: color 0.15s; font-size: 10px; }
 #topbar-right a:hover { color: rgba(255,255,255,0.7); }
-#ticker-wrap { flex: 1; overflow: hidden; position: relative; }
+
+/* ── 지수 티커 바 ── */
+#ticker-bar {
+  background: #0d1f3c;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  overflow: hidden;
+  height: 28px;
+  display: flex;
+  align-items: center;
+}
 #ticker-track {
-  display: flex; gap: 0; white-space: nowrap;
-  animation: ticker-scroll 30s linear infinite;
+  display: flex;
+  white-space: nowrap;
+  animation: ticker-scroll 20s linear infinite;
 }
 #ticker-track:hover { animation-play-state: paused; }
 @keyframes ticker-scroll {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
-.index-item { display: inline-flex; align-items: center; gap: 4px; padding: 0 14px; border-right: 1px solid rgba(255,255,255,0.08); }
-.index-name { font-size: 10px; color: rgba(255,255,255,0.4); font-weight: 500; }
-.index-price { font-size: 11px; color: rgba(255,255,255,0.85); font-weight: 700; }
+.index-item { display: inline-flex; align-items: center; gap: 5px; padding: 0 16px; border-right: 1px solid rgba(255,255,255,0.07); }
+.index-name { font-size: 10px; color: rgba(255,255,255,0.45); font-weight: 500; }
+.index-price { font-size: 11px; color: rgba(255,255,255,0.9); font-weight: 700; font-variant-numeric: tabular-nums; }
 .index-change { font-size: 10px; font-weight: 600; }
 .index-change.up { color: #ff6b6b; }
 .index-change.dn { color: #74b9ff; }
@@ -145,7 +155,7 @@ a { text-decoration: none; color: inherit; }
   background: #fff;
   border-bottom: 2px solid var(--border);
   position: sticky;
-  top: 68px;
+  top: 96px;
   z-index: 150;
   display: flex;
   overflow-x: auto;
@@ -556,15 +566,17 @@ a { text-decoration: none; color: inherit; }
 
 <!-- 상단 얇은 바 -->
 <div id="topbar">
-  <div id="ticker-wrap">
-    <div id="ticker-track">
-      <!-- JS로 채워짐 (2번 반복해서 무한 루프) -->
-    </div>
-  </div>
+  <span id="topbar-date"></span>
   <div id="topbar-right">
     <a href="/board.html">커뮤니티</a>
-    <span style="color:rgba(255,255,255,0.2)">|</span>
-    <span id="topbar-date"></span>
+    <span>etfradar.kr</span>
+  </div>
+</div>
+
+<!-- 지수 티커 바 -->
+<div id="ticker-bar">
+  <div id="ticker-track">
+    <!-- JS로 채워짐 -->
   </div>
 </div>
 
@@ -649,7 +661,7 @@ a { text-decoration: none; color: inherit; }
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="text/javascript">
 /* ── 날짜 ── */
 document.getElementById('topbar-date').textContent = new Date().toLocaleDateString('ko-KR', {
-  month: 'long', day: 'numeric', weekday: 'short'
+  year: 'numeric', month: 'long', day: 'numeric', weekday: 'short'
 });
 
 /* ── 지수 티커 ── */
