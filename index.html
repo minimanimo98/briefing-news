@@ -1061,40 +1061,22 @@ function renderArticles() {
     const ago = timeAgo(a.pubDate);
     const newBadge = isNew(a.pubDate) ? '<span class="new-badge">NEW</span>' : '';
 
-    if (i === 0) {
-      html += `
-        <div onclick="openArticle('${a.link.replace(/'/g,"\\'")}','${a.title.replace(/'/g,"\\'")}','${a.source.replace(/'/g,"\\'")}')">
-          <div class="card-featured" style="cursor:pointer;">
+    if (i === 10) html += `<div class="ad-middle"><!-- 카카오 애드핏 중간 광고 --></div>`;
+
+    html += `
+      <div onclick="openArticle('${a.link.replace(/'/g,"\\'")}','${a.title.replace(/'/g,"\\'")}','${a.source.replace(/'/g,"\\'")}')">
+        <div class="card" style="cursor:pointer;">
+          <div class="card-num${i < 3 ? ' hot' : ''}">${i + 1}</div>
+          <div class="card-body">
             <div class="card-meta">
               <span class="source-badge">${a.source}</span>
               <span class="time-badge">${ago}</span>
               ${newBadge}
             </div>
             <div class="card-title">${a.title}</div>
-            ${a.description ? `<div class="card-desc">${a.description.slice(0, 130)}...</div>` : ''}
           </div>
-        </div>`;
-    } else {
-      if (i === 1) html += `<div class="section-label">최신 뉴스</div>`;
-
-      /* 10번째 뉴스 뒤에 광고 자리 (애드핏 승인 후 display:flex 로 변경) */
-      if (i === 10) html += `<div class="ad-middle"><!-- 카카오 애드핏 중간 광고 --></div>`;
-
-      html += `
-        <div onclick="openArticle('${a.link.replace(/'/g,"\\'")}','${a.title.replace(/'/g,"\\'")}','${a.source.replace(/'/g,"\\'")}')">
-          <div class="card" style="cursor:pointer;">
-            <div class="card-num${i < 4 ? ' hot' : ''}">${i + 1}</div>
-            <div class="card-body">
-              <div class="card-meta">
-                <span class="source-badge">${a.source}</span>
-                <span class="time-badge">${ago}</span>
-                ${newBadge}
-              </div>
-              <div class="card-title">${a.title}</div>
-            </div>
-          </div>
-        </div>`;
-    }
+        </div>
+      </div>`;
   });
 
   if (allArticles.length > displayCount) {
@@ -1303,4 +1285,4 @@ loadFeeds();
 </div>
 
 </body>
-          </html>
+</html>
