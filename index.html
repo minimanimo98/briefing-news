@@ -691,22 +691,31 @@ const TAB_SOURCES = {
   all: [
     "https://news.google.com/rss/search?q=ETF+한국+투자&hl=ko&gl=KR&ceid=KR:ko",
     "https://news.google.com/rss/search?q=공모펀드+사모펀드&hl=ko&gl=KR&ceid=KR:ko",
-    "https://news.google.com/rss/search?q=코스피+코스닥+증시&hl=ko&gl=KR&ceid=KR:ko"
+    "https://news.google.com/rss/search?q=코스피+코스닥+증시&hl=ko&gl=KR&ceid=KR:ko",
+    "https://www.hankyung.com/feed/finance",
+    "https://www.edaily.co.kr/rss/newsflash.xml",
+    "https://www.mt.co.kr/rss/index.html"
   ],
   etf: [
     "https://news.google.com/rss/search?q=ETF&hl=ko&gl=KR&ceid=KR:ko",
     "https://news.google.com/rss/search?q=상장지수펀드&hl=ko&gl=KR&ceid=KR:ko",
-    "https://news.google.com/rss/search?q=TIGER+ETF+KODEX&hl=ko&gl=KR&ceid=KR:ko"
+    "https://news.google.com/rss/search?q=TIGER+ETF+KODEX&hl=ko&gl=KR&ceid=KR:ko",
+    "https://www.hankyung.com/feed/finance",
+    "https://www.edaily.co.kr/rss/newsflash.xml"
   ],
   fund: [
     "https://news.google.com/rss/search?q=펀드&hl=ko&gl=KR&ceid=KR:ko",
     "https://news.google.com/rss/search?q=공모펀드+사모펀드&hl=ko&gl=KR&ceid=KR:ko",
-    "https://news.google.com/rss/search?q=펀드+수익률+운용&hl=ko&gl=KR&ceid=KR:ko"
+    "https://news.google.com/rss/search?q=펀드+수익률+운용&hl=ko&gl=KR&ceid=KR:ko",
+    "https://www.mt.co.kr/rss/index.html"
   ],
   stock: [
     "https://news.google.com/rss/search?q=코스피+코스닥&hl=ko&gl=KR&ceid=KR:ko",
     "https://news.google.com/rss/search?q=주식+종목+주가&hl=ko&gl=KR&ceid=KR:ko",
-    "https://news.google.com/rss/search?q=증시+외국인+기관&hl=ko&gl=KR&ceid=KR:ko"
+    "https://news.google.com/rss/search?q=증시+외국인+기관&hl=ko&gl=KR&ceid=KR:ko",
+    "https://www.hankyung.com/feed/finance",
+    "https://www.edaily.co.kr/rss/newsflash.xml",
+    "https://www.mt.co.kr/rss/index.html"
   ]
 };
 
@@ -719,7 +728,11 @@ const SOURCE_MAP = {
   'newsis.com':'뉴시스','etnews.com':'전자신문','zdnet.co.kr':'ZDNet',
   'bloter.net':'블로터','khan.co.kr':'경향신문','hankookilbo.com':'한국일보',
   'kmib.co.kr':'국민일보','seoul.co.kr':'서울신문','jtbc.co.kr':'JTBC',
-  'mbc.co.kr':'MBC','sbs.co.kr':'SBS','kbs.co.kr':'KBS'
+  'mbc.co.kr':'MBC','sbs.co.kr':'SBS','kbs.co.kr':'KBS',
+  'wowtv.co.kr':'한국경제TV','inews24.com':'아이뉴스24','thebell.co.kr':'더벨',
+  'biz.chosun.com':'조선비즈','moneys.mt.co.kr':'머니S','fn.co.kr':'파이낸셜뉴스',
+  'investchosun.com':'투자조선','etoday.co.kr':'이투데이','g-enews.com':'글로벌이코노믹',
+  'dailian.co.kr':'데일리안','businesspost.co.kr':'비즈니스포스트'
 };
 
 function cleanSource(raw) {
@@ -804,7 +817,14 @@ async function loadFeeds() {
   all.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
 
   const seen = new Set();
-  allArticles = all.filter(a => { if (seen.has(a.title)) return false; seen.add(a.title); return true; });
+  const sevenDaysAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
+  allArticles = all.filter(a => {
+    if (seen.has(a.title)) return false;
+    seen.add(a.title);
+    // 7일 이상 된 뉴스 제거
+    if (new Date(a.pubDate).getTime() < sevenDaysAgo) return false;
+    return true;
+  });
 
   if (!allArticles.length) {
     document.getElementById('news').innerHTML = '<div id="loading">잠시 후 다시 시도해주세요.</div>';
