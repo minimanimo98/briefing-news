@@ -1170,7 +1170,7 @@ function openArticle(url, title, source) {
   fetch('/api/article', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ title, source }),
+    body: JSON.stringify({ title, source, url }),
   }).then(r => r.json()).then(data => {
     if (data.summary) {
       const text = data.summary;
@@ -1303,4 +1303,4 @@ loadFeeds();
 </div>
 
 </body>
-</html>
+          </html>
