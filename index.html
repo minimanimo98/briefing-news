@@ -667,7 +667,6 @@ async function loadFeeds() {
   const urls = TAB_SOURCES[curTab] || TAB_SOURCES.all;
   const results = await Promise.all(urls.map(url => fetchOne(url)));
   const all = results.flat();
-  alert('뉴스 수: ' + all.length);
   all.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
 
   const seen = new Set();
