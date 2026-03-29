@@ -146,7 +146,7 @@ a{text-decoration:none;color:inherit}
 <div id="ptr-indicator"><div id="ptr-circle"></div></div>
 <div id="header">
   <div id="header-inner">
-    <div><div id="logo">ETF<em>레이더</em></div><div id="board-name">자유 게시판</div></div>
+    <div><a href="/"><div id="logo">ETF<em>레이더</em></div></a><div id="board-name">자유 게시판</div></div>
     <a href="/" id="news-link">← 뉴스홈</a>
   </div>
 </div>
@@ -277,8 +277,13 @@ async function deletePost(){if(!confirm('이 글을 삭제할까요?'))return;co
 async function deleteComment(id){await fetch(`${SUPABASE_URL}/rest/v1/comments?id=eq.${id}`,{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}});setTimeout(()=>loadComments(currentPostId),300);}
 async function deleteReply(id){await fetch(`${SUPABASE_URL}/rest/v1/comments?id=eq.${id}`,{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}});setTimeout(()=>loadComments(currentPostId),300);}
 let touchStartY=0,isPulling=false;
-document.addEventListener('touchstart',e=>{if(window.scrollY===0)touchStartY=e.touches[0].clientY;},{passive:true});
-document.addEventListener('touchmove',e=>{if(touchStartY===0)return;const dy=e.touches[0].clientY-touchStartY;if(dy>0&&window.scrollY===0){isPulling=true;document.getElementById('ptr-indicator').classList.add('visible');document.getElementById('ptr-circle').style.transform=`rotate(${Math.min(dy/80,1)*360}deg)`;if(dy>80)document.getElementById('ptr-circle').classList.add('spinning');else document.getElementById('ptr-circle').classList.remove('spinning');}},{passive:true});
+document.addEventListener('touchstart',e=>{
+  const isDetail=document.getElementById('detail-view').style.display==='block';
+  const scrollEl=isDetail?document.getElementById('detail-view'):window;
+  const scrollTop=isDetail?document.getElementById('detail-view').scrollTop:window.scrollY;
+  if(scrollTop===0)touchStartY=e.touches[0].clientY;
+},{passive:true});
+document.addEventListener('touchmove',e=>{if(touchStartY===0)return;const dy=e.touches[0].clientY-touchStartY;if(dy>0){isPulling=true;document.getElementById('ptr-indicator').classList.add('visible');document.getElementById('ptr-circle').style.transform=`rotate(${Math.min(dy/80,1)*360}deg)`;if(dy>80)document.getElementById('ptr-circle').classList.add('spinning');else document.getElementById('ptr-circle').classList.remove('spinning');}},{passive:true});
 document.addEventListener('touchend',e=>{if(!isPulling){touchStartY=0;return;}const dy=e.changedTouches[0].clientY-touchStartY;if(dy>80){document.getElementById('ptr-circle').classList.add('spinning');const isDetail=document.getElementById('detail-view').style.display==='block';if(isDetail)loadComments(currentPostId);else{loadPosts();loadHotPosts();}setTimeout(()=>{document.getElementById('ptr-indicator').classList.remove('visible');document.getElementById('ptr-circle').classList.remove('spinning');},800);}else document.getElementById('ptr-indicator').classList.remove('visible');isPulling=false;touchStartY=0;},{passive:true});
 async function loadHotPosts(){try{const r=await fetch(`${SUPABASE_URL}/rest/v1/posts?select=*&order=likes.desc&limit=5`,{headers:H});const posts=await r.json();const hot=posts.filter(p=>(p.likes||0)>0).slice(0,5);document.getElementById('hot-list').innerHTML=hot.length?hot.map((p,i)=>`<div class="hot-item" onclick="showPost(${p.id})"><span class="hot-num">${i+1}</span><span class="hot-title">[${p.category||'자유'}] ${p.title}</span><span class="hot-count">👍${p.likes}</span></div>`).join(''):'<div style="padding:12px 16px;color:#ccc;font-size:12px">아직 인기글이 없어요!</div>';}catch(e){}}
 async function loadPosts(){
