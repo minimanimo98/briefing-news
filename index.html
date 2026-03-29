@@ -634,10 +634,14 @@ function strip(h) {
 
 async function fetchOne(url) {
   try {
-    const r = await fetch(`/api/rss?url=${encodeURIComponent(url)}`, { signal: AbortSignal.timeout(8000) });
+    const r = await fetch(`/api/rss?url=${encodeURIComponent(url)}`, { signal: AbortSignal.timeout(10000) });
+    if (!r.ok) return [];
     const text = await r.text();
+    if (!text || text.length < 50) return [];
     const xml = new DOMParser().parseFromString(text, 'text/xml');
-    return [...xml.querySelectorAll('item')].slice(0, 20).map(item => {
+    const items = [...xml.querySelectorAll('item')];
+    if (!items.length) return [];
+    return items.slice(0, 20).map(item => {
       const raw = item.querySelector('title')?.textContent?.trim() || '';
       const { title, source } = parseTitle(raw);
       return {
@@ -647,7 +651,10 @@ async function fetchOne(url) {
         description: strip(item.querySelector('description')?.textContent || '')
       };
     }).filter(a => a.title && a.title.length > 2);
-  } catch (e) { return []; }
+  } catch (e) {
+    console.error('fetchOne error:', url, e);
+    return [];
+  }
 }
 
 async function loadFeeds() {
