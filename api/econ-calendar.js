@@ -94,19 +94,18 @@ module.exports = async function handler(req, res) {
     } catch(e) {}
 
     const prompt = `당신은 ETF 투자 전문가입니다.
-"${name}" 경제지표에 대해 ETF 개인투자자가 이해할 수 있게 설명해주세요.
+"${name}" 경제지표를 ETF 투자자에게 딱 핵심만 설명해주세요.
 
-아래 3가지를 각각 1~2문장으로:
-- 중학생도 이해할 수 있는 쉬운 말
-- 마침표로 끝내기
+각 항목 20자 이내로 짧게:
+- 마침표 금지
 - 이모지 없이
-- 관련 ETF 언급
+- 쉬운 말
 
 반드시 아래 형식만 출력:
 
-[이게뭔가요] 이 지표가 무엇인지 쉽게 설명
-[좋으면] 예상보다 좋게 나오면 시장/ETF에 어떤 영향
-[나쁘면] 예상보다 나쁘게 나오면 시장/ETF에 어떤 영향`;
+[이게뭔가요] 한 줄 설명
+[좋으면] ETF 영향 한 줄
+[나쁘면] ETF 영향 한 줄`;
 
     try {
       const response = await fetch('https://api.anthropic.com/v1/messages', {
