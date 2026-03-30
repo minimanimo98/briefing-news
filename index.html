@@ -1057,6 +1057,7 @@ a { text-decoration: none; color: inherit; }
   flex-shrink: 0;
   font-style: italic;
   font-family: Georgia, serif;
+  position: relative;
 }
 .info-tip-light {
   background: var(--border);
@@ -1065,21 +1066,29 @@ a { text-decoration: none; color: inherit; }
 .info-tip:hover { background: var(--red); color: #fff; }
 #tip-popup {
   position: fixed;
-  bottom: 80px;
-  left: 16px; right: 16px;
   background: #111827;
   color: #e8eaf0;
-  font-size: 13px;
-  line-height: 1.7;
-  padding: 14px 16px;
-  border-radius: 10px;
+  font-size: 12px;
+  line-height: 1.6;
+  padding: 10px 13px;
+  border-radius: 8px;
   z-index: 3000;
   box-shadow: 0 4px 20px rgba(0,0,0,0.4);
   display: none;
   word-break: keep-all;
   border-left: 3px solid var(--red);
+  max-width: 240px;
+  pointer-events: none;
 }
 #tip-popup.show { display: block; }
+#tip-popup::before {
+  content: '';
+  position: absolute;
+  top: -6px; left: 16px;
+  border-width: 0 6px 6px;
+  border-style: solid;
+  border-color: transparent transparent #111827;
+}
 </style>
 <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" integrity="sha384-TiCUE00h649CAMonG018J2ujOgDKW/kVWlChEuu4jK2vxfAAD0eZxzCKakxg55G4" crossorigin="anonymous"></script>
 </head>
@@ -1134,7 +1143,7 @@ a { text-decoration: none; color: inherit; }
   <div id="ai-summary-inner">
     <div id="ai-summary-header">
       <span id="ai-summary-label">한줄 시장브리핑</span>
-      <span class="info-tip info-tip-dark" onclick="showTip('오늘의 주요 뉴스를 AI가 ETF 투자자 관점으로 요약한 브리핑이에요. 1시간마다 자동 업데이트돼요.')">?</span>
+      <span class="info-tip info-tip-dark" onclick="showTip('오늘의 주요 뉴스를 AI가 ETF 투자자 관점으로 요약한 브리핑이에요. 1시간마다 자동 업데이트돼요.', this)">?</span>
       <span id="ai-summary-date"></span>
     </div>
     <div id="ai-summary-text">
@@ -1152,7 +1161,7 @@ a { text-decoration: none; color: inherit; }
     <div id="hot-news-header">
       <span class="hot-label">HOT</span>
       <span class="hot-sub">오늘 많이 본 뉴스</span>
-      <span class="info-tip info-tip-light" onclick="showTip('오늘 이 사이트에서 클릭이 많았던 뉴스 순위예요. 데이터가 쌓이면 자동으로 업데이트돼요.')">?</span>
+      <span class="info-tip info-tip-light" onclick="showTip('오늘 이 사이트에서 클릭이 많았던 뉴스 순위예요. 데이터가 쌓이면 자동으로 업데이트돼요.', this)">?</span>
     </div>
     <div id="hot-news-list"></div>
   </div>
@@ -1171,7 +1180,7 @@ a { text-decoration: none; color: inherit; }
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
           <span style="font-size:9px;font-weight:700;color:#e8001a;letter-spacing:0.15em;">FEAR & GREED</span>
           <span id="fear-greed-status" style="font-size:15px;font-weight:700;color:#f0a500;">분석 중...</span>
-          <span class="info-tip info-tip-dark" onclick="showTip('코스피·코스닥 등락, VIX 변동성 지수, 나스닥 흐름을 종합해 시장 심리를 0~100으로 표현해요. 낮을수록 공포, 높을수록 탐욕이에요.')">?</span>
+          <span class="info-tip info-tip-dark" onclick="showTip('코스피·코스닥 등락, VIX 변동성 지수, 나스닥 흐름을 종합해 시장 심리를 0~100으로 표현해요. 낮을수록 공포, 높을수록 탐욕이에요.', this)">?</span>
         </div>
         <div style="background:rgba(255,255,255,0.1);border-radius:4px;height:6px;overflow:hidden;margin-bottom:6px;">
           <div id="fear-greed-bar" style="width:50%;height:100%;border-radius:4px;background:#f0a500;transition:width 1s ease;"></div>
@@ -1718,12 +1727,29 @@ async function loadFearGreed() {
 
 // ── 툴팁 ──
 let tipTimer;
-function showTip(msg) {
-  const el = document.getElementById('tip-popup');
-  el.textContent = msg;
-  el.classList.add('show');
+function showTip(msg, el) {
+  const popup = document.getElementById('tip-popup');
+  if (popup.classList.contains('show') && popup.textContent === msg) {
+    popup.classList.remove('show');
+    clearTimeout(tipTimer);
+    return;
+  }
+  popup.textContent = msg;
+  popup.classList.add('show');
+
+  // 클릭된 요소 위치 기준으로 팝업 위치 계산
+  const rect = el.getBoundingClientRect();
+  const popupW = 240;
+  let left = rect.left;
+  // 화면 오른쪽 넘치면 왼쪽으로 조정
+  if (left + popupW > window.innerWidth - 16) {
+    left = window.innerWidth - popupW - 16;
+  }
+  popup.style.left = left + 'px';
+  popup.style.top = (rect.bottom + 8) + 'px';
+
   clearTimeout(tipTimer);
-  tipTimer = setTimeout(() => el.classList.remove('show'), 4000);
+  tipTimer = setTimeout(() => popup.classList.remove('show'), 4000);
 }
 
 loadFeeds();
