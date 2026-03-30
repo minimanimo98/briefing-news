@@ -1105,25 +1105,9 @@ a { text-decoration: none; color: inherit; }
   </div>
 </div>
 
-<!-- 공포/탐욕 지수 -->
-<div id="fear-greed">
-  <div id="fear-greed-inner">
-    <div id="fear-greed-gauge">
-      <div id="fear-greed-number" style="color:#f0a500;">-</div>
-      <div id="fear-greed-emoji">⏳</div>
-    </div>
-    <div id="fear-greed-info">
-      <div id="fear-greed-label-wrap">
-        <span id="fear-greed-tag">FEAR & GREED</span>
-        <span id="fear-greed-status" style="color:#f0a500;">분석 중...</span>
-      </div>
-      <div id="fear-greed-bar-wrap">
-        <div id="fear-greed-bar" style="width:50%;background:#f0a500;"></div>
-      </div>
-      <div id="fear-greed-details"></div>
-    </div>
-  </div>
-</div>
+<!-- 공포/탐욕 지수는 ETF브리핑 탭 안에 있음 -->
+
+<div id="hot-news">
   <div id="hot-news-inner">
     <div id="hot-news-header">
       <span class="hot-label">HOT</span>
@@ -1133,11 +1117,28 @@ a { text-decoration: none; color: inherit; }
   </div>
 </div>
 
-<!-- ETF 전광판 (종목 탭 클릭 시 표시) -->
+<!-- ETF 전광판 (ETF브리핑 탭 클릭 시 표시) -->
 <div id="etf-widget" style="display:none;">
   <div id="etf-widget-inner">
+    <!-- 공포/탐욕 지수 -->
+    <div style="margin:12px 12px 0;border-radius:8px;padding:14px 16px;background:linear-gradient(135deg,#0a1628 0%,#122040 100%);display:flex;align-items:center;gap:16px;">
+      <div style="flex-shrink:0;text-align:center;width:72px;">
+        <div id="fear-greed-number" style="font-size:34px;font-weight:900;line-height:1;color:#f0a500;font-variant-numeric:tabular-nums;">-</div>
+        <div id="fear-greed-emoji" style="font-size:18px;margin-top:2px;">⏳</div>
+      </div>
+      <div style="flex:1;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+          <span style="font-size:9px;font-weight:700;color:#e8001a;letter-spacing:0.15em;">FEAR & GREED</span>
+          <span id="fear-greed-status" style="font-size:15px;font-weight:700;color:#f0a500;">분석 중...</span>
+        </div>
+        <div style="background:rgba(255,255,255,0.1);border-radius:4px;height:6px;overflow:hidden;margin-bottom:6px;">
+          <div id="fear-greed-bar" style="width:50%;height:100%;border-radius:4px;background:#f0a500;transition:width 1s ease;"></div>
+        </div>
+        <div id="fear-greed-details" style="display:flex;gap:10px;flex-wrap:wrap;font-size:10px;color:rgba(255,255,255,0.45);"></div>
+      </div>
+    </div>
     <div id="etf-theme-tabs"></div>
-    <div id="etf-list"><div id="etf-loading" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:20px;color:var(--sub);font-size:12px;"><div class="ai-spinner" style="border-top-color:#0a1628;border-color:#e2e6ed;border-top-color:var(--red);"></div> 시세 불러오는 중...</div></div>
+    <div id="etf-list"><div id="etf-loading" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:20px;color:var(--sub);font-size:12px;"><div class="ai-spinner" style="border-color:#e2e6ed;border-top-color:var(--red);"></div> 시세 불러오는 중...</div></div>
   </div>
 </div>
 
@@ -1297,7 +1298,7 @@ function switchTab(tab, el) {
     document.getElementById('hot-news').style.display = 'none';
     document.getElementById('summary-bar').style.display = 'none';
     document.getElementById('news').style.display = 'none';
-    if (!etfLoaded) { loadETF(); etfLoaded = true; }
+    if (!etfLoaded) { loadETF(); loadFearGreed(); etfLoaded = true; }
   } else {
     // 뉴스 모드
     document.getElementById('etf-widget').style.display = 'none';
@@ -1673,8 +1674,29 @@ async function loadFearGreed() {
   } catch(e) {}
 }
 
-loadFearGreed();
 loadFeeds();
+
+// ── 스크롤 내리면 모달 자동 닫기 ──
+window.addEventListener('scroll', () => {
+  if (document.getElementById('article-modal').classList.contains('show')) closeArticle();
+  if (document.getElementById('ticker-modal').classList.contains('show')) closeTickerModal();
+  if (document.getElementById('etf-modal').classList.contains('show')) closeETFModal();
+}, { passive: true });
+
+// ── 모달 스와이프 다운으로 닫기 ──
+function addSwipeClose(sheetId, closeFn) {
+  const sheet = document.getElementById(sheetId);
+  if (!sheet) return;
+  let startY = 0;
+  sheet.addEventListener('touchstart', e => { startY = e.touches[0].clientY; }, { passive: true });
+  sheet.addEventListener('touchend', e => {
+    const dy = e.changedTouches[0].clientY - startY;
+    if (dy > 60) closeFn();
+  }, { passive: true });
+}
+addSwipeClose('article-sheet', closeArticle);
+addSwipeClose('ticker-sheet', closeTickerModal);
+addSwipeClose('etf-sheet', closeETFModal);
 </script>
 
 <!-- 뉴스 요약 모달 -->
