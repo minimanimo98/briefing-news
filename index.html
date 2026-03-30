@@ -1205,7 +1205,10 @@ a { text-decoration: none; color: inherit; }
 
 <div id="header">
   <div id="logo-wrap">
-    <button onclick="openCalendar()" style="background:none;border:none;cursor:pointer;padding:4px 6px;position:absolute;top:10px;left:12px;font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:0.05em;font-family:'Noto Sans KR',sans-serif;" title="경제지표 캘린더">지표</button>
+    <button onclick="openCalendar()" style="background:none;border:none;cursor:pointer;padding:4px;position:absolute;top:8px;left:8px;display:flex;flex-direction:column;align-items:center;gap:1px;" title="경제지표 캘린더">
+      <span style="font-size:16px;line-height:1;">📆</span>
+      <span style="font-size:8px;color:rgba(255,255,255,0.45);letter-spacing:0.05em;font-family:'Noto Sans KR',sans-serif;">경제지표</span>
+    </button>
     <div id="logo">ETF레이더</div>
     <div id="logo-badge">LIVE</div>
   </div>
