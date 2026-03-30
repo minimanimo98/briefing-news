@@ -1881,7 +1881,9 @@ function calItemHTML(e, today, isPast = false) {
 
   // 예상치/실제치 뱃지
   let valueBadge = '';
-  if (e.actual) {
+  if (e.actual && e.estimate) {
+    valueBadge = `<span style="font-size:10px;color:var(--sub);margin-left:4px;">예상 ${e.estimate} → </span><span style="font-size:10px;font-weight:700;color:#1a6ce8;">${e.actual}</span>`;
+  } else if (e.actual) {
     valueBadge = `<span style="font-size:10px;font-weight:700;color:#1a6ce8;margin-left:4px;">${e.actual}</span>`;
   } else if (e.estimate) {
     valueBadge = `<span style="font-size:10px;color:var(--sub);margin-left:4px;">예상 ${e.estimate}</span>`;
@@ -1994,7 +1996,7 @@ addSwipeClose('calendar-sheet', closeCalendar);
       <button id="calendar-sheet-close-btn" onclick="closeCalendar()">✕</button>
     </div>
     <div id="cal-brief-box">
-      <div id="cal-brief-label">AI 지표 해설</div>
+      <div id="cal-brief-label">한줄 지표해설</div>
       <div id="cal-brief-name"></div>
       <div id="cal-brief-content"></div>
     </div>
