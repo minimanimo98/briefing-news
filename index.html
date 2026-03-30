@@ -1101,6 +1101,8 @@ a { text-decoration: none; color: inherit; }
 }
 .cal-item:hover { background: #fafafa; }
 .cal-item:last-child { border-bottom: none; }
+.cal-item.today-item { background: rgba(232,0,26,0.04); border-left: 3px solid var(--red); }
+[data-theme="dark"] .cal-item.today-item { background: rgba(232,0,26,0.08); }
 .cal-date {
   font-size: 11px;
   color: var(--sub);
@@ -1203,7 +1205,7 @@ a { text-decoration: none; color: inherit; }
 
 <div id="header">
   <div id="logo-wrap">
-    <button onclick="openCalendar()" style="background:none;border:none;cursor:pointer;padding:4px;font-size:18px;position:absolute;top:10px;left:12px;" title="경제지표 캘린더">🗓</button>
+    <button onclick="openCalendar()" style="background:none;border:none;cursor:pointer;padding:4px 6px;position:absolute;top:10px;left:12px;font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:0.05em;font-family:'Noto Sans KR',sans-serif;" title="경제지표 캘린더">지표</button>
     <div id="logo">ETF레이더</div>
     <div id="logo-badge">LIVE</div>
   </div>
@@ -1868,18 +1870,21 @@ function renderCalendar(data) {
 
   if (data.past && data.past.length) {
     html += '<div class="cal-section-title">지난 지표</div>';
-    html += data.past.map(e => calItemHTML(e, today, true)).join('');
+    html += data.past.map(e => calItemHTML(e, today)).join('');
   }
 
   document.getElementById('calendar-list').innerHTML = html;
+
+  // 이번 주 섹션으로 스크롤
+  const sheet = document.getElementById('calendar-sheet');
+  if (sheet) sheet.scrollTop = 0;
 }
 
-function calItemHTML(e, today, isPast = false) {
+function calItemHTML(e, today) {
   const d = new Date(e.date);
   const isToday = e.date === today;
   const dateStr = `${d.getMonth()+1}/${d.getDate()}(${['일','월','화','수','목','금','토'][d.getDay()]})`;
 
-  // 예상치/실제치 뱃지
   let valueBadge = '';
   if (e.actual && e.estimate) {
     valueBadge = `<span style="font-size:10px;font-weight:700;color:#1a6ce8;margin-left:4px;">${e.actual}<span style="color:var(--sub);font-weight:400;">(예상 ${e.estimate})</span></span>`;
@@ -1890,7 +1895,7 @@ function calItemHTML(e, today, isPast = false) {
   }
 
   return `
-    <div class="cal-item" onclick="loadCalBrief('${e.name}','${e.date}','')">
+    <div class="cal-item${isToday ? ' today-item' : ''}" onclick="loadCalBrief('${e.name.replace(/'/g,"\\'")}','${e.date}','')">
       <span class="cal-date${isToday ? ' today' : ''}">${isToday ? '오늘' : dateStr}</span>
       <span class="cal-dot ${e.importance}"></span>
       <span class="cal-name">${e.name}${valueBadge}</span>
