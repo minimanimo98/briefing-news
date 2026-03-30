@@ -33,8 +33,28 @@ module.exports = async function handler(req, res) {
       }
     }
 
-    // 2. 새로 생성
-    const prompt = `다음은 오늘의 ETF·주식·펀드 관련 주요 뉴스 제목들입니다:\n\n${titles.map((t, i) => `${i + 1}. ${t}`).join('\n')}\n\n위 뉴스들을 바탕으로 아래 3가지 항목을 각각 한 문장으로 요약해주세요.\n- 말투: "~했다" 금지. 명사형 종결 또는 단호한 현재형 사용 (예: "700조 증발", "외국인 30조 매도", "코스피 1%대 하락")\n- 이모지 없이 깔끔하게\n- 각 항목은 반드시 아래 형식 그대로 출력\n\n[주식시장] 오늘 주식시장 핵심 한 문장\n[주요뉴스] 가장 중요한 뉴스 한 문장\n[ETF] ETF 시장 흐름 한 문장`;
+    // 2. 새로 생성 - ETF 투자자 관점 특화 프롬프트
+    const prompt = `당신은 10년 경력의 ETF 전문 애널리스트입니다.
+오늘의 주요 뉴스 제목을 보고, 국내 ETF 투자자 입장에서 "지금 당장 어떻게 행동해야 하는가"를 핵심만 짚어주세요.
+
+뉴스 목록:
+${titles.map((t, i) => `${i + 1}. ${t}`).join('\n')}
+
+아래 3가지를 각각 한 문장으로 작성하세요.
+
+작성 원칙:
+- 투자자가 "아, 오늘 시장이 이렇구나"를 즉시 느낄 수 있게
+- 단순 사실 나열 금지 → 반드시 ETF 투자 관점의 해석 포함
+- "~했다" 금지, 명사형 또는 단호한 현재형 사용
+- 이모지 없이, 숫자와 구체적 근거 포함
+- 예시 좋음: "외국인 1.2조 매도에 코스피 붕괴, 인버스ETF 수혜"
+- 예시 나쁨: "오늘 주식시장이 하락했습니다"
+
+반드시 아래 형식 그대로만 출력 (다른 말 금지):
+
+[주식시장] 오늘 시장 핵심 + ETF 투자자에게 미치는 영향
+[주요뉴스] 가장 중요한 뉴스 + 관련 ETF 섹터 언급
+[ETF] 오늘 주목할 ETF 흐름 또는 투자 포인트`;
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -45,7 +65,7 @@ module.exports = async function handler(req, res) {
       },
       body: JSON.stringify({
         model: 'claude-haiku-4-5',
-        max_tokens: 400,
+        max_tokens: 500,
         messages: [{ role: 'user', content: prompt }],
       }),
     });
@@ -71,4 +91,3 @@ module.exports = async function handler(req, res) {
     return res.status(500).json({ error: e.message });
   }
 };
-
