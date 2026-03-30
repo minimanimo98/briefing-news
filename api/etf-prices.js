@@ -15,11 +15,11 @@ const ETF_LIST = [
   { code: '452340.KS', name: 'ACE미국빅테크TOP7', theme: 'AI' },
   { code: '476820.KS', name: 'HANARO글로벌AI반도체', theme: 'AI' },
   // 로봇
-  { code: '476730.KS', name: 'KODEX글로벌로봇', theme: '로봇' },
+  { code: '487270.KS', name: 'KODEX글로벌로봇', theme: '로봇' },
   { code: '468380.KS', name: 'TIGER로봇AI', theme: '로봇' },
   { code: '441680.KS', name: 'ACE글로벌로보틱스', theme: '로봇' },
   { code: '448510.KS', name: 'HANARO글로벌로봇', theme: '로봇' },
-  { code: '487270.KS', name: 'KODEX로봇액티브', theme: '로봇' },
+  { code: '445290.KS', name: 'KODEX로봇액티브', theme: '로봇' },
   // 원자력
   { code: '456080.KS', name: 'KODEX원자력', theme: '원자력' },
   { code: '447680.KS', name: 'TIGER원자력', theme: '원자력' },
