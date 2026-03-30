@@ -742,6 +742,34 @@ a { text-decoration: none; color: inherit; }
 [data-theme="dark"] #article-sheet { background: #1a1d27; }
 [data-theme="dark"] #article-close-btn { background: #22263a; border-color: #2a2d3a; color: #8b8fa8; }
 
+/* ── 공유 버튼 ── */
+#article-share-btns {
+  display: flex;
+  gap: 8px;
+  padding: 0 16px 4px;
+}
+.share-btn {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--white);
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  transition: all 0.15s;
+}
+.share-btn:hover { border-color: var(--red); color: var(--red); }
+.share-btn.kakao { background: #FEE500; border-color: #FEE500; color: #000; }
+.share-btn.kakao:hover { background: #f0d800; border-color: #f0d800; }
+[data-theme="dark"] .share-btn { background: #22263a; border-color: #2a2d3a; color: #e8eaf0; }
+
 /* ── MOBILE ── */
 @media(max-width: 480px) {
   #logo { font-size: 24px; }
@@ -751,6 +779,7 @@ a { text-decoration: none; color: inherit; }
   .tab { padding: 11px 15px; font-size: 12px; }
 }
 </style>
+<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" integrity="sha384-TiCUE00h649CAMonG018J2ujOgDKW/kVWlChEuu4jK2vxfAAD0eZxzCKakxg55G4" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -1178,6 +1207,57 @@ function closeArticle() {
   document.body.style.overflow = '';
 }
 
+// 카카오 SDK 초기화
+if (window.Kakao && !Kakao.isInitialized()) {
+  Kakao.init('3e1b5b16a83bf1af306c25925bed481b'); // 카카오 JS 키 입력 필요
+}
+
+function shareKakao() {
+  if (!window.Kakao || !Kakao.isInitialized()) {
+    copyLink(); return;
+  }
+  Kakao.Share.sendDefault({
+    objectType: 'feed',
+    content: {
+      title: document.getElementById('article-sheet-title').textContent,
+      description: 'ETF레이더에서 확인하세요',
+      imageUrl: 'https://etfradar.kr/og-image.png',
+      link: { mobileWebUrl: currentArticleUrl, webUrl: currentArticleUrl }
+    },
+    buttons: [{
+      title: '원문 보기',
+      link: { mobileWebUrl: currentArticleUrl, webUrl: currentArticleUrl }
+    }]
+  });
+}
+
+function copyLink() {
+  navigator.clipboard.writeText(currentArticleUrl).then(() => {
+    alert('링크가 복사됐어요!');
+  }).catch(() => {
+    // 구형 브라우저 대응
+    const el = document.createElement('textarea');
+    el.value = currentArticleUrl;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    alert('링크가 복사됐어요!');
+  });
+}
+
+function shareNative() {
+  if (navigator.share) {
+    navigator.share({
+      title: document.getElementById('article-sheet-title').textContent,
+      text: 'ETF레이더에서 발견한 뉴스예요!',
+      url: currentArticleUrl,
+    }).catch(() => {});
+  } else {
+    copyLink();
+  }
+}
+
 function openOriginal() {
   window.open(currentArticleUrl, '_blank', 'noopener');
   closeArticle();
@@ -1276,6 +1356,11 @@ loadFeeds();
           <div class="ai-spinner"></div> 분석 중...
         </div>
       </div>
+    </div>
+    <div id="article-share-btns">
+      <button class="share-btn kakao" onclick="shareKakao()">💬 카톡 공유</button>
+      <button class="share-btn" onclick="copyLink()">🔗 링크 복사</button>
+      <button class="share-btn" onclick="shareNative()">↗ 공유</button>
     </div>
     <div id="article-sheet-actions">
       <button id="article-close-btn" onclick="closeArticle()">닫기</button>
