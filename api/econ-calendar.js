@@ -1,52 +1,74 @@
 // /api/econ-calendar.js
 const SUPABASE_URL = 'https://aoqzohxljzghflkuuxhx.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY;
-const FMP_KEY = process.env.FMP_API_KEY;
 
-const IMPORTANT_KEYWORDS = [
-  'CPI', 'PPI', 'GDP', 'NFP', 'Nonfarm', 'FOMC', 'Federal Reserve',
-  'Interest Rate', 'Unemployment', 'Retail Sales', 'PCE', 'ADP',
-  'ISM', 'PMI', 'Consumer Price', 'Producer Price', 'Jobs',
-  'Inflation', 'Trade Balance', 'Housing', 'Durable Goods',
+// 4~6월 주요 경제지표 일정
+const CALENDAR = [
+  // 4월
+  { date: '2026-04-02', name: 'ADP 고용보고서', country: '미국', importance: 'high' },
+  { date: '2026-04-03', name: '미국 실업수당청구', country: '미국', importance: 'mid' },
+  { date: '2026-04-03', name: '미국 고용보고서(NFP)', country: '미국', importance: 'high' },
+  { date: '2026-04-08', name: 'FOMC 의사록', country: '미국', importance: 'high' },
+  { date: '2026-04-10', name: '미국 CPI', country: '미국', importance: 'high' },
+  { date: '2026-04-11', name: '미국 PPI', country: '미국', importance: 'mid' },
+  { date: '2026-04-14', name: '중국 무역수지', country: '중국', importance: 'mid' },
+  { date: '2026-04-15', name: '중국 GDP(1분기)', country: '중국', importance: 'high' },
+  { date: '2026-04-16', name: '미국 소매판매', country: '미국', importance: 'mid' },
+  { date: '2026-04-17', name: '미국 실업수당청구', country: '미국', importance: 'mid' },
+  { date: '2026-04-24', name: '미국 GDP 예비치(1분기)', country: '미국', importance: 'high' },
+  { date: '2026-04-25', name: '미국 PCE', country: '미국', importance: 'high' },
+  { date: '2026-04-28', name: '일본 BOJ 금리결정', country: '일본', importance: 'high' },
+  { date: '2026-04-29', name: 'FOMC 금리결정', country: '미국', importance: 'high' },
+  { date: '2026-04-30', name: '유로존 GDP(1분기)', country: '유럽', importance: 'mid' },
+  // 5월
+  { date: '2026-05-01', name: '미국 고용보고서(NFP)', country: '미국', importance: 'high' },
+  { date: '2026-05-07', name: '영국 BOE 금리결정', country: '영국', importance: 'mid' },
+  { date: '2026-05-08', name: '미국 실업수당청구', country: '미국', importance: 'mid' },
+  { date: '2026-05-13', name: '미국 CPI', country: '미국', importance: 'high' },
+  { date: '2026-05-15', name: '미국 PPI', country: '미국', importance: 'mid' },
+  { date: '2026-05-15', name: '미국 소매판매', country: '미국', importance: 'mid' },
+  { date: '2026-05-20', name: 'FOMC 의사록', country: '미국', importance: 'high' },
+  { date: '2026-05-22', name: '미국 실업수당청구', country: '미국', importance: 'mid' },
+  { date: '2026-05-28', name: '미국 GDP 확정치(1분기)', country: '미국', importance: 'mid' },
+  { date: '2026-05-29', name: '미국 PCE', country: '미국', importance: 'high' },
+  // 6월
+  { date: '2026-06-03', name: 'ADP 고용보고서', country: '미국', importance: 'high' },
+  { date: '2026-06-05', name: '미국 고용보고서(NFP)', country: '미국', importance: 'high' },
+  { date: '2026-06-10', name: '미국 CPI', country: '미국', importance: 'high' },
+  { date: '2026-06-11', name: '미국 PPI', country: '미국', importance: 'mid' },
+  { date: '2026-06-17', name: 'FOMC 금리결정', country: '미국', importance: 'high' },
+  { date: '2026-06-19', name: '미국 실업수당청구', country: '미국', importance: 'mid' },
+  { date: '2026-06-25', name: '미국 GDP 확정치(1분기)', country: '미국', importance: 'mid' },
+  { date: '2026-06-26', name: '미국 PCE', country: '미국', importance: 'high' },
 ];
 
-const COUNTRY_MAP = {
-  'US': '미국', 'EU': '유럽', 'UK': '영국', 'CN': '중국',
-  'JP': '일본', 'KR': '한국', 'DE': '독일', 'FR': '프랑스',
-};
-
-async function fetchFMPCalendar(from, to) {
-  // v4 신규 엔드포인트
-  const url = `https://financialmodelingprep.com/api/v4/economic_calendar?from=${from}&to=${to}&apikey=${FMP_KEY}`;
-  const res = await fetch(url);
-  const data = await res.json();
-  if (!Array.isArray(data)) return [];
-
-  return data
-    .filter(e => {
-      const imp = e.impact || '';
-      if (imp === 'Low') return false;
-      const name = e.event || '';
-      return IMPORTANT_KEYWORDS.some(k => name.toLowerCase().includes(k.toLowerCase()));
-    })
-    .map(e => ({
-      date: (e.date || '').split(' ')[0],
-      name: e.event || '',
-      country: COUNTRY_MAP[e.country] || e.country || '미국',
-      importance: e.impact === 'High' ? 'high' : 'mid',
-      actual: e.actual,
-      estimate: e.estimate,
-      previous: e.previous,
-    }))
-    .sort((a, b) => new Date(a.date) - new Date(b.date));
+function getThisWeekEvents() {
+  const now = new Date();
+  const day = now.getDay();
+  const monday = new Date(now);
+  monday.setDate(now.getDate() - (day === 0 ? 6 : day - 1));
+  monday.setHours(0,0,0,0);
+  const sunday = new Date(monday);
+  sunday.setDate(monday.getDate() + 6);
+  sunday.setHours(23,59,59,999);
+  return CALENDAR.filter(e => {
+    const d = new Date(e.date);
+    return d >= monday && d <= sunday;
+  });
 }
 
-function getDateRange(days = 14) {
+function getUpcomingEvents() {
   const now = new Date();
-  const fmt = d => d.toISOString().split('T')[0];
-  const end = new Date(now);
-  end.setDate(now.getDate() + days);
-  return { from: fmt(now), to: fmt(end) };
+  now.setHours(0,0,0,0);
+  const endOfWeek = new Date();
+  endOfWeek.setDate(endOfWeek.getDate() + (6 - endOfWeek.getDay()));
+  endOfWeek.setHours(23,59,59,999);
+  const twoWeeksLater = new Date(now);
+  twoWeeksLater.setDate(now.getDate() + 14);
+  return CALENDAR.filter(e => {
+    const d = new Date(e.date);
+    return d > endOfWeek && d <= twoWeeksLater;
+  });
 }
 
 module.exports = async function handler(req, res) {
@@ -58,7 +80,7 @@ module.exports = async function handler(req, res) {
   // AI 해설 요청
   if (type === 'brief' && name) {
     const apiKey = process.env.ANTHROPIC_API_KEY;
-    const cacheKey = `econ_brief_${name.replace(/[\s/]/g,'_')}_${date || ''}`;
+    const cacheKey = `econ_brief_${name.replace(/[\s/()]/g,'_')}`;
 
     try {
       const cacheRes = await fetch(
@@ -74,13 +96,13 @@ module.exports = async function handler(req, res) {
     const prompt = `당신은 ETF 투자 전문가입니다.
 "${name}" 경제지표에 대해 ETF 개인투자자가 이해할 수 있게 설명해주세요.
 
-아래 3가지를 각각 1~2문장으로 작성하세요:
+아래 3가지를 각각 1~2문장으로:
 - 중학생도 이해할 수 있는 쉬운 말
 - 마침표로 끝내기
 - 이모지 없이
-- 관련 ETF 언급 (예: TIGER미국S&P500, 인버스ETF 등)
+- 관련 ETF 언급
 
-반드시 아래 형식 그대로만 출력:
+반드시 아래 형식만 출력:
 
 [이게뭔가요] 이 지표가 무엇인지 쉽게 설명
 [좋으면] 예상보다 좋게 나오면 시장/ETF에 어떤 영향
@@ -115,27 +137,14 @@ module.exports = async function handler(req, res) {
           body: JSON.stringify({ cache_key: cacheKey, brief, created_at: new Date().toISOString() }),
         });
       }
-
       return res.status(200).json({ brief });
     } catch(e) {
       return res.status(500).json({ error: e.message });
     }
   }
 
-  // 일정 목록 요청
-  try {
-    const { from, to } = getDateRange(14);
-    const events = await fetchFMPCalendar(from, to);
-
-    const endOfWeek = new Date();
-    endOfWeek.setDate(endOfWeek.getDate() + (6 - endOfWeek.getDay()));
-    const endOfWeekStr = endOfWeek.toISOString().split('T')[0];
-
-    const thisWeek = events.filter(e => e.date <= endOfWeekStr);
-    const upcoming = events.filter(e => e.date > endOfWeekStr);
-
-    return res.status(200).json({ thisWeek, upcoming });
-  } catch(e) {
-    return res.status(500).json({ error: e.message });
-  }
+  // 일정 목록
+  const thisWeek = getThisWeekEvents();
+  const upcoming = getUpcomingEvents();
+  return res.status(200).json({ thisWeek, upcoming });
 };
