@@ -1203,7 +1203,7 @@ a { text-decoration: none; color: inherit; }
 
 <div id="header">
   <div id="logo-wrap">
-    <button onclick="openCalendar()" style="background:none;border:none;cursor:pointer;padding:4px;font-size:20px;position:absolute;top:10px;left:12px;" title="경제지표 캘린더">📅</button>
+    <button onclick="openCalendar()" style="background:none;border:none;cursor:pointer;padding:4px;font-size:18px;position:absolute;top:10px;left:12px;" title="경제지표 캘린더">🗓</button>
     <div id="logo">ETF레이더</div>
     <div id="logo-badge">LIVE</div>
   </div>
@@ -1625,6 +1625,7 @@ function openArticle(url, title, source) {
     </div>`;
   document.getElementById('article-modal').classList.add('show');
   document.body.style.overflow = 'hidden';
+  history.pushState({ modal: 'article' }, '');
 
   fetch('/api/article', {
     method: 'POST',
@@ -1829,6 +1830,7 @@ function openCalendar() {
   document.body.style.overflow = 'hidden';
   document.getElementById('cal-brief-box').style.display = 'none';
   if (!calendarData) loadCalendar();
+  history.pushState({ modal: 'calendar' }, '');
 }
 
 function closeCalendar() {
@@ -1935,6 +1937,15 @@ function showTip(msg, el) {
 }
 
 loadFeeds();
+
+// ── 뒤로가기로 모달 닫기 ──
+window.addEventListener('popstate', () => {
+  if (document.getElementById('calendar-modal').classList.contains('show')) { closeCalendar(); return; }
+  if (document.getElementById('article-modal').classList.contains('show')) { closeArticle(); return; }
+  if (document.getElementById('etf-modal').classList.contains('show')) { closeETFModal(); return; }
+  if (document.getElementById('ticker-modal').classList.contains('show')) { closeTickerModal(); return; }
+});
+
 window.addEventListener('scroll', () => {
   if (document.getElementById('article-modal').classList.contains('show')) closeArticle();
   if (document.getElementById('ticker-modal').classList.contains('show')) closeTickerModal();
@@ -2100,6 +2111,7 @@ function openETFModal(code, name, price, pct, change, up) {
     </div>`;
   document.getElementById('etf-modal').classList.add('show');
   document.body.style.overflow = 'hidden';
+  history.pushState({ modal: 'etf' }, '');
 
   fetch('/api/etf-brief', {
     method: 'POST',
