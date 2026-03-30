@@ -732,6 +732,73 @@ a { text-decoration: none; color: inherit; }
 .share-btn.kakao:hover { background: #f0d800; border-color: #f0d800; }
 [data-theme="dark"] .share-btn { background: #22263a; border-color: #2a2d3a; color: #e8eaf0; }
 
+/* ── 지수 상세 모달 ── */
+#ticker-modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 2000;
+  background: rgba(0,0,0,0.6);
+  align-items: flex-end;
+}
+#ticker-modal.show { display: flex; }
+#ticker-sheet {
+  background: #0a1628;
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  border-radius: 16px 16px 0 0;
+  padding: 16px 16px 32px;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+}
+#ticker-modal.show #ticker-sheet { transform: translateY(0); }
+#ticker-sheet-handle {
+  width: 36px; height: 4px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 2px;
+  margin: 0 auto 16px;
+}
+#ticker-sheet-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--red);
+  letter-spacing: 0.15em;
+  margin-bottom: 14px;
+  text-align: center;
+}
+.ticker-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.ticker-detail-item {
+  background: rgba(255,255,255,0.05);
+  border-radius: 8px;
+  padding: 12px 14px;
+  border-left: 3px solid transparent;
+}
+.ticker-detail-item.up { border-left-color: #ff6b6b; }
+.ticker-detail-item.dn { border-left-color: #74b9ff; }
+.ticker-detail-name { font-size: 10px; color: rgba(255,255,255,0.45); margin-bottom: 4px; }
+.ticker-detail-price { font-size: 16px; font-weight: 700; color: #fff; font-variant-numeric: tabular-nums; }
+.ticker-detail-change { font-size: 12px; font-weight: 600; margin-top: 2px; }
+.ticker-detail-change.up { color: #ff6b6b; }
+.ticker-detail-change.dn { color: #74b9ff; }
+#ticker-close-btn {
+  display: block;
+  width: 100%;
+  margin-top: 16px;
+  padding: 13px;
+  background: rgba(255,255,255,0.08);
+  border: none;
+  border-radius: 8px;
+  color: rgba(255,255,255,0.6);
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+}
+
 @media(max-width: 480px) {
   #logo { font-size: 24px; }
   .card-featured .card-title { font-size: 16px; }
@@ -752,7 +819,7 @@ a { text-decoration: none; color: inherit; }
   </div>
 </div>
 
-<div id="ticker-bar">
+<div id="ticker-bar" onclick="openTickerModal()" style="cursor:pointer;">
   <div id="ticker-track"></div>
 </div>
 
@@ -828,10 +895,13 @@ document.getElementById('topbar-date').textContent = new Date().toLocaleDateStri
   year: 'numeric', month: 'long', day: 'numeric', weekday: 'short'
 });
 
+let lastIndicesData = {};
+
 async function loadIndices() {
   try {
     const res = await fetch('/api/indices');
     const data = await res.json();
+    lastIndicesData = data;
     const order = ['kospi','kosdaq','nikkei','topix','shanghai','hk','sp500','nasdaq','dow'];
     const items = order.filter(k => data[k]).map(k => {
       const d = data[k];
@@ -844,6 +914,29 @@ async function loadIndices() {
     }).join('');
     document.getElementById('ticker-track').innerHTML = items + items;
   } catch(e) {}
+}
+
+function openTickerModal() {
+  const order = ['kospi','kosdaq','nikkei','topix','shanghai','hk','sp500','nasdaq','dow'];
+  const data = lastIndicesData;
+  if (!Object.keys(data).length) return;
+  const grid = order.filter(k => data[k]).map(k => {
+    const d = data[k];
+    const cls = d.up ? 'up' : 'dn';
+    return `<div class="ticker-detail-item ${cls}">
+      <div class="ticker-detail-name">${d.name}</div>
+      <div class="ticker-detail-price">${d.price}</div>
+      <div class="ticker-detail-change ${cls}">${d.pct}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('ticker-detail-grid').innerHTML = grid;
+  document.getElementById('ticker-modal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeTickerModal() {
+  document.getElementById('ticker-modal').classList.remove('show');
+  document.body.style.overflow = '';
 }
 loadIndices();
 setInterval(loadIndices, 60000);
@@ -994,11 +1087,19 @@ async function loadFeeds() {
   all.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
 
   const seen = new Set();
+  const seenKeywords = [];
   const sevenDaysAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
   allArticles = all.filter(a => {
     if (seen.has(a.title)) return false;
     seen.add(a.title);
     if (new Date(a.pubDate).getTime() < sevenDaysAgo) return false;
+    // 유사 제목 중복 제거: 핵심 키워드 4개 이상 겹치면 스킵
+    const words = a.title.replace(/[^가-힣a-zA-Z0-9]/g, ' ').split(' ').filter(w => w.length >= 2);
+    for (const prev of seenKeywords) {
+      const overlap = words.filter(w => prev.includes(w)).length;
+      if (overlap >= 4) return false;
+    }
+    seenKeywords.push(words);
     return true;
   });
 
@@ -1186,11 +1287,14 @@ function trackClick(url, title) {
 }
 
 async function loadHotNews() {
+  // 탭 전환 시 즉시 초기화
+  document.getElementById('hot-news-list').innerHTML = '';
+  document.getElementById('hot-news').style.display = 'none';
   try {
     const res = await fetch(`/api/hot?tab=${curTab}`);
     const data = await res.json();
     const hot = data.hot || [];
-    if (!hot.length) return;
+    if (!hot.length) return; // 핫뉴스 없으면 그냥 숨김 유지
     const list = hot.map((item, i) => `
       <a href="${item.url}" target="_blank" rel="noopener" onclick="trackClick('${item.url.replace(/'/g,"\\'")}','')">
         <div class="hot-item">
@@ -1271,6 +1375,15 @@ loadFeeds();
       <button id="article-close-btn" onclick="closeArticle()">닫기</button>
       <button id="article-open-btn" onclick="openOriginal()">원문 보기 →</button>
     </div>
+  </div>
+</div>
+<!-- 지수 상세 모달 -->
+<div id="ticker-modal" onclick="if(event.target===this)closeTickerModal()">
+  <div id="ticker-sheet">
+    <div id="ticker-sheet-handle"></div>
+    <div id="ticker-sheet-title">실시간 글로벌 지수</div>
+    <div class="ticker-detail-grid" id="ticker-detail-grid"></div>
+    <button id="ticker-close-btn" onclick="closeTickerModal()">닫기</button>
   </div>
 </div>
 
