@@ -842,7 +842,76 @@ a { text-decoration: none; color: inherit; }
   cursor: pointer;
 }
 
-/* ── ETF 전광판 ── */
+/* ── 공포/탐욕 지수 ── */
+#fear-greed {
+  max-width: 760px;
+  margin: 8px auto 0;
+  padding: 0 12px;
+}
+#fear-greed-inner {
+  background: linear-gradient(135deg, #0a1628 0%, #122040 100%);
+  border-radius: 8px;
+  padding: 16px 18px;
+  box-shadow: var(--card-shadow);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+#fear-greed-gauge {
+  flex-shrink: 0;
+  text-align: center;
+  width: 80px;
+}
+#fear-greed-number {
+  font-size: 36px;
+  font-weight: 900;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+#fear-greed-emoji {
+  font-size: 20px;
+  margin-top: 2px;
+}
+#fear-greed-info { flex: 1; }
+#fear-greed-label-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+#fear-greed-tag {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--red);
+  letter-spacing: 0.15em;
+}
+#fear-greed-status {
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+}
+#fear-greed-bar-wrap {
+  background: rgba(255,255,255,0.1);
+  border-radius: 4px;
+  height: 6px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+#fear-greed-bar {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 1s ease;
+}
+#fear-greed-details {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.fg-detail {
+  font-size: 10px;
+  color: rgba(255,255,255,0.45);
+}
+.fg-detail span { color: rgba(255,255,255,0.7); font-weight: 600; }
 #etf-widget {
   max-width: 760px;
   margin: 8px auto 0;
@@ -1036,7 +1105,25 @@ a { text-decoration: none; color: inherit; }
   </div>
 </div>
 
-<div id="hot-news">
+<!-- 공포/탐욕 지수 -->
+<div id="fear-greed">
+  <div id="fear-greed-inner">
+    <div id="fear-greed-gauge">
+      <div id="fear-greed-number" style="color:#f0a500;">-</div>
+      <div id="fear-greed-emoji">⏳</div>
+    </div>
+    <div id="fear-greed-info">
+      <div id="fear-greed-label-wrap">
+        <span id="fear-greed-tag">FEAR & GREED</span>
+        <span id="fear-greed-status" style="color:#f0a500;">분석 중...</span>
+      </div>
+      <div id="fear-greed-bar-wrap">
+        <div id="fear-greed-bar" style="width:50%;background:#f0a500;"></div>
+      </div>
+      <div id="fear-greed-details"></div>
+    </div>
+  </div>
+</div>
   <div id="hot-news-inner">
     <div id="hot-news-header">
       <span class="hot-label">HOT</span>
@@ -1565,6 +1652,28 @@ function renderSummary(text) {
 document.getElementById('ai-summary-date').textContent =
   new Date().toLocaleDateString('ko-KR', { month: 'long', day: 'numeric', weekday: 'short' });
 
+// 공포/탐욕 지수
+async function loadFearGreed() {
+  try {
+    const res = await fetch('/api/fear-greed');
+    const data = await res.json();
+    if (!data.index) return;
+    document.getElementById('fear-greed-number').textContent = data.index;
+    document.getElementById('fear-greed-number').style.color = data.color;
+    document.getElementById('fear-greed-emoji').textContent = data.emoji;
+    document.getElementById('fear-greed-status').textContent = data.label;
+    document.getElementById('fear-greed-status').style.color = data.color;
+    document.getElementById('fear-greed-bar').style.width = data.index + '%';
+    document.getElementById('fear-greed-bar').style.background = data.color;
+    if (data.details) {
+      document.getElementById('fear-greed-details').innerHTML = data.details.map(d =>
+        `<span class="fg-detail">${d.label} <span>${d.value}</span></span>`
+      ).join('');
+    }
+  } catch(e) {}
+}
+
+loadFearGreed();
 loadFeeds();
 </script>
 
