@@ -1,17 +1,13 @@
 // /api/econ-calendar.js
-// Financial Modeling Prep API로 경제지표 자동 연동
-
 const SUPABASE_URL = 'https://aoqzohxljzghflkuuxhx.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY;
 const FMP_KEY = process.env.FMP_API_KEY;
 
-// 중요 지표 키워드 (필터링용)
 const IMPORTANT_KEYWORDS = [
   'CPI', 'PPI', 'GDP', 'NFP', 'Nonfarm', 'FOMC', 'Federal Reserve',
   'Interest Rate', 'Unemployment', 'Retail Sales', 'PCE', 'ADP',
   'ISM', 'PMI', 'Consumer Price', 'Producer Price', 'Jobs',
   'Inflation', 'Trade Balance', 'Housing', 'Durable Goods',
-  '고용', '물가', '금리', 'CPI', 'GDP'
 ];
 
 const COUNTRY_MAP = {
@@ -19,32 +15,25 @@ const COUNTRY_MAP = {
   'JP': '일본', 'KR': '한국', 'DE': '독일', 'FR': '프랑스',
 };
 
-const IMPORTANCE_MAP = {
-  'High': 'high', 'Medium': 'mid', 'Low': 'low',
-  3: 'high', 2: 'mid', 1: 'low',
-};
-
 async function fetchFMPCalendar(from, to) {
-  const url = `https://financialmodelingprep.com/api/v3/economic_calendar?from=${from}&to=${to}&apikey=${FMP_KEY}`;
+  // v4 신규 엔드포인트
+  const url = `https://financialmodelingprep.com/api/v4/economic_calendar?from=${from}&to=${to}&apikey=${FMP_KEY}`;
   const res = await fetch(url);
   const data = await res.json();
   if (!Array.isArray(data)) return [];
 
   return data
     .filter(e => {
-      // 중요도 높은 것만
-      const imp = e.impact || e.importance || '';
-      if (imp === 'Low' || imp === 1) return false;
-      // 주요 키워드 포함된 것만
-      const name = (e.event || e.name || '');
+      const imp = e.impact || '';
+      if (imp === 'Low') return false;
+      const name = e.event || '';
       return IMPORTANT_KEYWORDS.some(k => name.toLowerCase().includes(k.toLowerCase()));
     })
     .map(e => ({
       date: (e.date || '').split(' ')[0],
-      name: e.event || e.name || '',
+      name: e.event || '',
       country: COUNTRY_MAP[e.country] || e.country || '미국',
-      importance: IMPORTANCE_MAP[e.impact || e.importance] || 'mid',
-      desc: e.description || '',
+      importance: e.impact === 'High' ? 'high' : 'mid',
       actual: e.actual,
       estimate: e.estimate,
       previous: e.previous,
@@ -54,16 +43,10 @@ async function fetchFMPCalendar(from, to) {
 
 function getDateRange(days = 14) {
   const now = new Date();
-  const day = now.getDay();
-  const monday = new Date(now);
-  monday.setDate(now.getDate() - (day === 0 ? 6 : day - 1));
-  monday.setHours(0,0,0,0);
-
-  const end = new Date(monday);
-  end.setDate(monday.getDate() + days);
-
   const fmt = d => d.toISOString().split('T')[0];
-  return { from: fmt(monday), to: fmt(end) };
+  const end = new Date(now);
+  end.setDate(now.getDate() + days);
+  return { from: fmt(now), to: fmt(end) };
 }
 
 module.exports = async function handler(req, res) {
@@ -77,7 +60,6 @@ module.exports = async function handler(req, res) {
     const apiKey = process.env.ANTHROPIC_API_KEY;
     const cacheKey = `econ_brief_${name.replace(/[\s/]/g,'_')}_${date || ''}`;
 
-    // 캐시 확인
     try {
       const cacheRes = await fetch(
         `${SUPABASE_URL}/rest/v1/econ_brief_cache?cache_key=eq.${encodeURIComponent(cacheKey)}&select=brief`,
@@ -145,12 +127,11 @@ module.exports = async function handler(req, res) {
     const { from, to } = getDateRange(14);
     const events = await fetchFMPCalendar(from, to);
 
-    const today = new Date().toISOString().split('T')[0];
     const endOfWeek = new Date();
-    endOfWeek.setDate(endOfWeek.getDate() + (7 - endOfWeek.getDay()));
+    endOfWeek.setDate(endOfWeek.getDate() + (6 - endOfWeek.getDay()));
     const endOfWeekStr = endOfWeek.toISOString().split('T')[0];
 
-    const thisWeek = events.filter(e => e.date >= today && e.date <= endOfWeekStr);
+    const thisWeek = events.filter(e => e.date <= endOfWeekStr);
     const upcoming = events.filter(e => e.date > endOfWeekStr);
 
     return res.status(200).json({ thisWeek, upcoming });
