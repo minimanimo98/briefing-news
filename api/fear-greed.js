@@ -80,7 +80,7 @@ function calcScore(data) {
     else if (pos >= 20) score = 5;
     else                score = 2;
     scores.push(score);
-    details.push({ label: '52주 위치', value: pos.toFixed(0) + '%', score, max: 15 });
+    details.push({ label: '연중 위치', value: pos.toFixed(0) + '%', score, max: 15 });
   }
 
   // 5. 나스닥 글로벌 심리 (0~15점)
