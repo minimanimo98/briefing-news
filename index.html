@@ -186,6 +186,49 @@ a { text-decoration: none; color: inherit; }
   display: none;
 }
 
+/* ── 카카오 채널 배너 ── */
+#kakao-channel-banner {
+  background: linear-gradient(135deg, #FEE500 0%, #FFD700 100%);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+#kakao-channel-banner-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  cursor: pointer;
+}
+#kakao-channel-banner-icon { font-size: 20px; }
+#kakao-channel-banner-text { font-size: 13px; font-weight: 700; color: #000; line-height: 1.4; }
+#kakao-channel-banner-sub { font-size: 10px; color: rgba(0,0,0,0.55); }
+#kakao-channel-banner-btn {
+  background: #000;
+  color: #FEE500;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  cursor: pointer;
+  border: none;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+#kakao-channel-close {
+  font-size: 18px;
+  color: rgba(0,0,0,0.35);
+  cursor: pointer;
+  padding: 4px;
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  line-height: 1;
+}
+
 #tabs {
   background: #fff;
   border-bottom: 2px solid var(--border);
@@ -834,6 +877,19 @@ a { text-decoration: none; color: inherit; }
 
 <div id="ad-top"></div>
 
+<!-- 카카오 채널 구독 배너 -->
+<div id="kakao-channel-banner">
+  <div id="kakao-channel-banner-left" onclick="addKakaoChannel()">
+    <span id="kakao-channel-banner-icon">💬</span>
+    <div>
+      <div id="kakao-channel-banner-text">ETF레이더 카카오톡 채널 구독</div>
+      <div id="kakao-channel-banner-sub">매일 오전 8시 AI 시장브리핑 무료 발송</div>
+    </div>
+  </div>
+  <button id="kakao-channel-banner-btn" onclick="addKakaoChannel()">채널 추가</button>
+  <button id="kakao-channel-close" onclick="closeKakaoChannel()">✕</button>
+</div>
+
 <div id="tabs">
   <button class="tab active" onclick="switchTab('all',this)">전체</button>
   <button class="tab" onclick="switchTab('etf',this)">ETF</button>
@@ -1218,6 +1274,25 @@ function closeArticle() {
 // 카카오 SDK 초기화
 if (window.Kakao && !Kakao.isInitialized()) {
   Kakao.init('3e1b5b16a83bf1af306c25925bed481b');
+}
+
+// 카카오 채널 추가
+function addKakaoChannel() {
+  if (window.Kakao && Kakao.isInitialized()) {
+    Kakao.Channel.addChannel({ channelPublicId: '_etf레이더' });
+  } else {
+    window.open('https://pf.kakao.com/_etf레이더', '_blank');
+  }
+}
+
+function closeKakaoChannel() {
+  document.getElementById('kakao-channel-banner').style.display = 'none';
+  localStorage.setItem('kakao-channel-closed', '1');
+}
+
+// 이미 닫은 적 있으면 배너 숨기기
+if (localStorage.getItem('kakao-channel-closed') === '1') {
+  document.getElementById('kakao-channel-banner').style.display = 'none';
 }
 
 // ── 수정된 shareKakao: etfradar.kr 로 공유 ──
