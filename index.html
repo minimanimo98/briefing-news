@@ -295,7 +295,7 @@ a { text-decoration: none; color: inherit; }
   margin-left: auto;
 }
 #ai-summary-text {
-  font-size: 13px;
+  font-size: 12px;
   color: rgba(255,255,255,0.88);
   line-height: 1.9;
   font-family: 'Noto Serif KR', serif;
@@ -842,6 +842,129 @@ a { text-decoration: none; color: inherit; }
   cursor: pointer;
 }
 
+/* ── ETF 전광판 ── */
+#etf-widget {
+  max-width: 760px;
+  margin: 8px auto 0;
+  padding: 0 12px;
+}
+#etf-widget-inner {
+  background: var(--white);
+  border-radius: 6px;
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+}
+#etf-widget-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px 8px;
+  border-bottom: 1px solid var(--border);
+}
+.etf-widget-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--navy);
+  padding: 2px 7px;
+  border-radius: 2px;
+  letter-spacing: 0.1em;
+}
+.etf-widget-sub { font-size: 10px; color: var(--sub); }
+#etf-theme-tabs {
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+  border-bottom: 1px solid var(--border);
+  padding: 0 8px;
+}
+#etf-theme-tabs::-webkit-scrollbar { display: none; }
+.etf-theme-tab {
+  padding: 7px 12px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--sub);
+  border: none;
+  background: none;
+  cursor: pointer;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  font-family: 'Noto Sans KR', sans-serif;
+  transition: all 0.15s;
+}
+.etf-theme-tab.active { color: var(--red); border-bottom-color: var(--red); font-weight: 700; }
+.etf-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.15s;
+  gap: 10px;
+}
+.etf-item:last-child { border-bottom: none; }
+.etf-item:hover { background: #fafafa; }
+.etf-item-name { flex: 1; font-size: 13px; font-weight: 600; color: var(--text); }
+.etf-item-price { font-size: 13px; font-weight: 700; color: var(--text); font-variant-numeric: tabular-nums; }
+.etf-item-pct { font-size: 12px; font-weight: 700; width: 55px; text-align: right; }
+.etf-item-pct.up { color: #e8001a; }
+.etf-item-pct.dn { color: #1a6ce8; }
+#etf-loading { text-align: center; padding: 20px; color: var(--sub); font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+
+/* ETF 브리핑 모달 */
+#etf-modal {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0; top: 0;
+  z-index: 1000;
+  background: rgba(0,0,0,0.5);
+  align-items: flex-end;
+}
+#etf-modal.show { display: flex; }
+#etf-sheet {
+  background: var(--white);
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  border-radius: 16px 16px 0 0;
+  max-height: 75vh;
+  overflow-y: auto;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+#etf-modal.show #etf-sheet { transform: translateY(0); }
+#etf-sheet-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 12px auto 0; }
+#etf-sheet-info { padding: 14px 16px 0; display: flex; align-items: center; justify-content: space-between; }
+#etf-sheet-name { font-size: 16px; font-weight: 700; color: var(--text); }
+#etf-sheet-price { font-size: 18px; font-weight: 700; color: var(--text); }
+#etf-sheet-pct { font-size: 13px; font-weight: 700; text-align: right; }
+#etf-sheet-pct.up { color: #e8001a; }
+#etf-sheet-pct.dn { color: #1a6ce8; }
+#etf-brief-box {
+  margin: 14px 16px;
+  background: linear-gradient(135deg, #0a1628 0%, #122040 100%);
+  border-radius: 8px;
+  padding: 14px 16px;
+  border-left: 4px solid var(--red);
+}
+#etf-brief-label { font-size: 9px; font-weight: 700; color: var(--red); letter-spacing: 0.15em; margin-bottom: 10px; }
+#etf-brief-content { font-size: 13px; color: rgba(255,255,255,0.88); line-height: 1.8; font-family: 'Noto Serif KR', serif; word-break: keep-all; }
+.etf-brief-row { margin-bottom: 8px; }
+.etf-brief-row-label { font-size: 10px; font-weight: 700; color: var(--red); margin-bottom: 3px; }
+.etf-brief-row-text { font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.6; }
+#etf-sheet-close {
+  display: block; width: calc(100% - 32px); margin: 0 16px 16px;
+  padding: 13px; background: var(--bg); border: 1px solid var(--border);
+  border-radius: 8px; font-family: 'Noto Sans KR', sans-serif; font-size: 14px;
+  cursor: pointer; color: var(--sub);
+}
+[data-theme="dark"] #etf-widget-inner { background: #1a1d27; }
+[data-theme="dark"] .etf-item:hover { background: #22263a; }
+[data-theme="dark"] #etf-sheet { background: #1a1d27; }
+[data-theme="dark"] #etf-sheet-close { background: #22263a; border-color: #2a2d3a; color: #8b8fa8; }
+
 @media(max-width: 480px) {
   #logo { font-size: 24px; }
   .card-featured .card-title { font-size: 16px; }
@@ -919,6 +1042,18 @@ a { text-decoration: none; color: inherit; }
       <span class="hot-sub">오늘 많이 본 뉴스</span>
     </div>
     <div id="hot-news-list"></div>
+  </div>
+</div>
+
+<!-- ETF 전광판 -->
+<div id="etf-widget">
+  <div id="etf-widget-inner">
+    <div id="etf-widget-header">
+      <span class="etf-widget-label">ETF</span>
+      <span class="etf-widget-sub">클릭하면 AI 브리핑</span>
+    </div>
+    <div id="etf-theme-tabs"></div>
+    <div id="etf-list"><div id="etf-loading"><div class="ai-spinner" style="border-top-color:#0a1628;border-color:#e2e6ed;"></div> 시세 불러오는 중...</div></div>
   </div>
 </div>
 
@@ -1278,11 +1413,7 @@ if (window.Kakao && !Kakao.isInitialized()) {
 
 // 카카오 채널 추가
 function addKakaoChannel() {
-  if (window.Kakao && Kakao.isInitialized()) {
-    Kakao.Channel.addChannel({ channelPublicId: '_lxdhMX' });
-  } else {
-    window.open('https://pf.kakao.com/_lxdhMX', '_blank');
-  }
+  window.open('https://pf.kakao.com/_lxdhMX', '_blank');
 }
 
 function closeKakaoChannel() {
@@ -1461,6 +1592,120 @@ loadFeeds();
     <button id="ticker-close-btn" onclick="closeTickerModal()">닫기</button>
   </div>
 </div>
+<!-- ETF 브리핑 모달 -->
+<div id="etf-modal" onclick="if(event.target===this)closeETFModal()">
+  <div id="etf-sheet">
+    <div id="etf-sheet-handle"></div>
+    <div id="etf-sheet-info">
+      <div id="etf-sheet-name"></div>
+      <div>
+        <div id="etf-sheet-price"></div>
+        <div id="etf-sheet-pct"></div>
+      </div>
+    </div>
+    <div id="etf-brief-box">
+      <div id="etf-brief-label">AI ETF 브리핑</div>
+      <div id="etf-brief-content">
+        <div style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.4);font-size:12px;">
+          <div class="ai-spinner"></div> 분석 중...
+        </div>
+      </div>
+    </div>
+    <button id="etf-sheet-close" onclick="closeETFModal()">닫기</button>
+  </div>
+</div>
+
+<script>
+// ── ETF 전광판 ──
+let etfData = {};
+let currentTheme = '전체';
+
+async function loadETF() {
+  try {
+    const res = await fetch('/api/etf-prices');
+    const data = await res.json();
+    etfData = data;
+    renderETFTabs(data);
+    renderETFList(data.etfs);
+  } catch(e) {
+    document.getElementById('etf-loading').textContent = '시세 불러오기 실패';
+  }
+}
+
+function renderETFTabs(data) {
+  const themes = ['전체', ...Object.keys(data.themes || {})];
+  const tabs = themes.map((t, i) => `
+    <button class="etf-theme-tab${i === 0 ? ' active' : ''}" onclick="switchETFTheme('${t}', this)">${t}</button>
+  `).join('');
+  document.getElementById('etf-theme-tabs').innerHTML = tabs;
+}
+
+function switchETFTheme(theme, el) {
+  document.querySelectorAll('.etf-theme-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  currentTheme = theme;
+  const list = theme === '전체' ? etfData.etfs : (etfData.themes?.[theme] || []);
+  renderETFList(list);
+}
+
+function renderETFList(list) {
+  if (!list || !list.length) {
+    document.getElementById('etf-list').innerHTML = '<div id="etf-loading">데이터 없음</div>';
+    return;
+  }
+  const html = list.map(e => `
+    <div class="etf-item" onclick="openETFModal('${e.code}','${e.name}','${e.price}','${e.pct}','${e.change}',${e.up})">
+      <div class="etf-item-name">${e.name}</div>
+      <div class="etf-item-price">${e.price}</div>
+      <div class="etf-item-pct ${e.up ? 'up' : 'dn'}">${e.pct}</div>
+      <span style="font-size:10px;color:var(--sub);">›</span>
+    </div>
+  `).join('');
+  document.getElementById('etf-list').innerHTML = html;
+}
+
+function openETFModal(code, name, price, pct, change, up) {
+  document.getElementById('etf-sheet-name').textContent = name;
+  document.getElementById('etf-sheet-price').textContent = price + '원';
+  const pctEl = document.getElementById('etf-sheet-pct');
+  pctEl.textContent = change + '원 (' + pct + ')';
+  pctEl.className = up ? 'up' : 'dn';
+  document.getElementById('etf-brief-content').innerHTML = `
+    <div style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.4);font-size:12px;">
+      <div class="ai-spinner"></div> 분석 중...
+    </div>`;
+  document.getElementById('etf-modal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+
+  fetch('/api/etf-brief', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ etfCode: code, etfName: name, price, pct }),
+  }).then(r => r.json()).then(data => {
+    if (data.brief) {
+      const situation = data.brief.match(/\[지금상황\]\s*(.+)/)?.[1]?.trim() || '';
+      const news      = data.brief.match(/\[핵심뉴스\]\s*(.+)/)?.[1]?.trim() || '';
+      const hint      = data.brief.match(/\[투자힌트\]\s*(.+)/)?.[1]?.trim() || '';
+      let html = '';
+      if (situation) html += `<div class="etf-brief-row"><div class="etf-brief-row-label">지금상황</div><div class="etf-brief-row-text">${situation}</div></div>`;
+      if (news)      html += `<div class="etf-brief-row"><div class="etf-brief-row-label">핵심뉴스</div><div class="etf-brief-row-text">${news}</div></div>`;
+      if (hint)      html += `<div class="etf-brief-row"><div class="etf-brief-row-label">투자힌트</div><div class="etf-brief-row-text">${hint}</div></div>`;
+      document.getElementById('etf-brief-content').innerHTML = html || data.brief;
+    } else {
+      document.getElementById('etf-brief-content').textContent = '브리핑을 불러오지 못했습니다.';
+    }
+  }).catch(() => {
+    document.getElementById('etf-brief-content').textContent = '브리핑을 불러오지 못했습니다.';
+  });
+}
+
+function closeETFModal() {
+  document.getElementById('etf-modal').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+loadETF();
+</script>
 
 </body>
 </html>
