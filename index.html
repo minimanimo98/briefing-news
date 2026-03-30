@@ -1041,6 +1041,45 @@ a { text-decoration: none; color: inherit; }
   #summary-bar { padding: 8px 12px; }
   .tab { padding: 11px 15px; font-size: 12px; }
 }
+
+/* ── 툴팁 ── */
+.info-tip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px; height: 15px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.5);
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  flex-shrink: 0;
+  font-style: italic;
+  font-family: Georgia, serif;
+}
+.info-tip-light {
+  background: var(--border);
+  color: var(--sub);
+}
+.info-tip:hover { background: var(--red); color: #fff; }
+#tip-popup {
+  position: fixed;
+  bottom: 80px;
+  left: 16px; right: 16px;
+  background: #111827;
+  color: #e8eaf0;
+  font-size: 13px;
+  line-height: 1.7;
+  padding: 14px 16px;
+  border-radius: 10px;
+  z-index: 3000;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  display: none;
+  word-break: keep-all;
+  border-left: 3px solid var(--red);
+}
+#tip-popup.show { display: block; }
 </style>
 <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" integrity="sha384-TiCUE00h649CAMonG018J2ujOgDKW/kVWlChEuu4jK2vxfAAD0eZxzCKakxg55G4" crossorigin="anonymous"></script>
 </head>
@@ -1095,6 +1134,7 @@ a { text-decoration: none; color: inherit; }
   <div id="ai-summary-inner">
     <div id="ai-summary-header">
       <span id="ai-summary-label">한줄 시장브리핑</span>
+      <span class="info-tip info-tip-dark" onclick="showTip('오늘의 주요 뉴스를 AI가 ETF 투자자 관점으로 요약한 브리핑이에요. 1시간마다 자동 업데이트돼요.')">?</span>
       <span id="ai-summary-date"></span>
     </div>
     <div id="ai-summary-text">
@@ -1112,6 +1152,7 @@ a { text-decoration: none; color: inherit; }
     <div id="hot-news-header">
       <span class="hot-label">HOT</span>
       <span class="hot-sub">오늘 많이 본 뉴스</span>
+      <span class="info-tip info-tip-light" onclick="showTip('오늘 이 사이트에서 클릭이 많았던 뉴스 순위예요. 데이터가 쌓이면 자동으로 업데이트돼요.')">?</span>
     </div>
     <div id="hot-news-list"></div>
   </div>
@@ -1130,6 +1171,7 @@ a { text-decoration: none; color: inherit; }
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
           <span style="font-size:9px;font-weight:700;color:#e8001a;letter-spacing:0.15em;">FEAR & GREED</span>
           <span id="fear-greed-status" style="font-size:15px;font-weight:700;color:#f0a500;">분석 중...</span>
+          <span class="info-tip info-tip-dark" onclick="showTip('코스피·코스닥 등락, VIX 변동성 지수, 나스닥 흐름을 종합해 시장 심리를 0~100으로 표현해요. 낮을수록 공포, 높을수록 탐욕이에요.')">?</span>
         </div>
         <div style="background:rgba(255,255,255,0.1);border-radius:4px;height:6px;overflow:hidden;margin-bottom:6px;">
           <div id="fear-greed-bar" style="width:50%;height:100%;border-radius:4px;background:#f0a500;transition:width 1s ease;"></div>
@@ -1674,9 +1716,17 @@ async function loadFearGreed() {
   } catch(e) {}
 }
 
-loadFeeds();
+// ── 툴팁 ──
+let tipTimer;
+function showTip(msg) {
+  const el = document.getElementById('tip-popup');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(tipTimer);
+  tipTimer = setTimeout(() => el.classList.remove('show'), 4000);
+}
 
-// ── 스크롤 내리면 모달 자동 닫기 ──
+loadFeeds();
 window.addEventListener('scroll', () => {
   if (document.getElementById('article-modal').classList.contains('show')) closeArticle();
   if (document.getElementById('ticker-modal').classList.contains('show')) closeTickerModal();
@@ -1698,6 +1748,9 @@ addSwipeClose('article-sheet', closeArticle);
 addSwipeClose('ticker-sheet', closeTickerModal);
 addSwipeClose('etf-sheet', closeETFModal);
 </script>
+
+<!-- 툴팁 팝업 -->
+<div id="tip-popup" onclick="this.classList.remove('show')"></div>
 
 <!-- 뉴스 요약 모달 -->
 <div id="article-modal" onclick="if(event.target===this)closeArticle()">
