@@ -1018,6 +1018,7 @@ a { text-decoration: none; color: inherit; }
   <button class="tab" onclick="switchTab('etf',this)">ETF</button>
   <button class="tab" onclick="switchTab('fund',this)">펀드</button>
   <button class="tab" onclick="switchTab('stock',this)">주식</button>
+  <button class="tab" onclick="switchTab('etfboard',this)">ETF브리핑</button>
   <a href="/board.html" class="tab community">커뮤니티</a>
 </div>
 
@@ -1045,15 +1046,11 @@ a { text-decoration: none; color: inherit; }
   </div>
 </div>
 
-<!-- ETF 전광판 -->
-<div id="etf-widget">
+<!-- ETF 전광판 (종목 탭 클릭 시 표시) -->
+<div id="etf-widget" style="display:none;">
   <div id="etf-widget-inner">
-    <div id="etf-widget-header">
-      <span class="etf-widget-label">ETF</span>
-      <span class="etf-widget-sub">클릭하면 AI 브리핑</span>
-    </div>
     <div id="etf-theme-tabs"></div>
-    <div id="etf-list"><div id="etf-loading"><div class="ai-spinner" style="border-top-color:#0a1628;border-color:#e2e6ed;"></div> 시세 불러오는 중...</div></div>
+    <div id="etf-list"><div id="etf-loading" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:20px;color:var(--sub);font-size:12px;"><div class="ai-spinner" style="border-top-color:#0a1628;border-color:#e2e6ed;border-top-color:var(--red);"></div> 시세 불러오는 중...</div></div>
   </div>
 </div>
 
@@ -1205,8 +1202,24 @@ function switchTab(tab, el) {
   el.classList.add('active');
   curTab = tab;
   displayCount = 20;
-  loadFeeds();
-  loadHotNews();
+
+  if (tab === 'etfboard') {
+    // ETF 전광판 모드
+    document.getElementById('etf-widget').style.display = 'block';
+    document.getElementById('ai-summary').style.display = 'none';
+    document.getElementById('hot-news').style.display = 'none';
+    document.getElementById('summary-bar').style.display = 'none';
+    document.getElementById('news').style.display = 'none';
+    if (!etfLoaded) { loadETF(); etfLoaded = true; }
+  } else {
+    // 뉴스 모드
+    document.getElementById('etf-widget').style.display = 'none';
+    document.getElementById('ai-summary').style.display = 'block';
+    document.getElementById('summary-bar').style.display = 'flex';
+    document.getElementById('news').style.display = 'block';
+    loadFeeds();
+    loadHotNews();
+  }
 }
 
 function toggleDark() {
@@ -1619,6 +1632,7 @@ loadFeeds();
 // ── ETF 전광판 ──
 let etfData = {};
 let currentTheme = '전체';
+let etfLoaded = false;
 
 async function loadETF() {
   try {
