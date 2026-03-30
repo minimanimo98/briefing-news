@@ -1867,7 +1867,7 @@ function renderCalendar(data) {
   }
 
   if (data.past && data.past.length) {
-    html += '<div class="cal-section-title">지난 지표 (실제치)</div>';
+    html += '<div class="cal-section-title">지난 지표</div>';
     html += data.past.map(e => calItemHTML(e, today, true)).join('');
   }
 
