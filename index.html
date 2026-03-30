@@ -99,7 +99,6 @@
 body { background: var(--bg); color: var(--text); font-family: 'Noto Sans KR', sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }
 a { text-decoration: none; color: inherit; }
 
-/* ── TOPBAR ── */
 #topbar {
   background: var(--navy-light);
   padding: 5px 12px;
@@ -114,7 +113,6 @@ a { text-decoration: none; color: inherit; }
 #topbar-right a { color: rgba(255,255,255,0.35); transition: color 0.15s; font-size: 10px; }
 #topbar-right a:hover { color: rgba(255,255,255,0.7); }
 
-/* ── 지수 티커 바 ── */
 #ticker-bar {
   background: #0d1f3c;
   border-bottom: 1px solid rgba(255,255,255,0.06);
@@ -140,7 +138,6 @@ a { text-decoration: none; color: inherit; }
 .index-change.up { color: #ff6b6b; }
 .index-change.dn { color: #74b9ff; }
 
-/* ── HEADER ── */
 #header {
   background: var(--navy);
   padding: 14px 20px 12px;
@@ -180,19 +177,15 @@ a { text-decoration: none; color: inherit; }
   text-transform: uppercase;
 }
 
-/* ── 카카오 애드핏 — 상단 배너 (승인 후 활성화) ── */
 #ad-top {
   background: #fff;
   border-bottom: 1px solid var(--border);
-  display: flex;
   align-items: center;
   justify-content: center;
   min-height: 60px;
-  /* 애드핏 승인 전: display:none 처리, 승인 후 display:flex 으로 변경 */
   display: none;
 }
 
-/* ── TABS ── */
 #tabs {
   background: #fff;
   border-bottom: 2px solid var(--border);
@@ -228,7 +221,6 @@ a { text-decoration: none; color: inherit; }
 .tab.community { color: #0057ff; border-left: 1px solid var(--border); margin-left: auto; }
 .tab.community:hover { color: #003fcc; background: #f0f4ff; }
 
-/* ── AI 요약 박스 ── */
 #ai-summary {
   max-width: 760px;
   margin: 8px auto 0;
@@ -266,13 +258,6 @@ a { text-decoration: none; color: inherit; }
   font-family: 'Noto Serif KR', serif;
   word-break: keep-all;
 }
-#ai-summary-loading {
-  font-size: 12px;
-  color: rgba(255,255,255,0.4);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
 .ai-spinner {
   display: inline-block;
   width: 14px; height: 14px;
@@ -283,7 +268,6 @@ a { text-decoration: none; color: inherit; }
   flex-shrink: 0;
 }
 
-/* ── 핫뉴스 섹션 ── */
 #hot-news {
   max-width: 760px;
   margin: 8px auto 0;
@@ -312,10 +296,7 @@ a { text-decoration: none; color: inherit; }
   border-radius: 2px;
   letter-spacing: 0.1em;
 }
-.hot-sub {
-  font-size: 10px;
-  color: var(--sub);
-}
+.hot-sub { font-size: 10px; color: var(--sub); }
 .hot-item {
   display: flex;
   align-items: center;
@@ -350,7 +331,6 @@ a { text-decoration: none; color: inherit; }
   flex-shrink: 0;
 }
 
-/* ── SUMMARY BAR ── */
 #summary-bar {
   max-width: 760px;
   margin: 0 auto;
@@ -379,10 +359,8 @@ a { text-decoration: none; color: inherit; }
 #refresh-icon { display: inline-block; transition: transform 0.4s; }
 #refresh-btn:hover #refresh-icon { transform: rotate(180deg); }
 
-/* ── NEWS CONTAINER ── */
 #news { max-width: 760px; margin: 0 auto; padding: 4px 12px 60px; }
 
-/* ── FEATURED CARD ── */
 .card-featured {
   background: var(--white);
   border-radius: 6px;
@@ -423,7 +401,6 @@ a { text-decoration: none; color: inherit; }
   margin-top: 6px;
 }
 
-/* ── REGULAR CARD ── */
 .card {
   background: var(--white);
   border-radius: 6px;
@@ -450,10 +427,8 @@ a { text-decoration: none; color: inherit; }
   padding-top: 1px;
 }
 .card-num.hot { color: var(--red); }
-
 .card-body { flex: 1; min-width: 0; }
 
-/* ── META BADGES ── */
 .card-meta {
   display: flex;
   align-items: center;
@@ -492,7 +467,6 @@ a { text-decoration: none; color: inherit; }
   font-family: 'Noto Serif KR', serif;
 }
 
-/* ── SECTION LABEL ── */
 .section-label {
   font-size: 10px;
   font-weight: 700;
@@ -506,23 +480,19 @@ a { text-decoration: none; color: inherit; }
 }
 .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-/* ── 카카오 애드핏 — 중간 광고 자리 ── */
 .ad-middle {
   background: #fff;
   border-radius: 6px;
   border: 1px dashed #d1d5db;
-  display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100px;
   margin: 8px 0;
   color: #c0c4cc;
   font-size: 11px;
-  /* 애드핏 승인 후 이 클래스에 실제 광고 코드 삽입 */
   display: none;
 }
 
-/* ── LOADING ── */
 #loading {
   text-align: center;
   padding: 60px 20px;
@@ -544,7 +514,6 @@ a { text-decoration: none; color: inherit; }
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── LOAD MORE ── */
 #load-more {
   display: block;
   width: 100%;
@@ -563,7 +532,6 @@ a { text-decoration: none; color: inherit; }
 }
 #load-more:hover { background: var(--red); color: #fff; border-color: var(--red); }
 
-/* ── FOOTER ── */
 #footer {
   text-align: center;
   padding: 28px 20px;
@@ -578,23 +546,19 @@ a { text-decoration: none; color: inherit; }
 #footer a:hover { color: var(--red); }
 #update-time { color: var(--red); }
 
-/* ── 카카오 애드핏 — 하단 고정 배너 (승인 후 활성화) ── */
 #ad-fixed-bottom {
   position: fixed;
   bottom: 0; left: 0; right: 0;
   background: #fff;
   border-top: 1px solid var(--border);
-  display: flex;
   align-items: center;
   justify-content: center;
   min-height: 50px;
   z-index: 500;
   box-shadow: 0 -2px 12px rgba(0,0,0,0.08);
-  /* 애드핏 승인 후 display:flex 로 변경 */
   display: none;
 }
 
-/* ── 다크모드 버튼 ── */
 #dark-toggle {
   position: fixed;
   bottom: 20px;
@@ -617,7 +581,6 @@ a { text-decoration: none; color: inherit; }
 #dark-toggle:hover { transform: scale(1.1); }
 [data-theme="dark"] #dark-toggle { background: #2a2d3a; }
 
-/* ── 뉴스 요약 모달 ── */
 #article-modal {
   display: none;
   position: fixed;
@@ -742,7 +705,6 @@ a { text-decoration: none; color: inherit; }
 [data-theme="dark"] #article-sheet { background: #1a1d27; }
 [data-theme="dark"] #article-close-btn { background: #22263a; border-color: #2a2d3a; color: #8b8fa8; }
 
-/* ── 공유 버튼 ── */
 #article-share-btns {
   display: flex;
   gap: 8px;
@@ -770,7 +732,6 @@ a { text-decoration: none; color: inherit; }
 .share-btn.kakao:hover { background: #f0d800; border-color: #f0d800; }
 [data-theme="dark"] .share-btn { background: #22263a; border-color: #2a2d3a; color: #e8eaf0; }
 
-/* ── MOBILE ── */
 @media(max-width: 480px) {
   #logo { font-size: 24px; }
   .card-featured .card-title { font-size: 16px; }
@@ -783,7 +744,6 @@ a { text-decoration: none; color: inherit; }
 </head>
 <body>
 
-<!-- 상단 얇은 바 -->
 <div id="topbar">
   <span id="topbar-date"></span>
   <div id="topbar-right">
@@ -792,14 +752,10 @@ a { text-decoration: none; color: inherit; }
   </div>
 </div>
 
-<!-- 지수 티커 바 -->
 <div id="ticker-bar">
-  <div id="ticker-track">
-    <!-- JS로 채워짐 -->
-  </div>
+  <div id="ticker-track"></div>
 </div>
 
-<!-- 헤더 -->
 <div id="header">
   <div id="logo-wrap">
     <div id="logo">ETF레이더</div>
@@ -809,12 +765,8 @@ a { text-decoration: none; color: inherit; }
   <button onclick="toggleDark()" id="dark-toggle" style="position:absolute;top:10px;right:12px;background:none;border:none;font-size:18px;cursor:pointer;padding:4px;">🌙</button>
 </div>
 
-<!-- 카카오 애드핏 상단 배너 — 승인 후 아래 주석 해제 후 코드 삽입 -->
-<div id="ad-top">
-  <!-- ins class="kakao_ad_area" ... -->
-</div>
+<div id="ad-top"></div>
 
-<!-- 탭 -->
 <div id="tabs">
   <button class="tab active" onclick="switchTab('all',this)">전체</button>
   <button class="tab" onclick="switchTab('etf',this)">ETF</button>
@@ -823,7 +775,6 @@ a { text-decoration: none; color: inherit; }
   <a href="/board.html" class="tab community">커뮤니티</a>
 </div>
 
-<!-- AI 요약 박스 -->
 <div id="ai-summary">
   <div id="ai-summary-inner">
     <div id="ai-summary-header">
@@ -838,7 +789,6 @@ a { text-decoration: none; color: inherit; }
   </div>
 </div>
 
-<!-- 핫뉴스 섹션 -->
 <div id="hot-news">
   <div id="hot-news-inner">
     <div id="hot-news-header">
@@ -849,7 +799,6 @@ a { text-decoration: none; color: inherit; }
   </div>
 </div>
 
-<!-- 요약 바 -->
 <div id="summary-bar">
   <span id="article-count">뉴스 불러오는 중...</span>
   <button id="refresh-btn" onclick="loadFeeds()">
@@ -857,7 +806,6 @@ a { text-decoration: none; color: inherit; }
   </button>
 </div>
 
-<!-- 뉴스 목록 -->
 <div id="news">
   <div id="loading">
     <div class="spinner"></div><br>
@@ -865,7 +813,6 @@ a { text-decoration: none; color: inherit; }
   </div>
 </div>
 
-<!-- 푸터 -->
 <div id="footer">
   ETF레이더 · 국내 ETF·펀드·주식 전문 뉴스<br>
   원문 저작권은 각 언론사에 귀속됩니다<br>
@@ -873,18 +820,14 @@ a { text-decoration: none; color: inherit; }
   <span id="update-time"></span>
 </div>
 
-<!-- 카카오 애드핏 하단 고정 배너 — 승인 후 활성화 -->
-<div id="ad-fixed-bottom">
-  <!-- ins class="kakao_ad_area" ... -->
-</div>
+<div id="ad-fixed-bottom"></div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="text/javascript">
-/* ── 날짜 ── */
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script>
 document.getElementById('topbar-date').textContent = new Date().toLocaleDateString('ko-KR', {
   year: 'numeric', month: 'long', day: 'numeric', weekday: 'short'
 });
 
-/* ── 지수 티커 ── */
 async function loadIndices() {
   try {
     const res = await fetch('/api/indices');
@@ -899,14 +842,12 @@ async function loadIndices() {
         <span class="index-change ${cls}">${d.pct}</span>
       </div>`;
     }).join('');
-    // 2번 반복해서 무한 스크롤 효과
     document.getElementById('ticker-track').innerHTML = items + items;
   } catch(e) {}
 }
 loadIndices();
 setInterval(loadIndices, 60000);
 
-/* ── RSS 소스 ── */
 const TAB_SOURCES = {
   all: [
     "https://news.google.com/rss/search?q=ETF+한국+투자&hl=ko&gl=KR&ceid=KR:ko",
@@ -984,7 +925,6 @@ function switchTab(tab, el) {
   loadHotNews();
 }
 
-// 다크모드
 function toggleDark() {
   const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
   if (isDark) {
@@ -997,7 +937,6 @@ function toggleDark() {
     localStorage.setItem('theme', 'dark');
   }
 }
-// 저장된 테마 적용
 if (localStorage.getItem('theme') === 'dark') {
   document.documentElement.setAttribute('data-theme', 'dark');
   document.getElementById('dark-toggle').textContent = '☀️';
@@ -1041,7 +980,6 @@ async function fetchOne(url) {
       };
     }).filter(a => a.title && a.title.length > 2);
   } catch (e) {
-    console.error('fetchOne error:', url, e);
     return [];
   }
 }
@@ -1060,7 +998,6 @@ async function loadFeeds() {
   allArticles = all.filter(a => {
     if (seen.has(a.title)) return false;
     seen.add(a.title);
-    // 7일 이상 된 뉴스 제거
     if (new Date(a.pubDate).getTime() < sevenDaysAgo) return false;
     return true;
   });
@@ -1070,13 +1007,9 @@ async function loadFeeds() {
     return;
   }
 
-  // 중요도 점수 계산 (여러 언론사에서 나온 키워드 기반)
   allArticles = scoreArticles(allArticles);
-
   renderArticles();
   document.getElementById('update-time').textContent = '최종 업데이트 ' + new Date().toLocaleTimeString('ko-KR');
-
-  // AI 요약 + 핫뉴스 호출
   loadAISummary(allArticles.map(a => a.title));
   loadHotNews();
 }
@@ -1089,9 +1022,7 @@ function renderArticles() {
   items.forEach((a, i) => {
     const ago = timeAgo(a.pubDate);
     const newBadge = isNew(a.pubDate) ? '<span class="new-badge">NEW</span>' : '';
-
-    if (i === 10) html += `<div class="ad-middle"><!-- 카카오 애드핏 중간 광고 --></div>`;
-
+    if (i === 10) html += `<div class="ad-middle"></div>`;
     html += `
       <div onclick="openArticle('${a.link.replace(/'/g,"\\'")}','${a.title.replace(/'/g,"\\'")}','${a.source.replace(/'/g,"\\'")}')">
         <div class="card" style="cursor:pointer;">
@@ -1117,57 +1048,35 @@ function renderArticles() {
 
 function loadMore() { displayCount += 20; renderArticles(); }
 
-
-// 중요도 점수 계산 - 키워드 중복 + 시간 가중치
 function scoreArticles(articles) {
   function getKeywords(title) {
-    return title
-      .replace(/[^가-힣a-zA-Z0-9 ]/g, ' ')
-      .split(' ')
-      .filter(w => w.length >= 2)
-      .slice(0, 5);
+    return title.replace(/[^가-힣a-zA-Z0-9 ]/g, ' ').split(' ').filter(w => w.length >= 2).slice(0, 5);
   }
-
-  // 키워드별 등장 횟수 카운트
   const keywordCount = {};
   articles.forEach(a => {
-    getKeywords(a.title).forEach(kw => {
-      keywordCount[kw] = (keywordCount[kw] || 0) + 1;
-    });
+    getKeywords(a.title).forEach(kw => { keywordCount[kw] = (keywordCount[kw] || 0) + 1; });
   });
-
   const now = Date.now();
   articles.forEach(a => {
-    // 키워드 중복 점수
     let kwScore = 0;
-    getKeywords(a.title).forEach(kw => {
-      if (keywordCount[kw] > 1) kwScore += keywordCount[kw];
-    });
-
-    // 시간 점수 - 최신일수록 높음 (핵심!)
+    getKeywords(a.title).forEach(kw => { if (keywordCount[kw] > 1) kwScore += keywordCount[kw]; });
     const ageMin = (now - new Date(a.pubDate)) / 60000;
     let timeScore = 0;
-    if (ageMin < 60)   timeScore = 100;  // 1시간 이내
-    else if (ageMin < 180)  timeScore = 60;   // 3시간 이내
-    else if (ageMin < 360)  timeScore = 30;   // 6시간 이내
-    else if (ageMin < 720)  timeScore = 10;   // 12시간 이내
-    else timeScore = 0;
-
-    // 최종 점수 = 시간 점수 * 2 + 키워드 점수
+    if (ageMin < 60) timeScore = 100;
+    else if (ageMin < 180) timeScore = 60;
+    else if (ageMin < 360) timeScore = 30;
+    else if (ageMin < 720) timeScore = 10;
     a.score = (timeScore * 2) + kwScore;
   });
-
   return articles.sort((a, b) => b.score - a.score);
 }
 
-// 뉴스 요약 모달
 let currentArticleUrl = '';
 
 function openArticle(url, title, source) {
   currentArticleUrl = url;
   trackClick(url, title);
 
-  // 모달 열기
   document.getElementById('article-sheet-source').textContent = source;
   document.getElementById('article-sheet-title').textContent = title;
   document.getElementById('article-ai-content').innerHTML = `
@@ -1177,7 +1086,6 @@ function openArticle(url, title, source) {
   document.getElementById('article-modal').classList.add('show');
   document.body.style.overflow = 'hidden';
 
-  // AI 요약 호출
   fetch('/api/article', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -1188,7 +1096,6 @@ function openArticle(url, title, source) {
       const oneline = text.match(/\[한줄요약\]\s*(.+)/)?.[1]?.trim() || '';
       const point   = text.match(/\[투자포인트\]([\s\S]*?)(?=\[|$)/)?.[1]?.trim() || '';
       const etf     = text.match(/\[관련ETF\]\s*(.+)/)?.[1]?.trim() || '';
-
       let html = '';
       if (oneline) html += `<div class="article-ai-section"><div class="article-ai-section-label">한줄요약</div><div class="article-ai-section-text">${oneline}</div></div>`;
       if (point)   html += `<div class="article-ai-section"><div class="article-ai-section-label">투자포인트</div><div class="article-ai-section-text">${point.replace(/\n/g,'<br>')}</div></div>`;
@@ -1209,35 +1116,41 @@ function closeArticle() {
 
 // 카카오 SDK 초기화
 if (window.Kakao && !Kakao.isInitialized()) {
-  Kakao.init('3e1b5b16a83bf1af306c25925bed481b'); // 카카오 JS 키 입력 필요
+  Kakao.init('3e1b5b16a83bf1af306c25925bed481b');
 }
 
+// ── 수정된 shareKakao: etfradar.kr 로 공유 ──
 function shareKakao() {
   if (!window.Kakao || !Kakao.isInitialized()) {
     copyLink(); return;
   }
+  const title = document.getElementById('article-sheet-title').textContent;
+  const source = document.getElementById('article-sheet-source').textContent;
+  const shareUrl = 'https://etfradar.kr';
   Kakao.Share.sendDefault({
     objectType: 'feed',
     content: {
-      title: document.getElementById('article-sheet-title').textContent,
-      description: 'ETF레이더에서 확인하세요',
+      title: `[ETF레이더] ${title}`,
+      description: `${source} · ETF레이더에서 더 많은 ETF 뉴스 보기`,
       imageUrl: 'https://etfradar.kr/og-image.png',
-      link: { mobileWebUrl: currentArticleUrl, webUrl: currentArticleUrl }
+      link: { mobileWebUrl: shareUrl, webUrl: shareUrl }
     },
     buttons: [{
-      title: '원문 보기',
-      link: { mobileWebUrl: currentArticleUrl, webUrl: currentArticleUrl }
+      title: 'ETF레이더에서 보기',
+      link: { mobileWebUrl: shareUrl, webUrl: shareUrl }
     }]
   });
 }
 
+// ── 수정된 copyLink: ETF레이더 브랜드 포함 ──
 function copyLink() {
-  navigator.clipboard.writeText(currentArticleUrl).then(() => {
+  const title = document.getElementById('article-sheet-title').textContent;
+  const text = `[ETF레이더] ${title}\nhttps://etfradar.kr`;
+  navigator.clipboard.writeText(text).then(() => {
     alert('링크가 복사됐어요!');
   }).catch(() => {
-    // 구형 브라우저 대응
     const el = document.createElement('textarea');
-    el.value = currentArticleUrl;
+    el.value = text;
     document.body.appendChild(el);
     el.select();
     document.execCommand('copy');
@@ -1248,10 +1161,11 @@ function copyLink() {
 
 function shareNative() {
   if (navigator.share) {
+    const title = document.getElementById('article-sheet-title').textContent;
     navigator.share({
-      title: document.getElementById('article-sheet-title').textContent,
+      title: `[ETF레이더] ${title}`,
       text: 'ETF레이더에서 발견한 뉴스예요!',
-      url: currentArticleUrl,
+      url: 'https://etfradar.kr',
     }).catch(() => {});
   } else {
     copyLink();
@@ -1263,7 +1177,6 @@ function openOriginal() {
   closeArticle();
 }
 
-// 뉴스 클릭 추적 (탭 정보 포함)
 function trackClick(url, title) {
   fetch('/api/hot', {
     method: 'POST',
@@ -1272,14 +1185,12 @@ function trackClick(url, title) {
   }).catch(() => {});
 }
 
-// 핫뉴스 로드 (탭별)
 async function loadHotNews() {
   try {
     const res = await fetch(`/api/hot?tab=${curTab}`);
     const data = await res.json();
     const hot = data.hot || [];
     if (!hot.length) return;
-
     const list = hot.map((item, i) => `
       <a href="${item.url}" target="_blank" rel="noopener" onclick="trackClick('${item.url.replace(/'/g,"\\'")}','')">
         <div class="hot-item">
@@ -1288,22 +1199,17 @@ async function loadHotNews() {
           <span class="hot-clicks">${item.clicks}회</span>
         </div>
       </a>`).join('');
-
     document.getElementById('hot-news-list').innerHTML = list;
     document.getElementById('hot-news').style.display = 'block';
   } catch(e) {}
 }
 
-// AI 요약 호출 (서버 캐시 1시간)
 async function loadAISummary(titles) {
   try {
     const payload = JSON.stringify({ titles: titles.slice(0, 7) });
     const res = await fetch('/api/summarize', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: payload,
     });
     const data = await res.json();
@@ -1318,28 +1224,27 @@ async function loadAISummary(titles) {
 }
 
 function renderSummary(text) {
-    const stock = text.match(/\[주식시장\]\s*(.+)/)?.[1]?.trim() || '';
-    const news  = text.match(/\[주요뉴스\]\s*(.+)/)?.[1]?.trim() || '';
-    const etf   = text.match(/\[ETF\]\s*(.+)/)?.[1]?.trim() || '';
-
-    if (stock || news || etf) {
-      document.getElementById('ai-summary-text').innerHTML = `
-        <div style="display:flex;flex-direction:column;gap:10px;">
-          ${stock ? `<div style="display:flex;gap:0;align-items:flex-start;"><span style="color:#e8001a;font-weight:700;font-size:10px;letter-spacing:0.05em;white-space:nowrap;padding-top:3px;min-width:52px;">주식시장</span><span style="flex:1;">${stock}</span></div>` : ''}
-          ${news  ? `<div style="display:flex;gap:0;align-items:flex-start;border-top:1px solid rgba(255,255,255,0.08);padding-top:10px;"><span style="color:#e8001a;font-weight:700;font-size:10px;letter-spacing:0.05em;white-space:nowrap;padding-top:3px;min-width:52px;">주요뉴스</span><span style="flex:1;">${news}</span></div>` : ''}
-          ${etf   ? `<div style="display:flex;gap:0;align-items:flex-start;border-top:1px solid rgba(255,255,255,0.08);padding-top:10px;"><span style="color:#e8001a;font-weight:700;font-size:10px;letter-spacing:0.05em;white-space:nowrap;padding-top:3px;min-width:52px;">ETF</span><span style="flex:1;">${etf}</span></div>` : ''}
-        </div>`;
-    } else {
-      document.getElementById('ai-summary-text').textContent = text;
-    }
+  const stock = text.match(/\[주식시장\]\s*(.+)/)?.[1]?.trim() || '';
+  const news  = text.match(/\[주요뉴스\]\s*(.+)/)?.[1]?.trim() || '';
+  const etf   = text.match(/\[ETF\]\s*(.+)/)?.[1]?.trim() || '';
+  if (stock || news || etf) {
+    document.getElementById('ai-summary-text').innerHTML = `
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        ${stock ? `<div style="display:flex;gap:0;align-items:flex-start;"><span style="color:#e8001a;font-weight:700;font-size:10px;letter-spacing:0.05em;white-space:nowrap;padding-top:3px;min-width:52px;">주식시장</span><span style="flex:1;">${stock}</span></div>` : ''}
+        ${news  ? `<div style="display:flex;gap:0;align-items:flex-start;border-top:1px solid rgba(255,255,255,0.08);padding-top:10px;"><span style="color:#e8001a;font-weight:700;font-size:10px;letter-spacing:0.05em;white-space:nowrap;padding-top:3px;min-width:52px;">주요뉴스</span><span style="flex:1;">${news}</span></div>` : ''}
+        ${etf   ? `<div style="display:flex;gap:0;align-items:flex-start;border-top:1px solid rgba(255,255,255,0.08);padding-top:10px;"><span style="color:#e8001a;font-weight:700;font-size:10px;letter-spacing:0.05em;white-space:nowrap;padding-top:3px;min-width:52px;">ETF</span><span style="flex:1;">${etf}</span></div>` : ''}
+      </div>`;
+  } else {
+    document.getElementById('ai-summary-text').textContent = text;
+  }
 }
 
-// 날짜 표시
 document.getElementById('ai-summary-date').textContent =
   new Date().toLocaleDateString('ko-KR', { month: 'long', day: 'numeric', weekday: 'short' });
 
 loadFeeds();
 </script>
+
 <!-- 뉴스 요약 모달 -->
 <div id="article-modal" onclick="if(event.target===this)closeArticle()">
   <div id="article-sheet">
