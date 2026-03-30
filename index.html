@@ -1882,7 +1882,7 @@ function calItemHTML(e, today, isPast = false) {
   // 예상치/실제치 뱃지
   let valueBadge = '';
   if (e.actual && e.estimate) {
-    valueBadge = `<span style="font-size:10px;color:var(--sub);margin-left:4px;">예상 ${e.estimate} → </span><span style="font-size:10px;font-weight:700;color:#1a6ce8;">${e.actual}</span>`;
+    valueBadge = `<span style="font-size:10px;font-weight:700;color:#1a6ce8;margin-left:4px;">${e.actual}<span style="color:var(--sub);font-weight:400;">(예상 ${e.estimate})</span></span>`;
   } else if (e.actual) {
     valueBadge = `<span style="font-size:10px;font-weight:700;color:#1a6ce8;margin-left:4px;">${e.actual}</span>`;
   } else if (e.estimate) {
