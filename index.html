@@ -1855,27 +1855,43 @@ function renderCalendar(data) {
   if (data.thisWeek && data.thisWeek.length) {
     html += '<div class="cal-section-title">이번 주</div>';
     html += data.thisWeek.map(e => calItemHTML(e, today)).join('');
+  } else {
+    html += '<div class="cal-section-title">이번 주</div>';
+    html += '<div style="padding:12px 16px;font-size:13px;color:var(--sub);">이번 주 주요 지표 없음</div>';
   }
 
-  const nextWeek = (data.upcoming || []).filter(e => !data.thisWeek?.find(w => w.date === e.date));
+  const nextWeek = (data.upcoming || []);
   if (nextWeek.length) {
     html += '<div class="cal-section-title">다음 2주</div>';
     html += nextWeek.map(e => calItemHTML(e, today)).join('');
   }
 
-  if (!html) html = '<div style="padding:20px;text-align:center;color:var(--sub);font-size:13px;">이번 주 주요 지표가 없습니다.</div>';
+  if (data.past && data.past.length) {
+    html += '<div class="cal-section-title">지난 지표 (실제치)</div>';
+    html += data.past.map(e => calItemHTML(e, today, true)).join('');
+  }
+
   document.getElementById('calendar-list').innerHTML = html;
 }
 
-function calItemHTML(e, today) {
+function calItemHTML(e, today, isPast = false) {
   const d = new Date(e.date);
   const isToday = e.date === today;
   const dateStr = `${d.getMonth()+1}/${d.getDate()}(${['일','월','화','수','목','금','토'][d.getDay()]})`;
+
+  // 예상치/실제치 뱃지
+  let valueBadge = '';
+  if (e.actual) {
+    valueBadge = `<span style="font-size:10px;font-weight:700;color:#1a6ce8;margin-left:4px;">${e.actual}</span>`;
+  } else if (e.estimate) {
+    valueBadge = `<span style="font-size:10px;color:var(--sub);margin-left:4px;">예상 ${e.estimate}</span>`;
+  }
+
   return `
-    <div class="cal-item" onclick="loadCalBrief('${e.name}','${e.date}','${e.desc}')">
+    <div class="cal-item" onclick="loadCalBrief('${e.name}','${e.date}','')">
       <span class="cal-date${isToday ? ' today' : ''}">${isToday ? '오늘' : dateStr}</span>
       <span class="cal-dot ${e.importance}"></span>
-      <span class="cal-name">${e.name}</span>
+      <span class="cal-name">${e.name}${valueBadge}</span>
       <span class="cal-country">${e.country}</span>
       <span class="cal-arrow">›</span>
     </div>`;
