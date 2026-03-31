@@ -425,7 +425,8 @@ async function renderPoll() {
     if (data?.[0]?.votes) counts = data[0].votes;
   } catch(e) {}
 
-  const voted = localStorage.getItem('voted_' + poll.id);
+  // voted_키로만 체크 (이전 키 무시)
+  const voted = localStorage.getItem('v3_' + poll.id);
   if (voted !== null) {
     showPollResult(poll, counts, parseInt(voted));
   } else {
@@ -478,7 +479,7 @@ async function submitPoll() {
       });
     }
 
-    localStorage.setItem('voted_' + poll.id, selectedPollIdx);
+    localStorage.setItem('v3_' + poll.id, selectedPollIdx);
     showPollResult(poll, counts, selectedPollIdx);
   } catch(e) {
     btn.textContent = '투표하기'; btn.disabled = false;
