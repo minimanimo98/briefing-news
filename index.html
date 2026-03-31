@@ -2313,9 +2313,7 @@ function renderETFTabs(data) {
   const tabs = themes.map((t, i) => `
     <button class="etf-theme-tab${i === 0 ? ' active' : ''}" onclick="switchETFTheme('${t}', this)">${t}</button>
   `).join('');
-  // 내 관심 ETF 탭을 맨 앞에 추가
-  const bookmarkTab = `<button class="etf-theme-tab bookmark-tab" onclick="switchETFTheme('__bookmark__', this)">⭐ 관심</button>`;
-  document.getElementById('etf-theme-tabs').innerHTML = bookmarkTab + tabs;
+  document.getElementById('etf-theme-tabs').innerHTML = tabs;
 }
 
 function switchETFTheme(theme, el) {
@@ -2325,11 +2323,6 @@ function switchETFTheme(theme, el) {
   currentSort = 'default';
   document.querySelectorAll('.etf-sort-btn').forEach(b => b.classList.remove('active'));
   document.querySelector('.etf-sort-btn').classList.add('active');
-
-  if (theme === '__bookmark__') {
-    renderBookmarkedETFs();
-    return;
-  }
   const list = theme === '전체' ? etfData.etfs : (etfData.themes?.[theme] || []);
   renderETFList(list);
 }
@@ -2339,23 +2332,15 @@ function renderETFList(list) {
     document.getElementById('etf-list').innerHTML = '<div id="etf-loading">데이터 없음</div>';
     return;
   }
-  try {
-    const bookmarks = getBookmarks();
-    const html = list.map(e => `
-      <div class="etf-item" onclick="openETFModal('${e.code}','${e.name.replace(/'/g,"\\'")}','${e.price}','${e.pct}','${e.change}',${e.up})">
-        <div class="etf-item-name">${e.name}</div>
-        <div class="etf-item-price">${e.price}</div>
-        <div class="etf-item-pct ${e.up ? 'up' : 'dn'}">${e.pct}</div>
-        <button class="etf-bookmark${bookmarks.includes(e.code) ? ' active' : ''}"
-          onclick="event.stopPropagation(); toggleBookmark('${e.code}', this)"
-          title="관심 ETF 추가">${bookmarks.includes(e.code) ? '★' : '☆'}</button>
-      </div>
-    `).join('');
-    document.getElementById('etf-list').innerHTML = html;
-  } catch(e) {
-    console.error('renderETFList 에러:', e);
-    document.getElementById('etf-list').innerHTML = '<div style="padding:16px;color:red;font-size:12px;">렌더링 실패: ' + e.message + '</div>';
-  }
+  const html = list.map(e => `
+    <div class="etf-item" onclick="openETFModal('${e.code}','${e.name.replace(/'/g,"\\'")}','${e.price}','${e.pct}','${e.change}',${e.up})">
+      <div class="etf-item-name">${e.name}</div>
+      <div class="etf-item-price">${e.price}</div>
+      <div class="etf-item-pct ${e.up ? 'up' : 'dn'}">${e.pct}</div>
+      <span style="font-size:10px;color:var(--sub);">›</span>
+    </div>
+  `).join('');
+  document.getElementById('etf-list').innerHTML = html;
 }
 
 function openETFModal(code, name, price, pct, change, up) {
