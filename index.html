@@ -1157,7 +1157,96 @@ a { text-decoration: none; color: inherit; }
   border-color: transparent transparent #111827;
 }
 
-/* ── ETF 정렬 버튼 ── */
+/* ── AI 한줄 미리보기 ── */
+.card-ai-preview {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 5px;
+  min-height: 15px;
+}
+.preview-dot {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--red);
+  flex-shrink: 0;
+  opacity: 0.6;
+}
+.preview-text {
+  font-size: 11px;
+  color: var(--sub);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  line-height: 1.5;
+}
+.preview-loading {
+  width: 80px; height: 8px;
+  background: linear-gradient(90deg, var(--border) 25%, #e8eaf0 50%, var(--border) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s infinite;
+  border-radius: 4px;
+}
+@keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+[data-theme="dark"] .preview-loading {
+  background: linear-gradient(90deg, #2a2d3a 25%, #333650 50%, #2a2d3a 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s infinite;
+}
+
+/* ── PWA 설치 유도 배너 ── */
+#pwa-banner {
+  position: fixed;
+  bottom: 16px;
+  left: 12px; right: 12px;
+  max-width: 736px;
+  margin: 0 auto;
+  background: var(--navy);
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  z-index: 400;
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+  pointer-events: none;
+}
+#pwa-banner.show {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+#pwa-banner-icon { font-size: 22px; flex-shrink: 0; }
+#pwa-banner-text { flex: 1; }
+#pwa-banner-title { font-size: 12px; font-weight: 700; color: #fff; }
+#pwa-banner-sub { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 1px; }
+#pwa-banner-btn {
+  background: var(--red);
+  color: #fff;
+  border: none;
+  padding: 7px 12px;
+  border-radius: 8px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+#pwa-banner-close {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.35);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 2px;
+  flex-shrink: 0;
+  line-height: 1;
+}
 #etf-sort-bar {
   display: flex;
   gap: 6px;
@@ -1332,6 +1421,17 @@ a { text-decoration: none; color: inherit; }
     <div class="spinner"></div><br>
     최신 뉴스를 불러오고 있습니다...
   </div>
+</div>
+
+<!-- PWA 설치 유도 배너 -->
+<div id="pwa-banner">
+  <span id="pwa-banner-icon">📱</span>
+  <div id="pwa-banner-text">
+    <div id="pwa-banner-title">홈화면에 추가하면 앱처럼!</div>
+    <div id="pwa-banner-sub">빠르게 실행 · 알림 · 오프라인 지원</div>
+  </div>
+  <button id="pwa-banner-btn" onclick="installPWA()">추가</button>
+  <button id="pwa-banner-close" onclick="closePWABanner()">✕</button>
 </div>
 
 <div id="footer">
@@ -1586,12 +1686,65 @@ async function loadFeeds() {
 
   allArticles = scoreArticles(allArticles);
   renderArticles();
+  loadTopPreviews(); // TOP 3 AI 미리보기
   document.getElementById('update-time').textContent = '최종 업데이트 ' + new Date().toLocaleTimeString('ko-KR');
   loadAISummary(allArticles.map(a => a.title));
   loadHotNews();
 }
 
 // ── 뉴스 카드 렌더링 개선 ──
+// ── TOP 3 AI 한줄 미리보기 ──
+async function loadTopPreviews() {
+  const top3 = allArticles.slice(0, 3);
+  top3.forEach((a, i) => {
+    fetch('/api/article', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title: a.title, source: a.source, url: a.link }),
+    })
+    .then(r => r.json())
+    .then(data => {
+      const el = document.getElementById(`ai-preview-${i}`);
+      if (!el) return;
+      const oneline = data.summary?.match(/\[한줄요약\]\s*(.+)/)?.[1]?.trim();
+      if (oneline) {
+        el.innerHTML = `<span class="preview-dot"></span><span class="preview-text">${oneline}</span>`;
+      } else {
+        el.innerHTML = '';
+      }
+    })
+    .catch(() => {
+      const el = document.getElementById(`ai-preview-${i}`);
+      if (el) el.innerHTML = '';
+    });
+  });
+}
+
+// ── 자동 새로고침 ──
+let lastLoadTime = Date.now();
+const AUTO_REFRESH_MS = 5 * 60 * 1000; // 5분
+
+// 5분마다 자동 새로고침 (뉴스 탭일 때만)
+setInterval(() => {
+  if (curTab !== 'etfboard') loadFeeds();
+}, AUTO_REFRESH_MS);
+
+// 탭 포커스 돌아올 때 5분 이상 지났으면 새로고침
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') {
+    if (Date.now() - lastLoadTime > AUTO_REFRESH_MS && curTab !== 'etfboard') {
+      loadFeeds();
+    }
+  }
+});
+
+// loadFeeds 호출 시 시간 업데이트
+const _origLoadFeeds = loadFeeds;
+loadFeeds = async function() {
+  lastLoadTime = Date.now();
+  return _origLoadFeeds();
+};
+
 function renderArticles() {
   document.getElementById('article-count').innerHTML = `총 <strong>${allArticles.length}</strong>건의 뉴스`;
   const items = allArticles.slice(0, displayCount);
@@ -1616,6 +1769,7 @@ function renderArticles() {
               ${newBadge}
             </div>
             <div class="card-title">${a.title}</div>
+            ${isTop ? `<div class="card-ai-preview" id="ai-preview-${i}"><div class="preview-loading"></div></div>` : ''}
           </div>
         </div>
       </div>`;
@@ -1993,6 +2147,51 @@ function showTip(msg, el) {
   clearTimeout(tipTimer);
   tipTimer = setTimeout(() => popup.classList.remove('show'), 4000);
 }
+
+// ── PWA 설치 유도 ──
+let deferredPrompt = null;
+
+function shouldShowPWA() {
+  if (window.matchMedia('(display-mode: standalone)').matches) return false;
+  if (navigator.standalone) return false;
+  const closed = localStorage.getItem('pwa-banner-closed');
+  if (closed && Date.now() - parseInt(closed) < 7 * 24 * 60 * 60 * 1000) return false;
+  return true;
+}
+
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  if (shouldShowPWA()) {
+    setTimeout(() => document.getElementById('pwa-banner')?.classList.add('show'), 30000);
+  }
+});
+
+function checkIOSInstall() {
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const isSafari = /safari/i.test(navigator.userAgent) && !/chrome/i.test(navigator.userAgent);
+  if (isIOS && isSafari && shouldShowPWA()) {
+    document.getElementById('pwa-banner-sub').textContent = '공유 버튼 → 홈 화면에 추가 탭하기';
+    setTimeout(() => document.getElementById('pwa-banner')?.classList.add('show'), 30000);
+  }
+}
+
+function installPWA() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(c => { if (c.outcome === 'accepted') closePWABanner(); deferredPrompt = null; });
+  } else {
+    alert('Safari에서 하단 공유 버튼 → "홈 화면에 추가"를 탭해주세요 📱');
+    closePWABanner();
+  }
+}
+
+function closePWABanner() {
+  document.getElementById('pwa-banner')?.classList.remove('show');
+  localStorage.setItem('pwa-banner-closed', Date.now().toString());
+}
+
+checkIOSInstall();
 
 loadFeeds();
 
