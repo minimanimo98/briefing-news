@@ -523,20 +523,7 @@ a { text-decoration: none; color: inherit; }
   font-family: 'Noto Serif KR', serif;
 }
 
-/* ── 뉴스 카드 설명 스니펫 ── */
-.card-snippet {
-  font-size: 12px;
-  color: var(--sub);
-  line-height: 1.55;
-  margin-top: 5px;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  word-break: keep-all;
-}
-/* TOP 3 카드는 스니펫 표시, 나머지는 숨김 */
-.card:not(.card-top) .card-snippet { display: none; }
+
 
 .section-label {
   font-size: 10px;
@@ -1329,13 +1316,13 @@ a { text-decoration: none; color: inherit; }
 <div id="footer">
   ETF레이더 · 국내 ETF·펀드·주식 전문 뉴스<br>
   원문 저작권은 각 언론사에 귀속됩니다<br>
-  <a href="/board.html">커뮤니티</a> · <a href="mailto:etfradar.kr@gmail.com">문의</a><br>
+  <a href="/board.html">커뮤니티</a> · <a href="/cdn-cgi/l/email-protection#7114051703101510035f1a0331161c10181d5f121e1c">문의</a><br>
   <span id="update-time"></span>
 </div>
 
 <div id="ad-fixed-bottom"></div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 <script>
 document.getElementById('topbar-date').textContent = new Date().toLocaleDateString('ko-KR', {
   year: 'numeric', month: 'long', day: 'numeric', weekday: 'short'
@@ -1593,10 +1580,7 @@ function renderArticles() {
     const ago = timeAgo(a.pubDate);
     const newBadge = isNew(a.pubDate) ? '<span class="new-badge">NEW</span>' : '';
     const isTop = i < 3;
-    // 스니펫: 상위 3개만 표시, 제목과 중복되는 내용 제거 후 최대 60자
-    const snippet = a.description && a.description.length > 10
-      ? a.description.replace(a.title, '').trim().slice(0, 80)
-      : '';
+
 
     if (i === 10) html += `<div class="ad-middle"></div>`;
 
@@ -1611,7 +1595,6 @@ function renderArticles() {
               ${newBadge}
             </div>
             <div class="card-title">${a.title}</div>
-            ${snippet ? `<div class="card-snippet">${snippet}</div>` : ''}
           </div>
         </div>
       </div>`;
@@ -2269,12 +2252,4 @@ function openETFModal(code, name, price, pct, change, up) {
 }
 
 function closeETFModal() {
-  document.getElementById('etf-modal').classList.remove('show');
-  document.body.style.overflow = '';
-}
-
-// ✅ Fix: loadETF() 중복 호출 제거 — switchTab에서만 호출
-</script>
-
-</body>
-</html>
+  document.getElementById('etf-modal').classList.remo
