@@ -1512,7 +1512,8 @@ function switchTab(tab, el) {
     document.getElementById('hot-news').style.display = 'none';
     document.getElementById('summary-bar').style.display = 'none';
     document.getElementById('news').style.display = 'none';
-    if (!etfLoaded) { loadETF(); loadFearGreed(); etfLoaded = true; }
+    loadFearGreed();
+    if (!etfLoaded) { loadETF(); etfLoaded = true; }
   } else {
     // 뉴스 모드
     document.getElementById('etf-widget').style.display = 'none';
@@ -2149,13 +2150,16 @@ function sortETF(type, el) {
   document.querySelectorAll('.etf-sort-btn').forEach(b => b.classList.remove('active'));
   el.classList.add('active');
   currentSort = type;
-  let list = currentTheme === '전체' ? etfData.etfs : (etfData.themes?.[currentTheme] || []);
-  if (!list) return;
+  let list = currentTheme === '전체' ? (etfData.etfs || []) : (etfData.themes?.[currentTheme] || []);
+  if (!list || !list.length) return;
   list = [...list];
   if (type === 'up') {
     list.sort((a, b) => parseFloat(b.pct) - parseFloat(a.pct));
   } else if (type === 'dn') {
     list.sort((a, b) => parseFloat(a.pct) - parseFloat(b.pct));
+  } else {
+    // 테마별 - 원래 순서로
+    list = currentTheme === '전체' ? (etfData.etfs || []) : (etfData.themes?.[currentTheme] || []);
   }
   renderETFList(list);
 }
