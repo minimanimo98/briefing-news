@@ -2,6 +2,25 @@
 const SUPABASE_URL = 'https://aoqzohxljzghflkuuxhx.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY;
 
+// ── 공시·약식 뉴스 감지 패턴 ──
+const LOW_QUALITY_PATTERNS = [
+  '주요공시', '전 거래일', '장 마감 후', '시간외 대량매매',
+  '입찰공고', '주요 일정', '공시 목록', '주요 공시',
+  '수시공시', '주주총회', '정기공시', '반기보고서', '사업보고서',
+  '감사보고서', '분기보고서', '지분변동', '장외매매',
+];
+
+// 저품질 뉴스인지 판단
+function isLowQuality(title) {
+  // 1. 패턴 매칭
+  if (LOW_QUALITY_PATTERNS.some(p => title.includes(p))) return true;
+  // 2. 대괄호로 시작하고 제목이 너무 짧은 경우 (목록성 기사)
+  if (/^\[.{2,10}\]/.test(title) && title.length < 20) return true;
+  // 3. 숫자 나열형 제목 (예: "3월 30일 장전 주요공시")
+  if (/\d+월\s*\d+일.*(공시|일정|브리핑)/.test(title)) return true;
+  return false;
+}
+
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   if (req.method === 'OPTIONS') return res.status(200).end();
@@ -17,6 +36,17 @@ module.exports = async function handler(req, res) {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) return res.status(500).json({ error: 'API 키 없음' });
 
+  // ── 공시·약식 뉴스 조기 반환 ──
+  if (isLowQuality(title)) {
+    return res.status(200).json({
+      summary: [
+        '[한줄요약] 공시·일정 목록 기사로 개별 종목 분석이 어렵습니다.',
+        '[투자포인트] 원문에서 관심 종목의 공시 내용을 직접 확인하세요.',
+      ].join('\n'),
+      lowQuality: true,
+    });
+  }
+
   try {
     // 1. 캐시 확인 (URL 기반, 24시간 유효)
     if (url && SUPABASE_KEY) {
@@ -27,25 +57,30 @@ module.exports = async function handler(req, res) {
       const cached = await cacheRes.json();
       if (cached?.[0]?.summary) {
         const age = Date.now() - new Date(cached[0].created_at).getTime();
-        if (age < 86400000) { // 24시간
+        if (age < 86400000) {
           return res.status(200).json({ summary: cached[0].summary, cached: true });
         }
       }
     }
 
-    // 2. 새로 생성
-    const prompt = `다음 뉴스 제목을 보고 투자자 관점에서 핵심 인사이트를 제공해주세요.
+    // 2. 새로 생성 (개선된 프롬프트)
+    const prompt = `당신은 ETF·주식 투자 전문 애널리스트입니다.
+아래 뉴스 제목을 읽고 반드시 투자 인사이트를 제공해야 합니다.
 
-뉴스: "${title}"
+뉴스 제목: "${title}"
 출처: ${source || ''}
 
-아래 형식으로 간결하게 작성해주세요:
-- 이모지 없이 깔끔하게
-- "~했다" 금지, 명사형/현재형 사용
+규칙:
+- 제목만 있어도 관련 업종·시장 흐름 기반으로 반드시 분석할 것
+- "분석이 어렵습니다" 같은 회피 응답 금지
+- 이모지 없이 간결하게
+- "~했다" 금지, 현재형·명사형 사용
+- 각 항목 한 줄씩
 
+형식:
 [한줄요약] 이 뉴스의 핵심을 한 문장으로
-[투자포인트] 투자자가 주목해야 할 포인트 2~3가지 (각 한 줄)
-[관련ETF] 이 뉴스와 관련된 ETF 또는 섹터 (없으면 생략)`;
+[투자포인트] 투자자가 주목할 포인트 2가지 (줄바꿈으로 구분)
+[관련ETF] 관련 ETF 또는 섹터명 (없으면 생략)`;
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -57,6 +92,7 @@ module.exports = async function handler(req, res) {
       body: JSON.stringify({
         model: 'claude-haiku-4-5',
         max_tokens: 300,
+        system: 'ETF·주식 투자 분석 전문가로서, 제공된 뉴스 제목을 바탕으로 항상 실질적인 투자 인사이트를 제공합니다. 정보가 부족해 보여도 업종·시장 맥락을 활용해 분석합니다.',
         messages: [{ role: 'user', content: prompt }],
       }),
     });
@@ -64,7 +100,7 @@ module.exports = async function handler(req, res) {
     const data = await response.json();
     const summary = data?.content?.[0]?.text || '요약 실패';
 
-    // 3. Supabase에 캐시 저장
+    // 3. Supabase 캐시 저장
     if (url && SUPABASE_KEY && summary !== '요약 실패') {
       await fetch(`${SUPABASE_URL}/rest/v1/article_cache`, {
         method: 'POST',
