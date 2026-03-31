@@ -1157,44 +1157,6 @@ a { text-decoration: none; color: inherit; }
   border-color: transparent transparent #111827;
 }
 
-/* ── AI 한줄 미리보기 ── */
-.card-ai-preview {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-top: 5px;
-  min-height: 15px;
-}
-.preview-dot {
-  width: 4px; height: 4px;
-  border-radius: 50%;
-  background: var(--red);
-  flex-shrink: 0;
-  opacity: 0.6;
-}
-.preview-text {
-  font-size: 11px;
-  color: var(--sub);
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  line-height: 1.5;
-}
-.preview-loading {
-  width: 80px; height: 8px;
-  background: linear-gradient(90deg, var(--border) 25%, #e8eaf0 50%, var(--border) 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.2s infinite;
-  border-radius: 4px;
-}
-@keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
-[data-theme="dark"] .preview-loading {
-  background: linear-gradient(90deg, #2a2d3a 25%, #333650 50%, #2a2d3a 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.2s infinite;
-}
-
 /* ── PWA 설치 유도 배너 ── */
 #pwa-banner {
   position: fixed;
@@ -1655,7 +1617,6 @@ async function fetchOne(url) {
 }
 
 async function loadFeeds() {
-  lastLoadTime = Date.now();
   document.getElementById('news').innerHTML = '<div id="loading"><div class="spinner"></div><br>최신 뉴스를 불러오고 있습니다...</div>';
   document.getElementById('article-count').textContent = '뉴스 불러오는 중...';
 
@@ -1687,55 +1648,10 @@ async function loadFeeds() {
 
   allArticles = scoreArticles(allArticles);
   renderArticles();
-  loadTopPreviews(); // TOP 3 AI 미리보기
   document.getElementById('update-time').textContent = '최종 업데이트 ' + new Date().toLocaleTimeString('ko-KR');
   loadAISummary(allArticles.map(a => a.title));
   loadHotNews();
 }
-
-// ── 뉴스 카드 렌더링 개선 ──
-// ── TOP 3 AI 한줄 미리보기 ──
-async function loadTopPreviews() {
-  const top3 = allArticles.slice(0, 3);
-  top3.forEach((a, i) => {
-    fetch('/api/article', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title: a.title, source: a.source, url: a.link }),
-    })
-    .then(r => r.json())
-    .then(data => {
-      const el = document.getElementById(`ai-preview-${i}`);
-      if (!el) return;
-      const oneline = data.summary?.match(/\[한줄요약\]\s*(.+)/)?.[1]?.trim();
-      if (oneline) {
-        el.innerHTML = `<span class="preview-dot"></span><span class="preview-text">${oneline}</span>`;
-      } else {
-        el.innerHTML = '';
-      }
-    })
-    .catch(() => {
-      const el = document.getElementById(`ai-preview-${i}`);
-      if (el) el.innerHTML = '';
-    });
-  });
-}
-
-// ── 자동 새로고침 ──
-let lastLoadTime = Date.now();
-const AUTO_REFRESH_MS = 5 * 60 * 1000; // 5분
-
-setInterval(() => {
-  if (curTab !== 'etfboard') loadFeeds();
-}, AUTO_REFRESH_MS);
-
-document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'visible') {
-    if (Date.now() - lastLoadTime > AUTO_REFRESH_MS && curTab !== 'etfboard') {
-      loadFeeds();
-    }
-  }
-});
 
 function renderArticles() {
   document.getElementById('article-count').innerHTML = `총 <strong>${allArticles.length}</strong>건의 뉴스`;
@@ -1761,7 +1677,6 @@ function renderArticles() {
               ${newBadge}
             </div>
             <div class="card-title">${a.title}</div>
-            ${isTop ? `<div class="card-ai-preview" id="ai-preview-${i}"><div class="preview-loading"></div></div>` : ''}
           </div>
         </div>
       </div>`;
