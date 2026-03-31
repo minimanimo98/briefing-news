@@ -2,6 +2,6 @@
   "crons": [
     { "path": "/api/tweet", "schedule": "0 21 * * *" },
     { "path": "/api/community?type=post", "schedule": "0 23 * * *" },
-    { "path": "/api/community?type=comment", "schedule": "*/30 * * * *" }
+    { "path": "/api/community?type=comment", "schedule": "0 10 * * *" }
   ]
 }
