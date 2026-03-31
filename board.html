@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -30,8 +29,7 @@ a{text-decoration:none;color:inherit}
 .notice-text{font-size:12px;color:#c00;font-weight:500}
 #container{max-width:800px;margin:0 auto;padding:8px 0 40px}
 
-/* 오늘의 토론 */
-#today-section{background:linear-gradient(135deg,#0a1628,#122040);margin-bottom:4px;border-radius:0;overflow:hidden;}
+#today-section{background:linear-gradient(135deg,#0a1628,#122040);margin-bottom:4px;overflow:hidden;}
 #today-header{padding:10px 16px 6px;display:flex;align-items:center;justify-content:space-between}
 #today-badge{font-size:9px;font-weight:700;color:#fff;background:var(--red);padding:2px 8px;border-radius:10px;letter-spacing:0.05em}
 #today-date{font-size:10px;color:rgba(255,255,255,0.4)}
@@ -39,7 +37,6 @@ a{text-decoration:none;color:inherit}
 #today-topic{font-size:15px;font-weight:700;color:#fff;line-height:1.5;margin-bottom:12px;word-break:keep-all;font-family:'Noto Serif KR',serif}
 #today-context{font-size:12px;color:rgba(255,255,255,0.55);line-height:1.6;margin-bottom:14px;word-break:keep-all}
 
-/* 여론조사 */
 #poll-section{background:#fff;margin-bottom:4px;border-top:2px solid #f0a500;}
 #poll-header{padding:10px 16px 6px;display:flex;align-items:center;gap:8px}
 #poll-badge{font-size:9px;font-weight:700;color:#fff;background:#f0a500;padding:2px 8px;border-radius:10px}
@@ -49,8 +46,6 @@ a{text-decoration:none;color:inherit}
 .poll-btn:hover{border-color:var(--red);background:#fff5f5}
 .poll-btn.voted{cursor:default;}
 .poll-btn.voted-yes{border-color:#1a6ce8;background:#f0f6ff;color:#1a6ce8;}
-.poll-btn.voted-no{border-color:var(--red);background:#fff0f2;color:var(--red);}
-.poll-btn.voted-hold{border-color:#f0a500;background:#fffbf0;color:#d48800;}
 .poll-bar-wrap{height:4px;background:#f0f2f5;border-radius:2px;margin:0 16px 4px;overflow:hidden}
 .poll-bar{height:100%;border-radius:2px;transition:width 0.5s ease}
 .poll-result-row{display:flex;justify-content:space-between;padding:2px 16px;font-size:11px;color:var(--sub)}
@@ -84,6 +79,7 @@ a{text-decoration:none;color:inherit}
 .new-dot{width:5px;height:5px;background:var(--red);border-radius:50%;flex-shrink:0;animation:blink 1.5s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
 .cat-tag{font-size:10px;color:var(--red);background:#fff0f2;padding:1px 5px;border-radius:2px;flex-shrink:0}
+
 #pagination{display:flex;justify-content:center;gap:4px;padding:16px}
 .page-btn{padding:6px 10px;border:1px solid var(--border);background:#fff;font-family:'Noto Sans KR',sans-serif;font-size:12px;cursor:pointer;border-radius:2px;color:var(--sub)}
 .page-btn.active{background:var(--red);color:#fff;border-color:var(--red)}
@@ -123,6 +119,7 @@ a{text-decoration:none;color:inherit}
 #comment-cnt-badge{background:var(--red);color:#fff;font-size:10px;padding:1px 6px;border-radius:10px}
 .comment-item{background:#fff;border-bottom:1px solid var(--border)}
 .comment-item:nth-child(even){background:#fafafa}
+
 .comment-main{padding:12px 16px}
 .comment-header{display:flex;align-items:center;gap:8px;margin-bottom:5px}
 .comment-nick{font-size:12px;font-weight:700;color:var(--navy)}
@@ -190,8 +187,6 @@ a{text-decoration:none;color:inherit}
     <span class="notice-text">ETF·펀드·주식 관련 자유롭게 이야기해요. 욕설·도배·광고는 삭제됩니다.</span>
   </div>
   <div id="container">
-
-    <!-- 오늘의 토론 -->
     <div id="today-section">
       <div id="today-header">
         <span id="today-badge">🔥 오늘의 토론</span>
@@ -203,12 +198,8 @@ a{text-decoration:none;color:inherit}
         <button onclick="joinTodayDiscussion()" style="background:var(--red);color:#fff;border:none;padding:8px 18px;border-radius:20px;font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:700;cursor:pointer;">💬 토론 참여하기</button>
       </div>
     </div>
-
-    <!-- 여론조사 -->
     <div id="poll-section">
-      <div id="poll-header">
-        <span id="poll-badge">📊 오늘의 ETF 투표</span>
-      </div>
+      <div id="poll-header"><span id="poll-badge">📊 오늘의 ETF 투표</span></div>
       <div id="poll-question">불러오는 중...</div>
       <div class="poll-options" id="poll-options"></div>
       <div id="poll-result" style="display:none;">
@@ -216,7 +207,6 @@ a{text-decoration:none;color:inherit}
         <div class="poll-total" id="poll-total"></div>
       </div>
     </div>
-
     <div id="hot-section">
       <div id="hot-header"><span>🔥 실시간 인기글</span></div>
       <div id="hot-list"><div class="loading"><div class="spinner"></div></div></div>
@@ -315,6 +305,9 @@ const SUPABASE_URL='https://aoqzohxljzghflkuuxhx.supabase.co';
 const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFvcXpvaHhsanpnaGZsa3V1eGh4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ2MTEyNjMsImV4cCI6MjA5MDE4NzI2M30.cbSaSVWBPQZfMG5QqQRFAhCGb0VNMTX9YiRLqtrpHgM';
 const H={'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=representation'};
 const ADMIN_PW='63659395';
+
+
+
 let currentPostId=null,currentSort='latest',searchQuery='',currentPage=1,isAdmin=false,adminAction=null;
 const PAGE_SIZE=20;
 const ANIMALS=['고양이','개구리','판다','여우','코알라','수달','너구리','다람쥐','부엉이','펭귄','햄스터','토끼','곰돌이','오리','사슴','호랑이','기린','코끼리','돌고래','앵무새'];
@@ -329,207 +322,149 @@ function openWrite(){document.getElementById('write-modal').classList.add('show'
 function closeWrite(){document.getElementById('write-modal').classList.remove('show');document.body.style.overflow='';}
 
 // ── 오늘의 토론 ──
-const DAILY_TOPICS = [
-  { topic: '오늘 코스피 급락, 지금 인버스ETF 들어갈 타이밍일까요?', context: '트럼프 관세 이슈 + 외국인 매도세가 맞물리며 코스피가 큰 폭으로 하락했습니다.' },
-  { topic: '방산 ETF, 지금 사도 늦지 않을까요?', context: '유럽 재무장 + K방산 수출 호조로 방산 ETF가 연초 대비 30% 이상 올랐습니다.' },
-  { topic: '반도체 vs AI ETF, 어디에 더 비중을 둬야 할까요?', context: 'HBM 수요는 견조하지만 글로벌 반도체 업황 둔화 우려가 공존하는 상황입니다.' },
-  { topic: '원자력 ETF, 지금 들어가기엔 너무 올랐을까요?', context: 'SMR 테마로 올해만 40% 이상 상승한 원자력 ETF, 고점 우려 vs 아직 성장 여력 논쟁 중입니다.' },
-  { topic: '미국 ETF vs 국내 ETF, 지금 어디에 집중해야 할까요?', context: '원달러 환율 상승으로 미국 ETF 수익률은 환차익까지 붙었지만, 국내 증시도 저평가 매력이 있습니다.' },
+const DAILY_TOPICS=[
+  {topic:'오늘 코스피 급락, 지금 인버스ETF 들어갈 타이밍일까요?',context:'트럼프 관세 이슈 + 외국인 매도세가 맞물리며 코스피가 큰 폭으로 하락했습니다.'},
+  {topic:'방산 ETF, 지금 사도 늦지 않을까요?',context:'유럽 재무장 + K방산 수출 호조로 방산 ETF가 연초 대비 30% 이상 올랐습니다.'},
+  {topic:'반도체 vs AI ETF, 어디에 더 비중을 둬야 할까요?',context:'HBM 수요는 견조하지만 글로벌 반도체 업황 둔화 우려가 공존하는 상황입니다.'},
+  {topic:'원자력 ETF, 지금 들어가기엔 너무 올랐을까요?',context:'SMR 테마로 올해만 40% 이상 상승한 원자력 ETF, 고점 우려 vs 아직 성장 여력 논쟁 중입니다.'},
+  {topic:'미국 ETF vs 국내 ETF, 지금 어디에 집중해야 할까요?',context:'원달러 환율 상승으로 미국 ETF 수익률은 환차익까지 붙었지만, 국내 증시도 저평가 매력이 있습니다.'},
 ];
 
-let todayPostId = null;
+let todayPostId=null;
 
-async function loadTodayDiscussion() {
-  const today = new Date().toISOString().split('T')[0];
-  document.getElementById('today-date').textContent = new Date().toLocaleDateString('ko-KR', {month:'long', day:'numeric', weekday:'short'});
-
-  // AI 브리핑에서 오늘의 토론 주제 가져오기
-  try {
-    const r = await fetch(`${SUPABASE_URL}/rest/v1/ai_summary_cache?select=summary&limit=1`, {headers: H});
-    const data = await r.json();
-    const summary = data?.[0]?.summary || '';
-
-    // 오늘 날짜의 토론 게시글 있는지 확인
-    const pr = await fetch(`${SUPABASE_URL}/rest/v1/posts?category=eq.토론&created_at=gte.${today}T00:00:00&order=created_at.desc&limit=1`, {headers: H});
-    const posts = await pr.json();
-
-    if (posts.length) {
-      todayPostId = posts[0].id;
-      document.getElementById('today-topic').textContent = posts[0].title;
-      document.getElementById('today-context').textContent = posts[0].content?.split('\n')[0] || '';
-    } else {
-      // 요일 기반으로 고정 토픽 사용
-      const dayIdx = new Date().getDay();
-      const topic = DAILY_TOPICS[dayIdx % DAILY_TOPICS.length];
-      document.getElementById('today-topic').textContent = topic.topic;
-      document.getElementById('today-context').textContent = topic.context;
+async function loadTodayDiscussion(){
+  const today=new Date().toISOString().split('T')[0];
+  document.getElementById('today-date').textContent=new Date().toLocaleDateString('ko-KR',{month:'long',day:'numeric',weekday:'short'});
+  try{
+    const pr=await fetch(`${SUPABASE_URL}/rest/v1/posts?category=eq.AI토론&created_at=gte.${today}T00:00:00&order=created_at.desc&limit=1`,{headers:H});
+    const posts=await pr.json();
+    if(posts.length){
+      todayPostId=posts[0].id;
+      document.getElementById('today-topic').textContent=posts[0].title;
+      document.getElementById('today-context').textContent=posts[0].content?.split('\n')[0]||'';
+    }else{
+      const dayIdx=new Date().getDay();
+      const topic=DAILY_TOPICS[dayIdx%DAILY_TOPICS.length];
+      document.getElementById('today-topic').textContent=topic.topic;
+      document.getElementById('today-context').textContent=topic.context;
     }
-  } catch(e) {
-    const dayIdx = new Date().getDay();
-    const topic = DAILY_TOPICS[dayIdx % DAILY_TOPICS.length];
-    document.getElementById('today-topic').textContent = topic.topic;
-    document.getElementById('today-context').textContent = topic.context;
+  }catch(e){
+    const dayIdx=new Date().getDay();
+    const topic=DAILY_TOPICS[dayIdx%DAILY_TOPICS.length];
+    document.getElementById('today-topic').textContent=topic.topic;
+    document.getElementById('today-context').textContent=topic.context;
   }
 }
 
-async function joinTodayDiscussion() {
-  if (todayPostId) {
-    showPost(todayPostId);
-    return;
-  }
-  // 오늘 토론 게시글 생성
-  const dayIdx = new Date().getDay();
-  const topic = DAILY_TOPICS[dayIdx % DAILY_TOPICS.length];
-  const title = document.getElementById('today-topic').textContent;
-  const context = document.getElementById('today-context').textContent;
-
-  try {
-    const r = await fetch(`${SUPABASE_URL}/rest/v1/posts`, {
-      method: 'POST', headers: H,
-      body: JSON.stringify({
-        title, content: context + '\n\n여러분의 의견을 자유롭게 남겨주세요! 👇',
-        category: '토론', nickname: 'ETF레이더', likes: 0, dislikes: 0, views: 0, comment_count: 0
-      })
+async function joinTodayDiscussion(){
+  if(todayPostId){showPost(todayPostId);return;}
+  const title=document.getElementById('today-topic').textContent;
+  const context=document.getElementById('today-context').textContent;
+  try{
+    const r=await fetch(`${SUPABASE_URL}/rest/v1/posts`,{
+      method:'POST',headers:H,
+      body:JSON.stringify({title,content:context+'\n\n여러분의 의견을 자유롭게 남겨주세요! 👇',category:'AI토론',nickname:'ETF레이더',likes:0,dislikes:0,views:0,comment_count:0})
     });
-    const posts = await r.json();
-    todayPostId = posts[0]?.id;
-    if (todayPostId) showPost(todayPostId);
+    const posts=await r.json();
+    todayPostId=posts[0]?.id;
+    if(todayPostId)showPost(todayPostId);
     else openWrite();
-  } catch(e) { openWrite(); }
+  }catch(e){openWrite();}
 }
 
-// ── 여론조사 (Supabase 실제 투표) ──
-const POLLS = [
-  { id: 'poll_semicon', q: '반도체 ETF, 지금 추가 매수 하시겠어요?', opts: ['💪 추가 매수', '⏳ 더 기다린다', '🚫 매도 고려'] },
-  { id: 'poll_defense', q: '방산 ETF, 지금 진입 타이밍이라고 생각하시나요?', opts: ['✅ 지금이 적기', '📊 조정 후 진입', '❌ 고점이라 패스'] },
-  { id: 'poll_nuclear', q: '원자력 ETF, 아직 성장 여력이 있다고 보시나요?', opts: ['🚀 아직 초입', '⚖️ 반반', '📉 이미 고점'] },
-  { id: 'poll_market', q: '오늘 장 마감 후 내일 전망은?', opts: ['📈 반등', '➡️ 횡보', '📉 추가 하락'] },
-  { id: 'poll_us', q: '미국 ETF vs 한국 ETF, 지금은?', opts: ['🇺🇸 미국 ETF', '🇰🇷 한국 ETF', '🌍 둘 다 관망'] },
+// ── 여론조사 ──
+const POLLS=[
+  {id:'poll_semicon',q:'반도체 ETF, 지금 추가 매수 하시겠어요?',opts:['💪 추가 매수','⏳ 더 기다린다','🚫 매도 고려']},
+  {id:'poll_defense',q:'방산 ETF, 지금 진입 타이밍이라고 생각하시나요?',opts:['✅ 지금이 적기','📊 조정 후 진입','❌ 고점이라 패스']},
+  {id:'poll_nuclear',q:'원자력 ETF, 아직 성장 여력이 있다고 보시나요?',opts:['🚀 아직 초입','⚖️ 반반','📉 이미 고점']},
+  {id:'poll_market',q:'오늘 장 마감 후 내일 전망은?',opts:['📈 반등','➡️ 횡보','📉 추가 하락']},
+  {id:'poll_us',q:'미국 ETF vs 한국 ETF, 지금은?',opts:['🇺🇸 미국 ETF','🇰🇷 한국 ETF','🌍 둘 다 관망']},
 ];
-
-let selectedPollIdx = null;
-
-function getTodayPoll() {
-  const dayIdx = new Date().getDay();
-  return POLLS[dayIdx % POLLS.length];
-}
-
-async function renderPoll() {
-  const poll = getTodayPoll();
-  document.getElementById('poll-question').textContent = poll.q;
-
-  // Supabase에서 실제 투표 수 가져오기
-  let counts = poll.opts.map(() => 0);
-  try {
-    const r = await fetch(`${SUPABASE_URL}/rest/v1/polls?poll_id=eq.${poll.id}&select=votes`, { headers: H });
-    const data = await r.json();
-    if (data?.[0]?.votes) counts = data[0].votes;
-  } catch(e) {}
-
-  // voted_키로만 체크 (이전 키 무시)
-  const voted = localStorage.getItem('v3_' + poll.id);
-  if (voted !== null) {
-    showPollResult(poll, counts, parseInt(voted));
-  } else {
-    selectedPollIdx = null;
-    document.getElementById('poll-options').innerHTML = poll.opts.map((o, i) => `
-      <button class="poll-btn" id="poll-btn-${i}" onclick="selectPoll(${i})">${o}</button>
-    `).join('') + `<button id="poll-submit-btn" onclick="submitPoll()" style="display:none;width:100%;padding:11px;background:var(--red);color:#fff;border:none;border-radius:6px;font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:700;cursor:pointer;margin-top:4px;">투표하기</button>`;
-    document.getElementById('poll-result').style.display = 'none';
+let selectedPollIdx=null;
+function getTodayPoll(){return POLLS[new Date().getDay()%POLLS.length];}
+async function renderPoll(){
+  const poll=getTodayPoll();
+  document.getElementById('poll-question').textContent=poll.q;
+  let counts=poll.opts.map(()=>0);
+  try{
+    const r=await fetch(`${SUPABASE_URL}/rest/v1/polls?poll_id=eq.${poll.id}&select=votes`,{headers:H});
+    const data=await r.json();
+    if(data?.[0]?.votes)counts=data[0].votes;
+  }catch(e){}
+  const voted=localStorage.getItem('v3_'+poll.id);
+  if(voted!==null)showPollResult(poll,counts,parseInt(voted));
+  else{
+    selectedPollIdx=null;
+    document.getElementById('poll-options').innerHTML=poll.opts.map((o,i)=>`<button class="poll-btn" id="poll-btn-${i}" onclick="selectPoll(${i})">${o}</button>`).join('')+`<button id="poll-submit-btn" onclick="submitPoll()" style="display:none;width:100%;padding:11px;background:var(--red);color:#fff;border:none;border-radius:6px;font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:700;cursor:pointer;margin-top:4px;">투표하기</button>`;
+    document.getElementById('poll-result').style.display='none';
   }
 }
-
-function selectPoll(idx) {
-  selectedPollIdx = idx;
-  const poll = getTodayPoll();
-  poll.opts.forEach((_, i) => {
-    const btn = document.getElementById(`poll-btn-${i}`);
-    if (btn) btn.style.cssText = i === idx
-      ? 'border-color:var(--red);background:#fff0f2;color:var(--red);font-weight:700;'
-      : '';
-  });
-  document.getElementById('poll-submit-btn').style.display = 'block';
+function selectPoll(idx){
+  selectedPollIdx=idx;
+  const poll=getTodayPoll();
+  poll.opts.forEach((_,i)=>{const btn=document.getElementById(`poll-btn-${i}`);if(btn)btn.style.cssText=i===idx?'border-color:var(--red);background:#fff0f2;color:var(--red);font-weight:700;':''});
+  document.getElementById('poll-submit-btn').style.display='block';
 }
-
-async function submitPoll() {
-  if (selectedPollIdx === null) return;
-  const poll = getTodayPoll();
-  const btn = document.getElementById('poll-submit-btn');
-  btn.textContent = '투표 중...'; btn.disabled = true;
-
-  try {
-    // 현재 votes 가져오기
-    const r = await fetch(`${SUPABASE_URL}/rest/v1/polls?poll_id=eq.${poll.id}&select=votes,id`, { headers: H });
-    const data = await r.json();
-
-    let counts = poll.opts.map(() => 0);
-    if (data?.[0]?.votes) counts = [...data[0].votes];
+async function submitPoll(){
+  if(selectedPollIdx===null)return;
+  const poll=getTodayPoll();
+  const btn=document.getElementById('poll-submit-btn');
+  btn.textContent='투표 중...';btn.disabled=true;
+  try{
+    const r=await fetch(`${SUPABASE_URL}/rest/v1/polls?poll_id=eq.${poll.id}&select=votes,id`,{headers:H});
+    const data=await r.json();
+    let counts=poll.opts.map(()=>0);
+    if(data?.[0]?.votes)counts=[...data[0].votes];
     counts[selectedPollIdx]++;
-
-    if (data?.[0]?.id) {
-      // 업데이트
-      await fetch(`${SUPABASE_URL}/rest/v1/polls?id=eq.${data[0].id}`, {
-        method: 'PATCH', headers: H,
-        body: JSON.stringify({ votes: counts })
-      });
-    } else {
-      // 새로 생성
-      await fetch(`${SUPABASE_URL}/rest/v1/polls`, {
-        method: 'POST', headers: H,
-        body: JSON.stringify({ poll_id: poll.id, votes: counts })
-      });
-    }
-
-    localStorage.setItem('v3_' + poll.id, selectedPollIdx);
-    showPollResult(poll, counts, selectedPollIdx);
-  } catch(e) {
-    btn.textContent = '투표하기'; btn.disabled = false;
-  }
+    if(data?.[0]?.id){await fetch(`${SUPABASE_URL}/rest/v1/polls?id=eq.${data[0].id}`,{method:'PATCH',headers:H,body:JSON.stringify({votes:counts})});}
+    else{await fetch(`${SUPABASE_URL}/rest/v1/polls`,{method:'POST',headers:H,body:JSON.stringify({poll_id:poll.id,votes:counts})});}
+    localStorage.setItem('v3_'+poll.id,selectedPollIdx);
+    showPollResult(poll,counts,selectedPollIdx);
+  }catch(e){btn.textContent='투표하기';btn.disabled=false;}
+}
+function showPollResult(poll,counts,votedIdx){
+  const total=counts.reduce((a,b)=>a+b,0);
+  const colors=['#1a6ce8','#e8001a','#f0a500','#1db954'];
+  document.getElementById('poll-options').innerHTML=poll.opts.map((o,i)=>{
+    const pct=total>0?Math.round(counts[i]/total*100):0;
+    return`<button class="poll-btn ${i===votedIdx?'voted-yes':''} voted" disabled><span>${i===votedIdx?'✓ ':''}${o}</span><span style="font-size:12px;font-weight:700;">${pct}%</span></button>`;
+  }).join('');
+  const bars=poll.opts.map((o,i)=>{
+    const pct=total>0?Math.round(counts[i]/total*100):0;
+    return`<div class="poll-bar-wrap"><div class="poll-bar" style="width:${pct}%;background:${colors[i%colors.length]}"></div></div><div class="poll-result-row"><span>${o}</span><span>${counts[i]}표 (${pct}%)</span></div>`;
+  }).join('');
+  document.getElementById('poll-bars').innerHTML=bars;
+  document.getElementById('poll-total').textContent=total>0?`총 ${total}명 참여`:'아직 투표한 사람이 없어요. 첫 번째로 투표해보세요!';
+  document.getElementById('poll-result').style.display='block';
 }
 
-function showPollResult(poll, counts, votedIdx) {
-  const total = counts.reduce((a, b) => a + b, 0);
-  const colors = ['#1a6ce8', '#e8001a', '#f0a500', '#1db954'];
-  document.getElementById('poll-options').innerHTML = poll.opts.map((o, i) => {
-    const pct = total > 0 ? Math.round(counts[i] / total * 100) : 0;
-    return `<button class="poll-btn ${i === votedIdx ? 'voted-yes' : ''} voted" disabled>
-      <span>${i === votedIdx ? '✓ ' : ''}${o}</span><span style="font-size:12px;font-weight:700;">${pct}%</span>
-    </button>`;
-  }).join('');
-
-  const bars = poll.opts.map((o, i) => {
-    const pct = total > 0 ? Math.round(counts[i] / total * 100) : 0;
-    return `<div class="poll-bar-wrap"><div class="poll-bar" style="width:${pct}%;background:${colors[i % colors.length]}"></div></div>
-    <div class="poll-result-row"><span>${o}</span><span>${counts[i]}표 (${pct}%)</span></div>`;
-  }).join('');
-
-  document.getElementById('poll-bars').innerHTML = bars;
-  document.getElementById('poll-total').textContent = total > 0 ? `총 ${total}명 참여` : '아직 투표한 사람이 없어요. 첫 번째로 투표해보세요!';
-  document.getElementById('poll-result').style.display = 'block';
-}
-
-// 기존 코드
-window.addEventListener('popstate', function(e) {
-  if (document.getElementById('detail-view').style.display === 'block') {
-    document.getElementById('detail-view').style.display = 'none';
-    document.getElementById('list-view').style.display = 'block';
-    loadPosts(); loadHotPosts();
-  }
-});
+// 관리자
+window.addEventListener('popstate',function(){if(document.getElementById('detail-view').style.display==='block'){document.getElementById('detail-view').style.display='none';document.getElementById('list-view').style.display='block';loadPosts();loadHotPosts();}});
 function openAdminModal(action){adminAction=action;document.getElementById('admin-pw-input').value='';document.getElementById('admin-error').style.display='none';document.getElementById('admin-modal').classList.add('show');setTimeout(()=>document.getElementById('admin-pw-input').focus(),100);}
 function closeAdminModal(){document.getElementById('admin-modal').classList.remove('show');}
 function confirmAdmin(){const pw=document.getElementById('admin-pw-input').value;if(pw===ADMIN_PW){isAdmin=true;closeAdminModal();if(adminAction==='post')deletePost();else if(adminAction?.type==='comment')deleteComment(adminAction.id);else if(adminAction?.type==='reply')deleteReply(adminAction.id);}else{document.getElementById('admin-error').style.display='block';document.getElementById('admin-pw-input').value='';}}
 function adminDeletePost(){isAdmin?deletePost():openAdminModal('post');}
 function adminDeleteComment(id){isAdmin?deleteComment(id):openAdminModal({type:'comment',id});}
 function adminDeleteReply(id){isAdmin?deleteReply(id):openAdminModal({type:'reply',id});}
-async function deletePost(){if(!confirm('이 글을 삭제할까요?'))return;const r=await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${currentPostId}`,{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}});if(r.ok||r.status===204){document.getElementById('detail-view').style.display='none';document.getElementById('list-view').style.display='block';history.pushState({page:'list'},'','');setTimeout(()=>{loadPosts();loadHotPosts();},600);}else alert('삭제 실패. 다시 시도해주세요.');}
+async function deletePost(){if(!confirm('이 글을 삭제할까요?'))return;const r=await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${currentPostId}`,{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}});if(r.ok||r.status===204){document.getElementById('detail-view').style.display='none';document.getElementById('list-view').style.display='block';history.pushState({page:'list'},'','');setTimeout(()=>{loadPosts();loadHotPosts();},600);}else alert('삭제 실패.');}
 async function deleteComment(id){await fetch(`${SUPABASE_URL}/rest/v1/comments?id=eq.${id}`,{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}});setTimeout(()=>loadComments(currentPostId),300);}
 async function deleteReply(id){await fetch(`${SUPABASE_URL}/rest/v1/comments?id=eq.${id}`,{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}});setTimeout(()=>loadComments(currentPostId),300);}
+
+// PTR
 let touchStartY=0,isPulling=false;
 document.addEventListener('touchstart',e=>{if(document.getElementById('detail-view').style.display==='block')return;if(window.scrollY===0)touchStartY=e.touches[0].clientY;},{passive:true});
 document.addEventListener('touchmove',e=>{if(touchStartY===0)return;const dy=e.touches[0].clientY-touchStartY;if(dy>0&&window.scrollY===0){isPulling=true;document.getElementById('ptr-indicator').classList.add('visible');document.getElementById('ptr-circle').style.transform=`rotate(${Math.min(dy/80,1)*360}deg)`;if(dy>80)document.getElementById('ptr-circle').classList.add('spinning');else document.getElementById('ptr-circle').classList.remove('spinning');}},{passive:true});
 document.addEventListener('touchend',e=>{if(!isPulling){touchStartY=0;return;}const dy=e.changedTouches[0].clientY-touchStartY;if(dy>80){document.getElementById('ptr-circle').classList.add('spinning');loadPosts();loadHotPosts();setTimeout(()=>{document.getElementById('ptr-indicator').classList.remove('visible');document.getElementById('ptr-circle').classList.remove('spinning');},800);}else document.getElementById('ptr-indicator').classList.remove('visible');isPulling=false;touchStartY=0;},{passive:true});
-async function loadHotPosts(){try{const r=await fetch(`${SUPABASE_URL}/rest/v1/posts?select=*&order=likes.desc&limit=5`,{headers:H});const posts=await r.json();const hot=posts.filter(p=>(p.likes||0)>0).slice(0,5);document.getElementById('hot-list').innerHTML=hot.length?hot.map((p,i)=>`<div class="hot-item" onclick="showPost(${p.id})"><span class="hot-num">${i+1}</span><span class="hot-title">[${p.category||'자유'}] ${p.title}</span><span class="hot-count">👍${p.likes}</span></div>`).join(''):'<div style="padding:12px 16px;color:#ccc;font-size:12px">아직 인기글이 없어요!</div>';}catch(e){}}
+
+async function loadHotPosts(){
+  try{
+    const r=await fetch(`${SUPABASE_URL}/rest/v1/posts?select=*&order=likes.desc&limit=5`,{headers:H});
+    const posts=await r.json();
+    const hot=posts.filter(p=>(p.likes||0)>0).slice(0,5);
+    document.getElementById('hot-list').innerHTML=hot.length?hot.map((p,i)=>`<div class="hot-item" onclick="showPost(${p.id})"><span class="hot-num">${i+1}</span><span class="hot-title">[${p.category||'자유'}] ${p.title}</span><span class="hot-count">👍${p.likes}</span></div>`).join(''):'<div style="padding:12px 16px;color:#ccc;font-size:12px">아직 인기글이 없어요!</div>';
+  }catch(e){}
+}
+
 async function loadPosts(){
   document.getElementById('posts-container').innerHTML='<div class="loading"><div class="spinner"></div></div>';
   try{
@@ -569,23 +504,137 @@ async function loadPosts(){
     document.getElementById('pagination').innerHTML=pag;
   }catch(e){document.getElementById('posts-container').innerHTML='<div style="padding:20px;text-align:center;color:#ccc">불러오기 실패</div>';}
 }
+
 function goPage(p){currentPage=p;loadPosts();window.scrollTo(0,0);}
 function searchPosts(){searchQuery=document.getElementById('search-input').value.trim();currentPage=1;loadPosts();}
-async function submitPost(){const title=document.getElementById('post-title-input').value.trim();const content=document.getElementById('post-content-input').value.trim();const category=document.getElementById('post-category').value;if(!title){alert('제목을 입력해주세요.');return;}if(content.length<5){alert('내용을 5자 이상 입력해주세요.');return;}const btn=document.getElementById('submit-btn');btn.textContent='게시 중...';btn.disabled=true;try{await fetch(`${SUPABASE_URL}/rest/v1/posts`,{method:'POST',headers:H,body:JSON.stringify({title,content,category,nickname:randomNick(),likes:0,dislikes:0,views:0,comment_count:0})});document.getElementById('post-title-input').value='';document.getElementById('post-content-input').value='';document.getElementById('char-count').textContent='0';closeWrite();await Promise.all([loadPosts(),loadHotPosts()]);
-  // 30~90초 뒤 AI 댓글 트리거 (자연스러운 딜레이)
-  const delay = 30000 + Math.random() * 60000;
-  setTimeout(() => { fetch('/api/community?type=comment').catch(()=>{}); }, delay);
-}catch(e){alert('오류가 발생했습니다.');}btn.textContent='게시하기';btn.disabled=false;}
-async function showPost(id){currentPostId=id;try{const r=await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${id}&select=*`,{headers:H});const posts=await r.json();const p=posts[0];await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${id}`,{method:'PATCH',headers:H,body:JSON.stringify({views:(p.views||0)+1})});document.getElementById('detail-category').textContent=p.category||'자유';document.getElementById('detail-title').textContent=p.title;document.getElementById('detail-meta').innerHTML=`<span>${p.nickname||'익명'}</span><span class="comment-ip">${fakeIp()}</span><span>${timeAgo(p.created_at)}</span><span>조회 ${(p.views||0)+1}</span>`;document.getElementById('detail-body').textContent=p.content;document.getElementById('up-count').textContent=p.likes||0;document.getElementById('down-count').textContent=p.dislikes||0;document.querySelectorAll('.vote-btn').forEach(b=>b.classList.remove('voted'));const savedVote=localStorage.getItem(`vote_${id}`);if(savedVote)document.querySelector(`.vote-btn.${savedVote==='up'?'up':'down'}`).classList.add('voted');document.getElementById('list-view').style.display='none';document.getElementById('detail-view').style.display='block';history.pushState({page:'detail',id},'','#detail');loadComments(id);document.getElementById('detail-view').scrollTop=0;}catch(e){}}
+
+// ── 게시글 작성 (핵심 수정: post_id 특정해서 AI 댓글 1회만) ──
+async function submitPost(){
+  const title=document.getElementById('post-title-input').value.trim();
+  const content=document.getElementById('post-content-input').value.trim();
+  const category=document.getElementById('post-category').value;
+  if(!title){alert('제목을 입력해주세요.');return;}
+  if(content.length<5){alert('내용을 5자 이상 입력해주세요.');return;}
+  const btn=document.getElementById('submit-btn');
+  btn.textContent='게시 중...';btn.disabled=true;
+  try{
+    // 1. 게시글 저장 후 post_id 받기
+    const r=await fetch(`${SUPABASE_URL}/rest/v1/posts`,{
+      method:'POST',headers:H,
+      body:JSON.stringify({title,content,category,nickname:randomNick(),likes:0,dislikes:0,views:0,comment_count:0})
+    });
+    const newPosts=await r.json();
+    const newPostId=newPosts[0]?.id;
+
+    // 2. 모달 닫기 + 목록 갱신
+    document.getElementById('post-title-input').value='';
+    document.getElementById('post-content-input').value='';
+    document.getElementById('char-count').textContent='0';
+    closeWrite();
+    await Promise.all([loadPosts(),loadHotPosts()]);
+
+    // 3. ✅ 안전한 AI 댓글: 해당 post_id만 특정, 중복 방지는 서버에서 처리
+    if(newPostId){
+      fetch(`/api/community?type=comment&post_id=${newPostId}`).catch(()=>{});
+    }
+  }catch(e){
+    alert('오류가 발생했습니다. 다시 시도해주세요.');
+  }
+  btn.textContent='게시하기';btn.disabled=false;
+}
+
+async function showPost(id){
+  currentPostId=id;
+  try{
+    const r=await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${id}&select=*`,{headers:H});
+    const posts=await r.json();
+    const p=posts[0];
+    await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${id}`,{method:'PATCH',headers:H,body:JSON.stringify({views:(p.views||0)+1})});
+    document.getElementById('detail-category').textContent=p.category||'자유';
+    document.getElementById('detail-title').textContent=p.title;
+    document.getElementById('detail-meta').innerHTML=`<span>${p.nickname||'익명'}</span><span class="comment-ip">${fakeIp()}</span><span>${timeAgo(p.created_at)}</span><span>조회 ${(p.views||0)+1}</span>`;
+    document.getElementById('detail-body').textContent=p.content;
+    document.getElementById('up-count').textContent=p.likes||0;
+    document.getElementById('down-count').textContent=p.dislikes||0;
+    document.querySelectorAll('.vote-btn').forEach(b=>b.classList.remove('voted'));
+    const savedVote=localStorage.getItem(`vote_${id}`);
+    if(savedVote)document.querySelector(`.vote-btn.${savedVote==='up'?'up':'down'}`).classList.add('voted');
+    document.getElementById('list-view').style.display='none';
+    document.getElementById('detail-view').style.display='block';
+    history.pushState({page:'detail',id},'','#detail');
+    loadComments(id);
+    document.getElementById('detail-view').scrollTop=0;
+  }catch(e){}
+}
+
 function showList(){document.getElementById('detail-view').style.display='none';document.getElementById('list-view').style.display='block';loadPosts();loadHotPosts();}
-async function vote(type){const voteKey=`vote_${currentPostId}`;const already=localStorage.getItem(voteKey);if(already){alert(already==='up'?'이미 추천한 글입니다.':'이미 비추천한 글입니다.');return;}const btn=document.querySelector(`.vote-btn.${type==='up'?'up':'down'}`);btn.classList.add('voted');const r=await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${currentPostId}&select=likes,dislikes`,{headers:H});const p=(await r.json())[0];const field=type==='up'?'likes':'dislikes';const val=(p[field]||0)+1;await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${currentPostId}`,{method:'PATCH',headers:H,body:JSON.stringify({[field]:val})});document.getElementById(type==='up'?'up-count':'down-count').textContent=val;localStorage.setItem(voteKey,type);if(type==='up')loadHotPosts();}
-async function loadComments(postId){const r=await fetch(`${SUPABASE_URL}/rest/v1/comments?post_id=eq.${postId}&order=created_at.asc`,{headers:H});const all=await r.json();const parents=all.filter(c=>!c.parent_id);const replies=all.filter(c=>c.parent_id);document.getElementById('comment-cnt-badge').textContent=all.length;const container=document.getElementById('comments-container');if(!parents.length){container.innerHTML='<div style="padding:20px;text-align:center;color:#ccc;font-size:13px">첫 댓글을 남겨보세요!</div>';return;}container.className=isAdmin?'admin-mode':'';container.innerHTML=parents.map(c=>{const myReplies=replies.filter(r=>r.parent_id===c.id);return`<div class="comment-item"><div class="comment-main"><div class="comment-header"><span class="comment-nick">${c.nickname||'익명'}</span><span class="comment-ip">${fakeIp()}</span><span class="comment-time">${timeAgo(c.created_at)}</span></div><div class="comment-body">${c.content}</div><div class="comment-footer"><button class="reply-btn" onclick="toggleReplyForm(${c.id})">↩ 답글</button><button class="comment-del-btn" onclick="adminDeleteComment(${c.id})">삭제</button></div></div>${myReplies.length?`<div class="replies">${myReplies.map(r=>`<div class="reply-item"><div class="reply-content"><div class="reply-header"><span class="reply-nick">${r.nickname||'익명'}</span><span class="reply-time">${timeAgo(r.created_at)}</span></div><div class="reply-body">${r.content}</div><button class="reply-del-btn" onclick="adminDeleteReply(${r.id})">삭제</button></div></div>`).join('')}</div>`:''}<div class="reply-form" id="reply-form-${c.id}"><input type="text" class="reply-input" id="reply-input-${c.id}" placeholder="답글을 입력하세요 (익명)" maxlength="200" onkeydown="if(event.key==='Enter')submitReply(${c.id})"><button class="reply-submit" onclick="submitReply(${c.id})">등록</button></div></div>`;}).join('');}
+
+async function vote(type){
+  const voteKey=`vote_${currentPostId}`;
+  const already=localStorage.getItem(voteKey);
+  if(already){alert(already==='up'?'이미 추천한 글입니다.':'이미 비추천한 글입니다.');return;}
+  const btn=document.querySelector(`.vote-btn.${type==='up'?'up':'down'}`);
+  btn.classList.add('voted');
+  const r=await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${currentPostId}&select=likes,dislikes`,{headers:H});
+  const p=(await r.json())[0];
+  const field=type==='up'?'likes':'dislikes';
+  const val=(p[field]||0)+1;
+  await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${currentPostId}`,{method:'PATCH',headers:H,body:JSON.stringify({[field]:val})});
+  document.getElementById(type==='up'?'up-count':'down-count').textContent=val;
+  localStorage.setItem(voteKey,type);
+  if(type==='up')loadHotPosts();
+}
+
+async function loadComments(postId){
+  const r=await fetch(`${SUPABASE_URL}/rest/v1/comments?post_id=eq.${postId}&order=created_at.asc`,{headers:H});
+  const all=await r.json();
+  const parents=all.filter(c=>!c.parent_id);
+  const replies=all.filter(c=>c.parent_id);
+  document.getElementById('comment-cnt-badge').textContent=all.length;
+  const container=document.getElementById('comments-container');
+  if(!parents.length){container.innerHTML='<div style="padding:20px;text-align:center;color:#ccc;font-size:13px">첫 댓글을 남겨보세요!</div>';return;}
+  container.className=isAdmin?'admin-mode':'';
+  container.innerHTML=parents.map(c=>{
+    const myReplies=replies.filter(r=>r.parent_id===c.id);
+    return`<div class="comment-item">
+      <div class="comment-main">
+        <div class="comment-header">
+          <span class="comment-nick">${c.nickname||'익명'}</span>
+          <span class="comment-ip">${fakeIp()}</span>
+          <span class="comment-time">${timeAgo(c.created_at)}</span>
+        </div>
+        <div class="comment-body">${c.content}</div>
+        <div class="comment-footer">
+          <button class="reply-btn" onclick="toggleReplyForm(${c.id})">↩ 답글</button>
+          <button class="comment-del-btn" onclick="adminDeleteComment(${c.id})">삭제</button>
+        </div>
+      </div>
+      ${myReplies.length?`<div class="replies">${myReplies.map(r=>`<div class="reply-item"><div class="reply-content"><div class="reply-header"><span class="reply-nick">${r.nickname||'익명'}</span><span class="reply-time">${timeAgo(r.created_at)}</span></div><div class="reply-body">${r.content}</div><button class="reply-del-btn" onclick="adminDeleteReply(${r.id})">삭제</button></div></div>`).join('')}</div>`:''}
+      <div class="reply-form" id="reply-form-${c.id}">
+        <input type="text" class="reply-input" id="reply-input-${c.id}" placeholder="답글을 입력하세요 (익명)" maxlength="200" onkeydown="if(event.key==='Enter')submitReply(${c.id})">
+        <button class="reply-submit" onclick="submitReply(${c.id})">등록</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
 function toggleReplyForm(commentId){const form=document.getElementById(`reply-form-${commentId}`);const isOpen=form.classList.contains('open');document.querySelectorAll('.reply-form').forEach(f=>f.classList.remove('open'));if(!isOpen){form.classList.add('open');document.getElementById(`reply-input-${commentId}`).focus();}}
 async function submitReply(parentId){const input=document.getElementById(`reply-input-${parentId}`);const content=input.value.trim();if(!content||content.length<2)return;await fetch(`${SUPABASE_URL}/rest/v1/comments`,{method:'POST',headers:H,body:JSON.stringify({post_id:currentPostId,parent_id:parentId,content,nickname:randomNick()})});const r=await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${currentPostId}&select=comment_count`,{headers:H});const p=(await r.json())[0];await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${currentPostId}`,{method:'PATCH',headers:H,body:JSON.stringify({comment_count:(p.comment_count||0)+1})});await loadComments(currentPostId);}
-async function submitComment(){const content=document.getElementById('comment-input').value.trim();if(!content||content.length<2)return;const btn=document.getElementById('comment-submit');btn.textContent='...';btn.disabled=true;await fetch(`${SUPABASE_URL}/rest/v1/comments`,{method:'POST',headers:H,body:JSON.stringify({post_id:currentPostId,content,nickname:randomNick()})});const r=await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${currentPostId}&select=comment_count`,{headers:H});const p=(await r.json())[0];await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${currentPostId}`,{method:'PATCH',headers:H,body:JSON.stringify({comment_count:(p.comment_count||0)+1})});document.getElementById('comment-input').value='';await loadComments(currentPostId);btn.textContent='등록';btn.disabled=false;}
+async function submitComment(){
+  const content=document.getElementById('comment-input').value.trim();
+  if(!content||content.length<2)return;
+  const btn=document.getElementById('comment-submit');
+  btn.textContent='...';btn.disabled=true;
+  await fetch(`${SUPABASE_URL}/rest/v1/comments`,{method:'POST',headers:H,body:JSON.stringify({post_id:currentPostId,content,nickname:randomNick()})});
+  const r=await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${currentPostId}&select=comment_count`,{headers:H});
+  const p=(await r.json())[0];
+  await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${currentPostId}`,{method:'PATCH',headers:H,body:JSON.stringify({comment_count:(p.comment_count||0)+1})});
+  document.getElementById('comment-input').value='';
+  await loadComments(currentPostId);
+  btn.textContent='등록';btn.disabled=false;
+}
 document.getElementById('comment-input').addEventListener('keydown',e=>{if(e.key==='Enter')submitComment();});
 
-// 초기 로드
 loadTodayDiscussion();
 renderPoll();
 loadPosts();
