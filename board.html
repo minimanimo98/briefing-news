@@ -406,6 +406,8 @@ const POLLS = [
   { id: 'poll_us_0331', q: '미국 ETF vs 한국 ETF, 지금은?', opts: ['🇺🇸 미국 ETF', '🇰🇷 한국 ETF', '🌍 둘 다 관망'] },
 ];
 
+let selectedPollIdx = null;
+
 function getTodayPoll() {
   const dayIdx = new Date().getDay();
   return POLLS[dayIdx % POLLS.length];
@@ -416,46 +418,58 @@ function renderPoll() {
   const voted = localStorage.getItem(poll.id);
   document.getElementById('poll-question').textContent = poll.q;
 
-  // 현재 투표 수 (로컬)
-  const counts = JSON.parse(localStorage.getItem(poll.id + '_counts') || 'null') || poll.opts.map(() => Math.floor(Math.random() * 30) + 5);
-
   if (voted !== null) {
+    const counts = JSON.parse(localStorage.getItem(poll.id + '_counts') || 'null') || poll.opts.map(() => 0);
     showPollResult(poll, counts, parseInt(voted));
   } else {
+    selectedPollIdx = null;
     document.getElementById('poll-options').innerHTML = poll.opts.map((o, i) => `
-      <button class="poll-btn" onclick="votePoll(${i})">${o}</button>
-    `).join('');
+      <button class="poll-btn" id="poll-btn-${i}" onclick="selectPoll(${i})">${o}</button>
+    `).join('') + `<button id="poll-submit-btn" onclick="submitPoll()" style="display:none;width:100%;padding:11px;background:var(--red);color:#fff;border:none;border-radius:6px;font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:700;cursor:pointer;margin-top:4px;">투표하기</button>`;
     document.getElementById('poll-result').style.display = 'none';
   }
 }
 
-function votePoll(idx) {
+function selectPoll(idx) {
+  selectedPollIdx = idx;
   const poll = getTodayPoll();
-  const counts = JSON.parse(localStorage.getItem(poll.id + '_counts') || 'null') || poll.opts.map(() => Math.floor(Math.random() * 30) + 5);
-  counts[idx]++;
-  localStorage.setItem(poll.id, idx);
+  poll.opts.forEach((_, i) => {
+    const btn = document.getElementById(`poll-btn-${i}`);
+    if (btn) btn.style.cssText = i === idx
+      ? 'border-color:var(--red);background:#fff0f2;color:var(--red);font-weight:700;'
+      : '';
+  });
+  document.getElementById('poll-submit-btn').style.display = 'block';
+}
+
+function submitPoll() {
+  if (selectedPollIdx === null) return;
+  const poll = getTodayPoll();
+  const counts = JSON.parse(localStorage.getItem(poll.id + '_counts') || 'null') || poll.opts.map(() => 0);
+  counts[selectedPollIdx]++;
+  localStorage.setItem(poll.id, selectedPollIdx);
   localStorage.setItem(poll.id + '_counts', JSON.stringify(counts));
-  showPollResult(poll, counts, idx);
+  showPollResult(poll, counts, selectedPollIdx);
 }
 
 function showPollResult(poll, counts, votedIdx) {
   const total = counts.reduce((a, b) => a + b, 0);
   const colors = ['#1a6ce8', '#e8001a', '#f0a500', '#1db954'];
   document.getElementById('poll-options').innerHTML = poll.opts.map((o, i) => {
-    const pct = Math.round(counts[i] / total * 100);
-    return `<button class="poll-btn ${i === votedIdx ? ['voted-yes','voted-no','voted-hold'][i] || 'voted-yes' : ''} voted" disabled>
-      <span>${o}</span><span style="font-size:12px;font-weight:700;">${pct}%</span>
+    const pct = total > 0 ? Math.round(counts[i] / total * 100) : 0;
+    return `<button class="poll-btn ${i === votedIdx ? 'voted-yes' : ''} voted" disabled>
+      <span>${i === votedIdx ? '✓ ' : ''}${o}</span><span style="font-size:12px;font-weight:700;">${pct}%</span>
     </button>`;
   }).join('');
 
   const bars = poll.opts.map((o, i) => {
-    const pct = Math.round(counts[i] / total * 100);
+    const pct = total > 0 ? Math.round(counts[i] / total * 100) : 0;
     return `<div class="poll-bar-wrap"><div class="poll-bar" style="width:${pct}%;background:${colors[i % colors.length]}"></div></div>
     <div class="poll-result-row"><span>${o}</span><span>${counts[i]}표 (${pct}%)</span></div>`;
   }).join('');
 
   document.getElementById('poll-bars').innerHTML = bars;
-  document.getElementById('poll-total').textContent = `총 ${total}명 참여`;
+  document.getElementById('poll-total').textContent = total > 0 ? `총 ${total}명 참여` : '아직 투표한 사람이 없어요. 첫 번째로 투표해보세요!';
   document.getElementById('poll-result').style.display = 'block';
 }
 
