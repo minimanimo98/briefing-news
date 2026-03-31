@@ -2295,16 +2295,19 @@ async function loadETFRelatedNews(etfName) {
 }
 
 async function loadETF() {
+  const listEl = document.getElementById('etf-list');
+  if (listEl) listEl.innerHTML = '<div style="padding:16px;font-size:12px;color:#aaa;">① API 호출 중...</div>';
   try {
     const res = await fetch('/api/etf-prices');
+    if (listEl) listEl.innerHTML = '<div style="padding:16px;font-size:12px;color:#aaa;">② 응답 받음, 파싱 중...</div>';
     const data = await res.json();
+    if (listEl) listEl.innerHTML = '<div style="padding:16px;font-size:12px;color:#aaa;">③ 파싱 완료, etfs: ' + (data.etfs?.length ?? 'undefined') + '개</div>';
     etfData = data;
     renderETFTabs(data);
     renderETFList(data.etfs);
   } catch(e) {
     console.error('loadETF 에러:', e);
-    const el = document.getElementById('etf-loading');
-    if (el) el.textContent = '시세 불러오기 실패: ' + e.message;
+    if (listEl) listEl.innerHTML = '<div style="padding:16px;font-size:12px;color:red;">에러: ' + e.message + '</div>';
   }
 }
 
