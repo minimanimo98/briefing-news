@@ -1545,8 +1545,7 @@ function switchTab(tab, el) {
     document.getElementById('summary-bar').style.display = 'none';
     document.getElementById('news').style.display = 'none';
     loadFearGreed();
-    // ✅ Fix: etfLoaded 체크 후 최초 1회만 로딩
-    if (!etfLoaded) { loadETF(); etfLoaded = true; }
+    if (!etfLoaded) { loadETF().then(() => { etfLoaded = true; }); }
   } else {
     document.getElementById('etf-widget').style.display = 'none';
     document.getElementById('ai-summary').style.display = 'block';
@@ -2303,7 +2302,9 @@ async function loadETF() {
     renderETFTabs(data);
     renderETFList(data.etfs);
   } catch(e) {
-    document.getElementById('etf-loading').textContent = '시세 불러오기 실패';
+    console.error('loadETF 에러:', e);
+    const el = document.getElementById('etf-loading');
+    if (el) el.textContent = '시세 불러오기 실패: ' + e.message;
   }
 }
 
@@ -2338,18 +2339,23 @@ function renderETFList(list) {
     document.getElementById('etf-list').innerHTML = '<div id="etf-loading">데이터 없음</div>';
     return;
   }
-  const bookmarks = getBookmarks();
-  const html = list.map(e => `
-    <div class="etf-item" onclick="openETFModal('${e.code}','${e.name}','${e.price}','${e.pct}','${e.change}',${e.up})">
-      <div class="etf-item-name">${e.name}</div>
-      <div class="etf-item-price">${e.price}</div>
-      <div class="etf-item-pct ${e.up ? 'up' : 'dn'}">${e.pct}</div>
-      <button class="etf-bookmark${bookmarks.includes(e.code) ? ' active' : ''}"
-        onclick="event.stopPropagation(); toggleBookmark('${e.code}', this)"
-        title="관심 ETF 추가">${bookmarks.includes(e.code) ? '★' : '☆'}</button>
-    </div>
-  `).join('');
-  document.getElementById('etf-list').innerHTML = html;
+  try {
+    const bookmarks = getBookmarks();
+    const html = list.map(e => `
+      <div class="etf-item" onclick="openETFModal('${e.code}','${e.name.replace(/'/g,"\\'")}','${e.price}','${e.pct}','${e.change}',${e.up})">
+        <div class="etf-item-name">${e.name}</div>
+        <div class="etf-item-price">${e.price}</div>
+        <div class="etf-item-pct ${e.up ? 'up' : 'dn'}">${e.pct}</div>
+        <button class="etf-bookmark${bookmarks.includes(e.code) ? ' active' : ''}"
+          onclick="event.stopPropagation(); toggleBookmark('${e.code}', this)"
+          title="관심 ETF 추가">${bookmarks.includes(e.code) ? '★' : '☆'}</button>
+      </div>
+    `).join('');
+    document.getElementById('etf-list').innerHTML = html;
+  } catch(e) {
+    console.error('renderETFList 에러:', e);
+    document.getElementById('etf-list').innerHTML = '<div style="padding:16px;color:red;font-size:12px;">렌더링 실패: ' + e.message + '</div>';
+  }
 }
 
 function openETFModal(code, name, price, pct, change, up) {
