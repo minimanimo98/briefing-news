@@ -2429,4 +2429,12 @@ function renderBookmarkedETFs() {
 }
 
 function closeETFModal() {
-  document.getElementById('etf-modal').classList.remo
+  document.getElementById('etf-modal').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+// ✅ Fix: loadETF() 중복 호출 제거 — switchTab에서만 호출
+</script>
+
+</body>
+</html>
