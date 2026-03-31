@@ -1655,6 +1655,7 @@ async function fetchOne(url) {
 }
 
 async function loadFeeds() {
+  lastLoadTime = Date.now();
   document.getElementById('news').innerHTML = '<div id="loading"><div class="spinner"></div><br>최신 뉴스를 불러오고 있습니다...</div>';
   document.getElementById('article-count').textContent = '뉴스 불러오는 중...';
 
@@ -1724,12 +1725,10 @@ async function loadTopPreviews() {
 let lastLoadTime = Date.now();
 const AUTO_REFRESH_MS = 5 * 60 * 1000; // 5분
 
-// 5분마다 자동 새로고침 (뉴스 탭일 때만)
 setInterval(() => {
   if (curTab !== 'etfboard') loadFeeds();
 }, AUTO_REFRESH_MS);
 
-// 탭 포커스 돌아올 때 5분 이상 지났으면 새로고침
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible') {
     if (Date.now() - lastLoadTime > AUTO_REFRESH_MS && curTab !== 'etfboard') {
@@ -1737,13 +1736,6 @@ document.addEventListener('visibilitychange', () => {
     }
   }
 });
-
-// loadFeeds 호출 시 시간 업데이트
-const _origLoadFeeds = loadFeeds;
-loadFeeds = async function() {
-  lastLoadTime = Date.now();
-  return _origLoadFeeds();
-};
 
 function renderArticles() {
   document.getElementById('article-count').innerHTML = `총 <strong>${allArticles.length}</strong>건의 뉴스`;
