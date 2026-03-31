@@ -1212,37 +1212,34 @@ a { text-decoration: none; color: inherit; }
 [data-theme="dark"] .etf-sort-btn { border-color: #2a2d3a; color: #8b8fa8; }
 
 /* ETF 보유종목 */
-#etf-holdings-box {
-  margin: 0 16px 12px;
-  border-radius: 8px;
-  overflow: hidden;
-  border: 1px solid var(--border);
+.etf-related-news-item {
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: opacity 0.15s;
 }
-#etf-holdings-title {
+.etf-related-news-item:last-child { border-bottom: none; }
+.etf-related-news-item:hover { opacity: 0.75; }
+.etf-related-news-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.9);
+  line-height: 1.5;
+  word-break: keep-all;
+  font-family: 'Noto Serif KR', serif;
+}
+.etf-related-news-meta {
   font-size: 10px;
-  font-weight: 700;
-  color: var(--sub);
-  letter-spacing: 0.1em;
-  padding: 8px 12px;
-  border-bottom: 1px solid var(--border);
-  background: var(--bg);
+  color: rgba(255,255,255,0.35);
+  margin-top: 3px;
 }
-.etf-holding-item {
-  display: flex;
-  align-items: center;
-  padding: 8px 12px;
-  border-bottom: 1px solid var(--border);
-  gap: 8px;
+#etf-related-news {
+  background: linear-gradient(135deg, #0a1628 0%, #122040 100%);
+  border-radius: 8px;
+  padding: 4px 14px 8px;
+  margin: 0 16px 12px;
+  border-left: 4px solid rgba(232,0,26,0.4);
 }
-.etf-holding-item:last-child { border-bottom: none; }
-.etf-holding-rank { font-size: 11px; color: var(--sub); width: 16px; flex-shrink: 0; }
-.etf-holding-name { flex: 1; font-size: 13px; font-weight: 600; color: var(--text); }
-.etf-holding-pct { font-size: 12px; font-weight: 700; color: var(--red); white-space: nowrap; }
-.etf-holding-bar-wrap { width: 50px; height: 4px; background: var(--border); border-radius: 2px; flex-shrink: 0; }
-.etf-holding-bar { height: 100%; background: var(--red); border-radius: 2px; }
-[data-theme="dark"] #etf-holdings-box { border-color: #2a2d3a; }
-[data-theme="dark"] #etf-holdings-title { background: #22263a; border-color: #2a2d3a; }
-[data-theme="dark"] .etf-holding-item { border-color: #2a2d3a; }
 </style>
 <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" integrity="sha384-TiCUE00h649CAMonG018J2ujOgDKW/kVWlChEuu4jK2vxfAAD0eZxzCKakxg55G4" crossorigin="anonymous"></script>
 </head>
@@ -2134,9 +2131,9 @@ addSwipeClose('calendar-sheet', closeCalendar);
         </div>
       </div>
     </div>
-    <div id="etf-holdings-box" style="display:none;">
-      <div id="etf-holdings-title">TOP 보유종목</div>
-      <div id="etf-holdings-list"></div>
+    <div id="etf-related-news" style="margin:0 16px 12px;">
+      <div style="font-size:10px;font-weight:700;color:var(--sub);letter-spacing:0.1em;padding:8px 0 6px;">관련 뉴스</div>
+      <div id="etf-related-news-list"></div>
     </div>
     <button id="etf-sheet-close" onclick="closeETFModal()">닫기</button>
   </div>
@@ -2164,51 +2161,50 @@ function sortETF(type, el) {
   renderETFList(list);
 }
 
-async function loadETFHoldings(code) {
-  const box = document.getElementById('etf-holdings-box');
-  const list = document.getElementById('etf-holdings-list');
-  box.style.display = 'block';
-  list.innerHTML = '<div style="padding:12px;text-align:center;font-size:12px;color:var(--sub);">불러오는 중...</div>';
+// ── ETF 관련 뉴스 ──
+async function loadETFRelatedNews(etfName) {
+  const el = document.getElementById('etf-related-news-list');
+  el.innerHTML = '<div style="padding:8px 0;font-size:12px;color:rgba(255,255,255,0.3);">뉴스 불러오는 중...</div>';
 
   try {
-    const url = `https://query1.finance.yahoo.com/v8/finance/chart/${code}?modules=topHoldings`;
-    const res = await fetch(`/api/rss?url=${encodeURIComponent(url)}`);
-    // Yahoo Finance topHoldings는 별도 API 필요 - ETF 코드별 하드코딩으로 대체
-    const holdings = getHardcodedHoldings(code);
-    if (!holdings || !holdings.length) {
-      list.innerHTML = '<div style="padding:12px;text-align:center;font-size:12px;color:var(--sub);">보유종목 데이터 없음</div>';
+    // ETF명에서 핵심 키워드 추출
+    const keyword = etfName
+      .replace('TIGER','').replace('KODEX','').replace('ACE','').replace('PLUS','').replace('SOL','')
+      .replace('TOP10','').replace('TOP3','').replace('TOP7','').replace('TOP4','')
+      .replace('액티브','').replace('플러스','').replace('Plus','')
+      .replace(/[()&]/g,'').trim();
+
+    const rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(keyword)}&hl=ko&gl=KR&ceid=KR:ko`;
+    const res = await fetch(`/api/rss?url=${encodeURIComponent(rssUrl)}`);
+    const text = await res.text();
+
+    let titles = [...text.matchAll(/<title><!\[CDATA\[(.*?)\]\]><\/title>/g)].map(m => m[1]);
+    let links = [...text.matchAll(/<link>(.*?)<\/link>/g)].map(m => m[1]);
+    let dates = [...text.matchAll(/<pubDate>(.*?)<\/pubDate>/g)].map(m => m[1]);
+
+    if (titles.length <= 1) {
+      titles = [...text.matchAll(/<title>(.*?)<\/title>/g)].map(m => m[1]);
+    }
+
+    const news = titles.slice(1, 4).map((t, i) => ({
+      title: t.replace(/\s+-\s+.+$/, '').trim(),
+      link: links[i+1] || '',
+      date: dates[i] ? timeAgo(new Date(dates[i])) : '',
+    })).filter(n => n.title.length > 2);
+
+    if (!news.length) {
+      el.innerHTML = '<div style="padding:8px 0;font-size:12px;color:rgba(255,255,255,0.3);">관련 뉴스 없음</div>';
       return;
     }
-    const maxPct = Math.max(...holdings.map(h => h.pct));
-    list.innerHTML = holdings.map((h, i) => `
-      <div class="etf-holding-item">
-        <span class="etf-holding-rank">${i+1}</span>
-        <span class="etf-holding-name">${h.name}</span>
-        <div class="etf-holding-bar-wrap"><div class="etf-holding-bar" style="width:${(h.pct/maxPct*100).toFixed(0)}%"></div></div>
-        <span class="etf-holding-pct">${h.pct}%</span>
+
+    el.innerHTML = news.map(n => `
+      <div class="etf-related-news-item" onclick="window.open('${n.link}','_blank','noopener')">
+        <div class="etf-related-news-title">${n.title}</div>
+        <div class="etf-related-news-meta">${n.date}</div>
       </div>`).join('');
   } catch(e) {
-    list.innerHTML = '<div style="padding:12px;text-align:center;font-size:12px;color:var(--sub);">불러오기 실패</div>';
+    el.innerHTML = '<div style="padding:8px 0;font-size:12px;color:rgba(255,255,255,0.3);">뉴스 불러오기 실패</div>';
   }
-}
-
-function getHardcodedHoldings(code) {
-  const map = {
-    '091160.KS': [{name:'삼성전자',pct:24.8},{name:'SK하이닉스',pct:19.2},{name:'한미반도체',pct:8.1},{name:'리노공업',pct:4.3},{name:'DB하이텍',pct:3.9}],
-    '305540.KS': [{name:'LG에너지솔루션',pct:22.1},{name:'삼성SDI',pct:18.4},{name:'SK이노베이션',pct:12.3},{name:'에코프로비엠',pct:9.2},{name:'포스코퓨처엠',pct:7.8}],
-    '305720.KS': [{name:'LG에너지솔루션',pct:21.5},{name:'삼성SDI',pct:17.9},{name:'SK이노베이션',pct:11.8},{name:'에코프로비엠',pct:8.9},{name:'포스코퓨처엠',pct:7.2}],
-    '360750.KS': [{name:'Apple',pct:7.1},{name:'NVIDIA',pct:6.8},{name:'Microsoft',pct:6.2},{name:'Amazon',pct:4.9},{name:'Meta',pct:2.8}],
-    '133690.KS': [{name:'Apple',pct:9.2},{name:'NVIDIA',pct:8.1},{name:'Microsoft',pct:7.8},{name:'Broadcom',pct:5.1},{name:'Tesla',pct:3.9}],
-    '379800.KS': [{name:'Apple',pct:7.1},{name:'NVIDIA',pct:6.8},{name:'Microsoft',pct:6.2},{name:'Amazon',pct:4.9},{name:'Meta',pct:2.8}],
-    '411060.KS': [{name:'금 현물',pct:99.5}],
-    '456080.KS': [{name:'한국전력',pct:18.2},{name:'두산에너빌리티',pct:15.4},{name:'한전KPS',pct:12.1},{name:'삼성물산',pct:8.9},{name:'GS건설',pct:6.3}],
-    '447680.KS': [{name:'한국전력',pct:17.8},{name:'두산에너빌리티',pct:14.9},{name:'한전KPS',pct:11.8},{name:'삼성물산',pct:8.5},{name:'GS건설',pct:6.1}],
-    '457490.KS': [{name:'한화에어로스페이스',pct:22.3},{name:'LIG넥스원',pct:18.7},{name:'현대로템',pct:15.2},{name:'한국항공우주',pct:12.8},{name:'풍산',pct:8.4}],
-    '466940.KS': [{name:'HD현대중공업',pct:24.1},{name:'삼성중공업',pct:19.8},{name:'한화오션',pct:17.3},{name:'HD현대미포',pct:12.5},{name:'현대글로비스',pct:8.2}],
-    '114800.KS': [{name:'코스피200 인버스',pct:99.8}],
-    '122630.KS': [{name:'코스피200 레버리지',pct:99.8}],
-  };
-  return map[code] || null;
 }
 
 async function loadETF() {
@@ -2265,7 +2261,7 @@ function openETFModal(code, name, price, pct, change, up) {
     <div style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.4);font-size:12px;">
       <div class="ai-spinner"></div> 분석 중...
     </div>`;
-  document.getElementById('etf-holdings-box').style.display = 'none';
+  document.getElementById('etf-holdings-box') && (document.getElementById('etf-holdings-box').style.display = 'none');
   document.getElementById('etf-modal').classList.add('show');
   document.body.style.overflow = 'hidden';
   history.pushState({ modal: 'etf' }, '');
@@ -2292,8 +2288,8 @@ function openETFModal(code, name, price, pct, change, up) {
     document.getElementById('etf-brief-content').textContent = '브리핑을 불러오지 못했습니다.';
   });
 
-  // 보유종목
-  loadETFHoldings(code);
+  // 관련 뉴스
+  loadETFRelatedNews(name);
 }
 
 function closeETFModal() {
