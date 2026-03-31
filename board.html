@@ -397,13 +397,13 @@ async function joinTodayDiscussion() {
   } catch(e) { openWrite(); }
 }
 
-// ── 여론조사 ──
+// ── 여론조사 (Supabase 실제 투표) ──
 const POLLS = [
-  { id: 'poll2_semicon_0401', q: '반도체 ETF, 지금 추가 매수 하시겠어요?', opts: ['💪 추가 매수', '⏳ 더 기다린다', '🚫 매도 고려'] },
-  { id: 'poll2_defense_0401', q: '방산 ETF, 지금 진입 타이밍이라고 생각하시나요?', opts: ['✅ 지금이 적기', '📊 조정 후 진입', '❌ 고점이라 패스'] },
-  { id: 'poll2_nuclear_0401', q: '원자력 ETF, 아직 성장 여력이 있다고 보시나요?', opts: ['🚀 아직 초입', '⚖️ 반반', '📉 이미 고점'] },
-  { id: 'poll2_market_0401', q: '오늘 장 마감 후 내일 전망은?', opts: ['📈 반등', '➡️ 횡보', '📉 추가 하락'] },
-  { id: 'poll2_us_0401', q: '미국 ETF vs 한국 ETF, 지금은?', opts: ['🇺🇸 미국 ETF', '🇰🇷 한국 ETF', '🌍 둘 다 관망'] },
+  { id: 'poll_semicon', q: '반도체 ETF, 지금 추가 매수 하시겠어요?', opts: ['💪 추가 매수', '⏳ 더 기다린다', '🚫 매도 고려'] },
+  { id: 'poll_defense', q: '방산 ETF, 지금 진입 타이밍이라고 생각하시나요?', opts: ['✅ 지금이 적기', '📊 조정 후 진입', '❌ 고점이라 패스'] },
+  { id: 'poll_nuclear', q: '원자력 ETF, 아직 성장 여력이 있다고 보시나요?', opts: ['🚀 아직 초입', '⚖️ 반반', '📉 이미 고점'] },
+  { id: 'poll_market', q: '오늘 장 마감 후 내일 전망은?', opts: ['📈 반등', '➡️ 횡보', '📉 추가 하락'] },
+  { id: 'poll_us', q: '미국 ETF vs 한국 ETF, 지금은?', opts: ['🇺🇸 미국 ETF', '🇰🇷 한국 ETF', '🌍 둘 다 관망'] },
 ];
 
 let selectedPollIdx = null;
@@ -413,13 +413,20 @@ function getTodayPoll() {
   return POLLS[dayIdx % POLLS.length];
 }
 
-function renderPoll() {
+async function renderPoll() {
   const poll = getTodayPoll();
-  const voted = localStorage.getItem(poll.id);
   document.getElementById('poll-question').textContent = poll.q;
 
+  // Supabase에서 실제 투표 수 가져오기
+  let counts = poll.opts.map(() => 0);
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/polls?poll_id=eq.${poll.id}&select=votes`, { headers: H });
+    const data = await r.json();
+    if (data?.[0]?.votes) counts = data[0].votes;
+  } catch(e) {}
+
+  const voted = localStorage.getItem('voted_' + poll.id);
   if (voted !== null) {
-    const counts = JSON.parse(localStorage.getItem(poll.id + '_counts') || 'null') || poll.opts.map(() => 0);
     showPollResult(poll, counts, parseInt(voted));
   } else {
     selectedPollIdx = null;
@@ -442,14 +449,40 @@ function selectPoll(idx) {
   document.getElementById('poll-submit-btn').style.display = 'block';
 }
 
-function submitPoll() {
+async function submitPoll() {
   if (selectedPollIdx === null) return;
   const poll = getTodayPoll();
-  const counts = JSON.parse(localStorage.getItem(poll.id + '_counts') || 'null') || poll.opts.map(() => 0);
-  counts[selectedPollIdx]++;
-  localStorage.setItem(poll.id, selectedPollIdx);
-  localStorage.setItem(poll.id + '_counts', JSON.stringify(counts));
-  showPollResult(poll, counts, selectedPollIdx);
+  const btn = document.getElementById('poll-submit-btn');
+  btn.textContent = '투표 중...'; btn.disabled = true;
+
+  try {
+    // 현재 votes 가져오기
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/polls?poll_id=eq.${poll.id}&select=votes,id`, { headers: H });
+    const data = await r.json();
+
+    let counts = poll.opts.map(() => 0);
+    if (data?.[0]?.votes) counts = [...data[0].votes];
+    counts[selectedPollIdx]++;
+
+    if (data?.[0]?.id) {
+      // 업데이트
+      await fetch(`${SUPABASE_URL}/rest/v1/polls?id=eq.${data[0].id}`, {
+        method: 'PATCH', headers: H,
+        body: JSON.stringify({ votes: counts })
+      });
+    } else {
+      // 새로 생성
+      await fetch(`${SUPABASE_URL}/rest/v1/polls`, {
+        method: 'POST', headers: H,
+        body: JSON.stringify({ poll_id: poll.id, votes: counts })
+      });
+    }
+
+    localStorage.setItem('voted_' + poll.id, selectedPollIdx);
+    showPollResult(poll, counts, selectedPollIdx);
+  } catch(e) {
+    btn.textContent = '투표하기'; btn.disabled = false;
+  }
 }
 
 function showPollResult(poll, counts, votedIdx) {
