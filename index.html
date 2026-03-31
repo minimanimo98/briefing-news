@@ -1,0 +1,2280 @@
+<!-- v2.1 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<!-- SEO -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ETF레이더 — 국내 ETF·펀드·주식 뉴스</title>
+<meta name="description" content="국내 ETF·펀드·주식 최신 뉴스를 한곳에서. 커뮤니티까지 — ETF레이더">
+<meta name="keywords" content="ETF,펀드,주식,코스피,코스닥,ETF뉴스,펀드뉴스,주식뉴스,TIGER,KODEX,투자,증시">
+<meta name="author" content="ETF레이더">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://etfradar.kr">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ETF레이더">
+<meta property="og:title" content="ETF레이더 — 국내 ETF·펀드·주식 뉴스">
+<meta property="og:description" content="국내 ETF·펀드·주식 최신 뉴스를 한곳에서. 커뮤니티까지">
+<meta property="og:url" content="https://etfradar.kr">
+<meta property="og:image" content="https://etfradar.kr/og-image.png">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ETF레이더 — 국내 ETF·펀드·주식 뉴스">
+<meta name="twitter:description" content="국내 ETF·펀드·주식 최신 뉴스를 한곳에서">
+<meta name="twitter:image" content="https://etfradar.kr/og-image.png">
+<meta name="theme-color" content="#0a1628">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ETF레이더">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<meta name="naver-site-verification" content="0ad4b1e46be201bee88db754753e99bd00d5bfd0">
+<meta name="google-site-verification" content="yOaipuFYPn0Icw0l-tdF4urAaGpM8IMy6L9KcCwlGLg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --red: #e8001a;
+  --navy: #0a1628;
+  --navy-light: #122040;
+  --bg: #f0f2f5;
+  --white: #ffffff;
+  --border: #e2e6ed;
+  --text: #111827;
+  --sub: #6b7280;
+  --card-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  --card-shadow-hover: 0 6px 20px rgba(0,0,0,0.12);
+}
+[data-theme="dark"] {
+  --bg: #0f1117;
+  --white: #1a1d27;
+  --border: #2a2d3a;
+  --text: #e8eaf0;
+  --sub: #8b8fa8;
+  --card-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  --card-shadow-hover: 0 6px 20px rgba(0,0,0,0.5);
+}
+[data-theme="dark"] body { background: #0f1117; color: #e8eaf0; }
+[data-theme="dark"] #tabs { background: #1a1d27; border-bottom-color: #2a2d3a; }
+[data-theme="dark"] .tab { color: #8b8fa8; background: #1a1d27; }
+[data-theme="dark"] .tab.active { color: #e8001a; }
+[data-theme="dark"] .tab:hover:not(.active) { background: #22263a; color: #e8eaf0; }
+[data-theme="dark"] .card { background: #1a1d27; border-color: transparent; }
+[data-theme="dark"] .card:hover { background: #22263a; border-left-color: #e8001a; }
+[data-theme="dark"] .card-featured { background: #1a1d27; }
+[data-theme="dark"] .card-title { color: #e8eaf0; }
+[data-theme="dark"] .card-featured .card-title { color: #e8eaf0; }
+[data-theme="dark"] .card-featured .card-desc { color: #8b8fa8; }
+[data-theme="dark"] .card-desc { color: #8b8fa8; }
+[data-theme="dark"] .card-num { color: #3a3d4a; }
+[data-theme="dark"] .card-num.hot { color: #e8001a; }
+[data-theme="dark"] .source-badge { background: #2a1a1f; color: #ff4d6a; }
+[data-theme="dark"] .time-badge { color: #555870; }
+[data-theme="dark"] .section-label { color: #555870; }
+[data-theme="dark"] .section-label::after { background: #2a2d3a; }
+[data-theme="dark"] #summary-bar { background: transparent; }
+[data-theme="dark"] #article-count { color: #8b8fa8; }
+[data-theme="dark"] #refresh-btn { background: #1a1d27; border-color: #2a2d3a; color: #8b8fa8; }
+[data-theme="dark"] #refresh-btn:hover { border-color: #e8001a; color: #e8001a; }
+[data-theme="dark"] #loading { background: #1a1d27; color: #555870; }
+[data-theme="dark"] #load-more { background: #1a1d27; border-color: #2a2d3a; color: #8b8fa8; }
+[data-theme="dark"] #load-more:hover { background: #e8001a; color: #fff; border-color: #e8001a; }
+[data-theme="dark"] #footer { border-top-color: #2a2d3a; color: #555870; }
+[data-theme="dark"] #footer a { color: #555870; }
+[data-theme="dark"] #hot-news-inner { background: #1a1d27; }
+[data-theme="dark"] #hot-news-header { border-bottom-color: #2a2d3a; }
+[data-theme="dark"] .hot-item { border-bottom-color: #2a2d3a; }
+[data-theme="dark"] .hot-item:hover { background: #22263a; }
+[data-theme="dark"] .hot-title { color: #e8eaf0; }
+[data-theme="dark"] .hot-clicks { color: #8b8fa8; }
+[data-theme="dark"] #ticker-bar { background: #0a0d14; border-bottom-color: #1a1d27; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Noto Sans KR', sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }
+a { text-decoration: none; color: inherit; }
+
+#topbar {
+  background: var(--navy-light);
+  padding: 5px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 0.05em;
+}
+#topbar-right { display: flex; gap: 14px; align-items: center; }
+#topbar-right a { color: rgba(255,255,255,0.35); transition: color 0.15s; font-size: 10px; }
+#topbar-right a:hover { color: rgba(255,255,255,0.7); }
+
+/* ── 티커바 (코스피·코스닥 포함) ── */
+#ticker-bar {
+  background: #0d1f3c;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  overflow: hidden;
+  height: 28px;
+  display: flex;
+  align-items: center;
+}
+#ticker-track {
+  display: flex;
+  white-space: nowrap;
+  animation: ticker-scroll 25s linear infinite;
+}
+#ticker-track:hover { animation-play-state: paused; }
+@keyframes ticker-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.index-item { display: inline-flex; align-items: center; gap: 5px; padding: 0 14px; border-right: 1px solid rgba(255,255,255,0.07); }
+.index-name { font-size: 10px; color: rgba(255,255,255,0.45); font-weight: 500; }
+.index-price { font-size: 11px; color: rgba(255,255,255,0.9); font-weight: 700; font-variant-numeric: tabular-nums; }
+.index-change { font-size: 10px; font-weight: 600; }
+.index-change.up { color: #ff6b6b; }
+.index-change.dn { color: #74b9ff; }
+/* 코스피·코스닥 강조 */
+.index-item.domestic .index-name { color: rgba(255,200,100,0.7); }
+.index-item.domestic .index-price { color: #ffe680; }
+
+#header {
+  background: var(--navy);
+  padding: 14px 20px 12px;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  border-bottom: 3px solid var(--red);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+}
+#logo-wrap { display: flex; align-items: center; justify-content: center; gap: 10px; }
+#logo {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 28px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+#logo-badge {
+  background: var(--red);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  padding: 3px 7px;
+  border-radius: 2px;
+  font-family: 'Noto Sans KR', sans-serif;
+  animation: pulse-badge 2s ease-in-out infinite;
+}
+@keyframes pulse-badge { 0%,100%{opacity:1} 50%{opacity:0.7} }
+#tagline {
+  font-size: 10px;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.22em;
+  margin-top: 4px;
+  text-transform: uppercase;
+}
+
+#ad-top {
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+  justify-content: center;
+  min-height: 60px;
+  display: none;
+}
+
+/* ── 카카오 채널 배너 ── */
+#kakao-channel-banner {
+  background: linear-gradient(135deg, #FEE500 0%, #FFD700 100%);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+#kakao-channel-banner-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  cursor: pointer;
+}
+#kakao-channel-banner-icon { font-size: 20px; }
+#kakao-channel-banner-text { font-size: 13px; font-weight: 700; color: #000; line-height: 1.4; }
+#kakao-channel-banner-sub { font-size: 10px; color: rgba(0,0,0,0.55); }
+#kakao-channel-banner-btn {
+  background: #000;
+  color: #FEE500;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  cursor: pointer;
+  border: none;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+#kakao-channel-close {
+  font-size: 18px;
+  color: rgba(0,0,0,0.35);
+  cursor: pointer;
+  padding: 4px;
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  line-height: 1;
+}
+
+#tabs {
+  background: #fff;
+  border-bottom: 2px solid var(--border);
+  position: sticky;
+  top: 68px;
+  z-index: 150;
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+#tabs::-webkit-scrollbar { display: none; }
+
+.tab {
+  padding: 12px 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--sub);
+  border: none;
+  background: none;
+  cursor: pointer;
+  white-space: nowrap;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  font-family: 'Noto Sans KR', sans-serif;
+  transition: all 0.15s;
+  letter-spacing: 0.02em;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.tab.active { color: var(--red); border-bottom-color: var(--red); font-weight: 700; }
+.tab:hover:not(.active) { color: var(--text); background: #fafafa; }
+.tab.community { color: #0057ff; border-left: 1px solid var(--border); margin-left: auto; }
+.tab.community:hover { color: #003fcc; background: #f0f4ff; }
+
+#ai-summary {
+  max-width: 760px;
+  margin: 8px auto 0;
+  padding: 0 12px;
+}
+#ai-summary-inner {
+  background: linear-gradient(135deg, #0a1628 0%, #122040 100%);
+  border-radius: 8px;
+  padding: 16px 18px;
+  border-left: 4px solid var(--red);
+  box-shadow: var(--card-shadow);
+}
+#ai-summary-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+#ai-summary-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--red);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+#ai-summary-date {
+  font-size: 10px;
+  color: rgba(255,255,255,0.3);
+  margin-left: auto;
+}
+#ai-summary-text {
+  font-size: 12px;
+  color: rgba(255,255,255,0.88);
+  line-height: 1.9;
+  font-family: 'Noto Serif KR', serif;
+  word-break: keep-all;
+}
+.ai-spinner {
+  display: inline-block;
+  width: 14px; height: 14px;
+  border: 2px solid rgba(255,255,255,0.15);
+  border-top-color: var(--red);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+#hot-news {
+  max-width: 760px;
+  margin: 8px auto 0;
+  padding: 0 12px;
+  display: none;
+}
+#hot-news-inner {
+  background: var(--white);
+  border-radius: 6px;
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+}
+#hot-news-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px 8px;
+  border-bottom: 1px solid var(--border);
+}
+.hot-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--red);
+  padding: 2px 7px;
+  border-radius: 2px;
+  letter-spacing: 0.1em;
+}
+.hot-sub { font-size: 10px; color: var(--sub); }
+.hot-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.hot-item:last-child { border-bottom: none; }
+.hot-item:hover { background: #fafafa; }
+.hot-rank {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--red);
+  width: 18px;
+  flex-shrink: 0;
+  font-family: Georgia, serif;
+}
+.hot-rank.gray { color: #d1d5db; }
+.hot-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.5;
+  word-break: keep-all;
+  flex: 1;
+}
+.hot-clicks {
+  font-size: 10px;
+  color: var(--sub);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+#summary-bar {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 9px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#article-count { font-size: 12px; color: var(--sub); }
+#article-count strong { color: var(--red); font-weight: 700; }
+#refresh-btn {
+  font-size: 11px;
+  color: var(--sub);
+  background: #fff;
+  border: 1px solid var(--border);
+  padding: 5px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: 'Noto Sans KR', sans-serif;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+#refresh-btn:hover { border-color: var(--red); color: var(--red); }
+#refresh-icon { display: inline-block; transition: transform 0.4s; }
+#refresh-btn:hover #refresh-icon { transform: rotate(180deg); }
+
+#news { max-width: 760px; margin: 0 auto; padding: 4px 12px 60px; }
+
+/* ── 뉴스 카드 개선 ── */
+.card-featured {
+  background: var(--white);
+  border-radius: 8px;
+  margin-bottom: 4px;
+  padding: 20px 18px;
+  border-left: 5px solid var(--red);
+  box-shadow: var(--card-shadow);
+  transition: box-shadow 0.2s, transform 0.2s;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+.card-featured::before {
+  content: 'TOP';
+  position: absolute;
+  top: 0; right: 0;
+  background: var(--red);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 3px 8px;
+  border-bottom-left-radius: 4px;
+}
+.card-featured:hover { box-shadow: var(--card-shadow-hover); transform: translateY(-1px); }
+.card-featured .card-title {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.55;
+  color: var(--text);
+  word-break: keep-all;
+  margin-bottom: 6px;
+}
+.card-featured .card-desc {
+  font-size: 12px;
+  color: var(--sub);
+  line-height: 1.7;
+  margin-top: 6px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: keep-all;
+}
+
+.card {
+  background: var(--white);
+  border-radius: 8px;
+  margin-bottom: 4px;
+  padding: 12px 14px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  transition: all 0.15s;
+  border-left: 3px solid transparent;
+  box-shadow: var(--card-shadow);
+  cursor: pointer;
+}
+.card:hover { box-shadow: var(--card-shadow-hover); border-left-color: var(--red); transform: translateY(-1px); }
+/* 상위 3개 카드 강조 */
+.card.card-top { border-left-color: rgba(232,0,26,0.2); }
+.card.card-top:hover { border-left-color: var(--red); }
+
+.card-num {
+  font-size: 16px;
+  font-weight: 700;
+  color: #d1d5db;
+  font-family: Georgia, serif;
+  flex-shrink: 0;
+  width: 24px;
+  line-height: 1.4;
+  text-align: center;
+  padding-top: 2px;
+}
+.card-num.hot { color: var(--red); }
+.card-body { flex: 1; min-width: 0; }
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 5px;
+  flex-wrap: wrap;
+}
+.source-badge {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--red);
+  background: #fff0f2;
+  padding: 2px 6px;
+  border-radius: 3px;
+  letter-spacing: 0.03em;
+}
+.time-badge { font-size: 10px; color: #9ca3af; }
+.new-badge {
+  font-size: 9px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--red);
+  padding: 1px 5px;
+  border-radius: 2px;
+  letter-spacing: 0.05em;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.55} }
+
+.card-title {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--text);
+  word-break: keep-all;
+  font-family: 'Noto Serif KR', serif;
+}
+
+/* ── 뉴스 카드 설명 스니펫 ── */
+.card-snippet {
+  font-size: 12px;
+  color: var(--sub);
+  line-height: 1.55;
+  margin-top: 5px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: keep-all;
+}
+/* TOP 3 카드는 스니펫 표시, 나머지는 숨김 */
+.card:not(.card-top) .card-snippet { display: none; }
+
+.section-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #9ca3af;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 16px 2px 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+.ad-middle {
+  background: #fff;
+  border-radius: 6px;
+  border: 1px dashed #d1d5db;
+  align-items: center;
+  justify-content: center;
+  min-height: 100px;
+  margin: 8px 0;
+  color: #c0c4cc;
+  font-size: 11px;
+  display: none;
+}
+
+#loading {
+  text-align: center;
+  padding: 60px 20px;
+  color: #c0c4cc;
+  font-size: 13px;
+  background: #fff;
+  border-radius: 6px;
+  margin-top: 8px;
+  box-shadow: var(--card-shadow);
+}
+.spinner {
+  display: inline-block;
+  width: 24px; height: 24px;
+  border: 2px solid #e5e7eb;
+  border-top-color: var(--red);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin-bottom: 12px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+#load-more {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  background: #fff;
+  border: 1px solid var(--border);
+  color: var(--sub);
+  cursor: pointer;
+  border-radius: 6px;
+  margin-top: 6px;
+  transition: all 0.15s;
+  box-shadow: var(--card-shadow);
+}
+#load-more:hover { background: var(--red); color: #fff; border-color: var(--red); }
+
+#footer {
+  text-align: center;
+  padding: 28px 20px;
+  color: #b0b7c3;
+  font-size: 11px;
+  line-height: 2;
+  border-top: 1px solid var(--border);
+  max-width: 760px;
+  margin: 0 auto;
+}
+#footer a { color: #b0b7c3; }
+#footer a:hover { color: var(--red); }
+#update-time { color: var(--red); }
+
+#ad-fixed-bottom {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: #fff;
+  border-top: 1px solid var(--border);
+  align-items: center;
+  justify-content: center;
+  min-height: 50px;
+  z-index: 500;
+  box-shadow: 0 -2px 12px rgba(0,0,0,0.08);
+  display: none;
+}
+
+#dark-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: var(--navy);
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 300;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+#dark-toggle:hover { transform: scale(1.1); }
+[data-theme="dark"] #dark-toggle { background: #2a2d3a; }
+
+#article-modal {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: rgba(0,0,0,0.5);
+  top: 0;
+  align-items: flex-end;
+}
+#article-modal.show { display: flex; }
+#article-sheet {
+  background: var(--white);
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  border-radius: 16px 16px 0 0;
+  max-height: 85vh;
+  overflow-y: auto;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+#article-modal.show #article-sheet { transform: translateY(0); }
+#article-sheet-handle {
+  width: 36px; height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  margin: 12px auto 0;
+}
+#article-sheet-header {
+  padding: 12px 16px 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+#article-sheet-source {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--red);
+  background: #fff0f2;
+  padding: 2px 8px;
+  border-radius: 3px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+#article-sheet-title {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--text);
+  word-break: keep-all;
+  padding: 10px 16px 0;
+  font-family: 'Noto Serif KR', serif;
+}
+#article-sheet-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 14px 16px;
+}
+#article-ai-box {
+  margin: 0 16px;
+  background: linear-gradient(135deg, #0a1628 0%, #122040 100%);
+  border-radius: 8px;
+  padding: 14px 16px;
+  border-left: 4px solid var(--red);
+}
+#article-ai-label {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--red);
+  letter-spacing: 0.15em;
+  margin-bottom: 10px;
+}
+#article-ai-content {
+  font-size: 13px;
+  color: rgba(255,255,255,0.88);
+  line-height: 1.8;
+  font-family: 'Noto Serif KR', serif;
+  word-break: keep-all;
+}
+.article-ai-section { margin-bottom: 10px; }
+.article-ai-section-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--red);
+  margin-bottom: 4px;
+}
+.article-ai-section-text {
+  font-size: 13px;
+  color: rgba(255,255,255,0.85);
+  line-height: 1.7;
+}
+#article-sheet-actions {
+  padding: 16px;
+  display: flex;
+  gap: 10px;
+}
+#article-close-btn {
+  flex: 1;
+  padding: 13px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  color: var(--sub);
+}
+#article-open-btn {
+  flex: 2;
+  padding: 13px;
+  background: var(--red);
+  border: none;
+  border-radius: 8px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  color: #fff;
+}
+[data-theme="dark"] #article-sheet { background: #1a1d27; }
+[data-theme="dark"] #article-close-btn { background: #22263a; border-color: #2a2d3a; color: #8b8fa8; }
+
+#article-share-btns {
+  display: flex;
+  gap: 8px;
+  padding: 0 16px 4px;
+}
+.share-btn {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--white);
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  transition: all 0.15s;
+}
+.share-btn:hover { border-color: var(--red); color: var(--red); }
+.share-btn.kakao { background: #FEE500; border-color: #FEE500; color: #000; }
+.share-btn.kakao:hover { background: #f0d800; border-color: #f0d800; }
+[data-theme="dark"] .share-btn { background: #22263a; border-color: #2a2d3a; color: #e8eaf0; }
+
+/* ── 지수 상세 모달 ── */
+#ticker-modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 2000;
+  background: rgba(0,0,0,0.6);
+  align-items: flex-end;
+}
+#ticker-modal.show { display: flex; }
+#ticker-sheet {
+  background: #0a1628;
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  border-radius: 16px 16px 0 0;
+  padding: 16px 16px 32px;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+}
+#ticker-modal.show #ticker-sheet { transform: translateY(0); }
+#ticker-sheet-handle {
+  width: 36px; height: 4px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 2px;
+  margin: 0 auto 16px;
+}
+#ticker-sheet-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--red);
+  letter-spacing: 0.15em;
+  margin-bottom: 14px;
+  text-align: center;
+}
+.ticker-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.ticker-detail-item {
+  background: rgba(255,255,255,0.05);
+  border-radius: 8px;
+  padding: 12px 14px;
+  border-left: 3px solid transparent;
+}
+.ticker-detail-item.up { border-left-color: #ff6b6b; }
+.ticker-detail-item.dn { border-left-color: #74b9ff; }
+/* 국내 지수 강조 */
+.ticker-detail-item.domestic { background: rgba(255,230,100,0.08); }
+.ticker-detail-item.domestic.up { border-left-color: #ffcc00; }
+.ticker-detail-name { font-size: 10px; color: rgba(255,255,255,0.45); margin-bottom: 4px; }
+.ticker-detail-price { font-size: 16px; font-weight: 700; color: #fff; font-variant-numeric: tabular-nums; }
+.ticker-detail-change { font-size: 12px; font-weight: 600; margin-top: 2px; }
+.ticker-detail-change.up { color: #ff6b6b; }
+.ticker-detail-change.dn { color: #74b9ff; }
+#ticker-close-btn {
+  display: block;
+  width: 100%;
+  margin-top: 16px;
+  padding: 13px;
+  background: rgba(255,255,255,0.08);
+  border: none;
+  border-radius: 8px;
+  color: rgba(255,255,255,0.6);
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* ── ETF 전광판 ── */
+#etf-widget {
+  max-width: 760px;
+  margin: 8px auto 0;
+  padding: 0 12px;
+}
+#etf-widget-inner {
+  background: var(--white);
+  border-radius: 6px;
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+}
+#etf-widget-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px 8px;
+  border-bottom: 1px solid var(--border);
+}
+.etf-widget-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--navy);
+  padding: 2px 7px;
+  border-radius: 2px;
+  letter-spacing: 0.1em;
+}
+.etf-widget-sub { font-size: 10px; color: var(--sub); }
+#etf-theme-tabs {
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+  border-bottom: 1px solid var(--border);
+  padding: 0 8px;
+}
+#etf-theme-tabs::-webkit-scrollbar { display: none; }
+.etf-theme-tab {
+  padding: 7px 12px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--sub);
+  border: none;
+  background: none;
+  cursor: pointer;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  font-family: 'Noto Sans KR', sans-serif;
+  transition: all 0.15s;
+}
+.etf-theme-tab.active { color: var(--red); border-bottom-color: var(--red); font-weight: 700; }
+.etf-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.15s;
+  gap: 10px;
+}
+.etf-item:last-child { border-bottom: none; }
+.etf-item:hover { background: #fafafa; }
+.etf-item-name { flex: 1; font-size: 13px; font-weight: 600; color: var(--text); }
+.etf-item-price { font-size: 13px; font-weight: 700; color: var(--text); font-variant-numeric: tabular-nums; }
+.etf-item-pct { font-size: 12px; font-weight: 700; width: 55px; text-align: right; }
+.etf-item-pct.up { color: #e8001a; }
+.etf-item-pct.dn { color: #1a6ce8; }
+#etf-loading { text-align: center; padding: 20px; color: var(--sub); font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+
+/* ETF 브리핑 모달 */
+#etf-modal {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0; top: 0;
+  z-index: 1000;
+  background: rgba(0,0,0,0.5);
+  align-items: flex-end;
+}
+#etf-modal.show { display: flex; }
+#etf-sheet {
+  background: var(--white);
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  border-radius: 16px 16px 0 0;
+  max-height: 75vh;
+  overflow-y: auto;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+#etf-modal.show #etf-sheet { transform: translateY(0); }
+#etf-sheet-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 12px auto 0; }
+#etf-sheet-info { padding: 14px 16px 0; display: flex; align-items: center; justify-content: space-between; }
+#etf-sheet-name { font-size: 16px; font-weight: 700; color: var(--text); }
+#etf-sheet-price { font-size: 18px; font-weight: 700; color: var(--text); }
+#etf-sheet-pct { font-size: 13px; font-weight: 700; text-align: right; }
+#etf-sheet-pct.up { color: #e8001a; }
+#etf-sheet-pct.dn { color: #1a6ce8; }
+#etf-brief-box {
+  margin: 14px 16px;
+  background: linear-gradient(135deg, #0a1628 0%, #122040 100%);
+  border-radius: 8px;
+  padding: 14px 16px;
+  border-left: 4px solid var(--red);
+}
+#etf-brief-label { font-size: 9px; font-weight: 700; color: var(--red); letter-spacing: 0.15em; margin-bottom: 10px; }
+#etf-brief-content { font-size: 13px; color: rgba(255,255,255,0.88); line-height: 1.8; font-family: 'Noto Serif KR', serif; word-break: keep-all; }
+.etf-brief-row { margin-bottom: 8px; }
+.etf-brief-row-label { font-size: 10px; font-weight: 700; color: var(--red); margin-bottom: 3px; }
+.etf-brief-row-text { font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.6; }
+#etf-sheet-close {
+  display: block; width: calc(100% - 32px); margin: 0 16px 16px;
+  padding: 13px; background: var(--bg); border: 1px solid var(--border);
+  border-radius: 8px; font-family: 'Noto Sans KR', sans-serif; font-size: 14px;
+  cursor: pointer; color: var(--sub);
+}
+[data-theme="dark"] #etf-widget-inner { background: #1a1d27; }
+[data-theme="dark"] .etf-item:hover { background: #22263a; }
+[data-theme="dark"] #etf-sheet { background: #1a1d27; }
+[data-theme="dark"] #etf-sheet-close { background: #22263a; border-color: #2a2d3a; color: #8b8fa8; }
+
+@media(max-width: 480px) {
+  #logo { font-size: 24px; }
+  .card-featured .card-title { font-size: 15px; }
+  .card-title { font-size: 13px; }
+  #summary-bar { padding: 8px 12px; }
+  .tab { padding: 11px 15px; font-size: 12px; }
+}
+
+/* ── 경제지표 캘린더 모달 ── */
+#calendar-modal {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0; top: 0;
+  z-index: 1000;
+  background: rgba(0,0,0,0.5);
+  align-items: flex-end;
+}
+#calendar-modal.show { display: flex; }
+#calendar-sheet {
+  background: var(--white);
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  border-radius: 16px 16px 0 0;
+  max-height: 85vh;
+  overflow-y: auto;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+#calendar-modal.show #calendar-sheet { transform: translateY(0); }
+#calendar-sheet-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 12px auto 0; }
+#calendar-sheet-header {
+  padding: 14px 16px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+#calendar-sheet-title { font-size: 15px; font-weight: 700; color: var(--text); }
+#calendar-sheet-close-btn {
+  font-size: 18px;
+  color: var(--sub);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+.cal-section-title {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--sub);
+  letter-spacing: 0.15em;
+  padding: 12px 16px 6px;
+  text-transform: uppercase;
+}
+.cal-item {
+  display: flex;
+  align-items: center;
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  gap: 12px;
+  transition: background 0.15s;
+}
+.cal-item:hover { background: #fafafa; }
+.cal-item:last-child { border-bottom: none; }
+.cal-item.today-item { background: rgba(232,0,26,0.04); border-left: 3px solid var(--red); }
+[data-theme="dark"] .cal-item.today-item { background: rgba(232,0,26,0.08); }
+.cal-date {
+  font-size: 11px;
+  color: var(--sub);
+  width: 52px;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+.cal-date.today { color: var(--red); font-weight: 700; }
+.cal-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.cal-dot.high { background: #e8001a; }
+.cal-dot.mid { background: #f0a500; }
+.cal-dot.low { background: #9ca3af; }
+.cal-name { flex: 1; font-size: 13px; font-weight: 600; color: var(--text); }
+.cal-country { font-size: 10px; color: var(--sub); flex-shrink: 0; }
+.cal-arrow { font-size: 10px; color: var(--sub); }
+
+#cal-brief-box {
+  margin: 0 16px 16px;
+  background: linear-gradient(135deg, #0a1628 0%, #122040 100%);
+  border-radius: 8px;
+  padding: 14px 16px;
+  border-left: 4px solid var(--red);
+  display: none;
+}
+#cal-brief-label { font-size: 9px; font-weight: 700; color: var(--red); letter-spacing: 0.15em; margin-bottom: 10px; }
+#cal-brief-name { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 10px; }
+#cal-brief-content { font-size: 13px; color: rgba(255,255,255,0.88); line-height: 1.8; font-family: 'Noto Serif KR', serif; word-break: keep-all; }
+.cal-brief-row { margin-bottom: 8px; }
+.cal-brief-row-label { font-size: 10px; font-weight: 700; color: var(--red); margin-bottom: 3px; }
+.cal-brief-row-text { font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.6; }
+[data-theme="dark"] #calendar-sheet { background: #1a1d27; }
+[data-theme="dark"] .cal-item:hover { background: #22263a; }
+
+.info-tip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px; height: 15px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.5);
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  flex-shrink: 0;
+  font-style: italic;
+  font-family: Georgia, serif;
+  position: relative;
+}
+.info-tip-light {
+  background: var(--border);
+  color: var(--sub);
+}
+.info-tip:hover { background: var(--red); color: #fff; }
+#tip-popup {
+  position: fixed;
+  background: #111827;
+  color: #e8eaf0;
+  font-size: 12px;
+  line-height: 1.6;
+  padding: 10px 13px;
+  border-radius: 8px;
+  z-index: 3000;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  display: none;
+  word-break: keep-all;
+  border-left: 3px solid var(--red);
+  max-width: 240px;
+  pointer-events: none;
+}
+#tip-popup.show { display: block; }
+#tip-popup::before {
+  content: '';
+  position: absolute;
+  top: -6px; left: 16px;
+  border-width: 0 6px 6px;
+  border-style: solid;
+  border-color: transparent transparent #111827;
+}
+
+/* ── ETF 정렬 버튼 ── */
+#etf-sort-bar {
+  display: flex;
+  gap: 6px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+}
+.etf-sort-btn {
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: none;
+  color: var(--sub);
+  cursor: pointer;
+  font-family: 'Noto Sans KR', sans-serif;
+  transition: all 0.15s;
+}
+.etf-sort-btn.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+.etf-sort-btn.up.active { background: #e8001a; border-color: #e8001a; color: #fff; }
+.etf-sort-btn.dn.active { background: #1a6ce8; border-color: #1a6ce8; color: #fff; }
+[data-theme="dark"] .etf-sort-btn { border-color: #2a2d3a; color: #8b8fa8; }
+
+/* ETF 관련 뉴스 */
+.etf-related-news-item {
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.etf-related-news-item:last-child { border-bottom: none; }
+.etf-related-news-item:hover { opacity: 0.75; }
+.etf-related-news-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.9);
+  line-height: 1.5;
+  word-break: keep-all;
+  font-family: 'Noto Serif KR', serif;
+}
+.etf-related-news-meta {
+  font-size: 10px;
+  color: rgba(255,255,255,0.35);
+  margin-top: 3px;
+}
+#etf-related-news {
+  background: linear-gradient(135deg, #0a1628 0%, #122040 100%);
+  border-radius: 8px;
+  padding: 4px 14px 8px;
+  margin: 0 16px 12px;
+  border-left: 4px solid rgba(232,0,26,0.4);
+}
+</style>
+<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" integrity="sha384-TiCUE00h649CAMonG018J2ujOgDKW/kVWlChEuu4jK2vxfAAD0eZxzCKakxg55G4" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div id="topbar">
+  <span id="topbar-date"></span>
+  <div id="topbar-right">
+    <a href="/board.html">커뮤니티</a>
+    <span>etfradar.kr</span>
+  </div>
+</div>
+
+<div id="ticker-bar" onclick="openTickerModal()" style="cursor:pointer;">
+  <div id="ticker-track"></div>
+</div>
+
+<div id="header">
+  <div id="logo-wrap">
+    <button onclick="openCalendar()" style="background:none;border:none;cursor:pointer;padding:4px;position:absolute;top:8px;left:8px;display:flex;flex-direction:column;align-items:center;gap:1px;" title="경제지표 캘린더">
+      <span style="font-size:16px;line-height:1;">📆</span>
+      <span style="font-size:8px;color:rgba(255,255,255,0.45);letter-spacing:0.05em;font-family:'Noto Sans KR',sans-serif;">경제지표</span>
+    </button>
+    <div id="logo">ETF레이더</div>
+    <div id="logo-badge">LIVE</div>
+  </div>
+  <div id="tagline">국내 ETF · 펀드 · 주식 전문 뉴스</div>
+  <button onclick="toggleDark()" id="dark-toggle" style="position:absolute;top:10px;right:12px;background:none;border:none;font-size:18px;cursor:pointer;padding:4px;">🌙</button>
+</div>
+
+<div id="ad-top"></div>
+
+<div id="kakao-channel-banner">
+  <div id="kakao-channel-banner-left" onclick="addKakaoChannel()">
+    <span id="kakao-channel-banner-icon">💬</span>
+    <div>
+      <div id="kakao-channel-banner-text">ETF레이더 카카오톡 채널 구독</div>
+      <div id="kakao-channel-banner-sub">매일 오전 8시 AI 시장브리핑 무료 발송</div>
+    </div>
+  </div>
+  <button id="kakao-channel-banner-btn" onclick="addKakaoChannel()">채널 추가</button>
+  <button id="kakao-channel-close" onclick="closeKakaoChannel()">✕</button>
+</div>
+
+<div id="tabs">
+  <button class="tab active" onclick="switchTab('all',this)">전체</button>
+  <button class="tab" onclick="switchTab('etf',this)">ETF</button>
+  <button class="tab" onclick="switchTab('etfboard',this)">ETF브리핑</button>
+  <button class="tab" onclick="switchTab('fund',this)">펀드</button>
+  <button class="tab" onclick="switchTab('stock',this)">주식</button>
+  <a href="/board.html" class="tab community">커뮤니티</a>
+</div>
+
+<div id="ai-summary">
+  <div id="ai-summary-inner">
+    <div id="ai-summary-header">
+      <span id="ai-summary-label">한줄 시장브리핑</span>
+      <span class="info-tip info-tip-dark" onclick="showTip('오늘의 주요 뉴스를 AI가 ETF 투자자 관점으로 요약한 브리핑이에요. 1시간마다 자동 업데이트돼요.', this)">?</span>
+      <span id="ai-summary-date"></span>
+    </div>
+    <div id="ai-summary-text">
+      <div id="ai-summary-loading" style="display:flex;align-items:center;gap:8px;">
+        <div class="ai-spinner"></div> 오늘의 시장 핵심을 분석하고 있습니다...
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="hot-news">
+  <div id="hot-news-inner">
+    <div id="hot-news-header">
+      <span class="hot-label">HOT</span>
+      <span class="hot-sub">오늘 많이 본 뉴스</span>
+      <span class="info-tip info-tip-light" onclick="showTip('오늘 이 사이트에서 클릭이 많았던 뉴스 순위예요. 데이터가 쌓이면 자동으로 업데이트돼요.', this)">?</span>
+    </div>
+    <div id="hot-news-list"></div>
+  </div>
+</div>
+
+<!-- ETF 전광판 -->
+<div id="etf-widget" style="display:none;">
+  <div id="etf-widget-inner">
+    <!-- 공포/탐욕 지수 -->
+    <div style="margin:12px 12px 0;border-radius:8px;padding:14px 16px;background:linear-gradient(135deg,#0a1628 0%,#122040 100%);display:flex;align-items:center;gap:16px;">
+      <div style="flex-shrink:0;text-align:center;width:72px;">
+        <div id="fear-greed-number" style="font-size:34px;font-weight:900;line-height:1;color:#f0a500;font-variant-numeric:tabular-nums;">-</div>
+        <div id="fear-greed-emoji" style="font-size:18px;margin-top:2px;">⏳</div>
+      </div>
+      <div style="flex:1;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+          <span style="font-size:9px;font-weight:700;color:#e8001a;letter-spacing:0.15em;">FEAR & GREED</span>
+          <span id="fear-greed-status" style="font-size:15px;font-weight:700;color:#f0a500;">분석 중...</span>
+          <span class="info-tip info-tip-dark" onclick="showTip('코스피·코스닥 등락, VIX 변동성 지수, 나스닥 흐름을 종합해 시장 심리를 0~100으로 표현해요. 낮을수록 공포, 높을수록 탐욕이에요.', this)">?</span>
+        </div>
+        <div style="background:rgba(255,255,255,0.1);border-radius:4px;height:6px;overflow:hidden;margin-bottom:6px;">
+          <div id="fear-greed-bar" style="width:50%;height:100%;border-radius:4px;background:#f0a500;transition:width 1s ease;"></div>
+        </div>
+        <div id="fear-greed-details" style="display:flex;gap:10px;flex-wrap:wrap;font-size:10px;color:rgba(255,255,255,0.45);"></div>
+      </div>
+    </div>
+    <div id="etf-theme-tabs"></div>
+    <div id="etf-sort-bar">
+      <button class="etf-sort-btn active" onclick="sortETF('default',this)">테마별</button>
+      <button class="etf-sort-btn up" onclick="sortETF('up',this)">상승↑</button>
+      <button class="etf-sort-btn dn" onclick="sortETF('dn',this)">하락↓</button>
+    </div>
+    <div id="etf-list"><div id="etf-loading" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:20px;color:var(--sub);font-size:12px;"><div class="ai-spinner" style="border-color:#e2e6ed;border-top-color:var(--red);"></div> 시세 불러오는 중...</div></div>
+  </div>
+</div>
+
+<div id="summary-bar">
+  <span id="article-count">뉴스 불러오는 중...</span>
+  <button id="refresh-btn" onclick="loadFeeds()">
+    <span id="refresh-icon">↻</span> 새로고침
+  </button>
+</div>
+
+<div id="news">
+  <div id="loading">
+    <div class="spinner"></div><br>
+    최신 뉴스를 불러오고 있습니다...
+  </div>
+</div>
+
+<div id="footer">
+  ETF레이더 · 국내 ETF·펀드·주식 전문 뉴스<br>
+  원문 저작권은 각 언론사에 귀속됩니다<br>
+  <a href="/board.html">커뮤니티</a> · <a href="mailto:etfradar.kr@gmail.com">문의</a><br>
+  <span id="update-time"></span>
+</div>
+
+<div id="ad-fixed-bottom"></div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script>
+document.getElementById('topbar-date').textContent = new Date().toLocaleDateString('ko-KR', {
+  year: 'numeric', month: 'long', day: 'numeric', weekday: 'short'
+});
+
+// ── 국내 지수 목록 (코스피·코스닥 포함) ──
+const DOMESTIC_INDICES = new Set(['kospi', 'kosdaq']);
+
+let lastIndicesData = {};
+
+async function loadIndices() {
+  try {
+    const res = await fetch('/api/indices');
+    const data = await res.json();
+    lastIndicesData = data;
+    // 코스피·코스닥을 맨 앞에 배치
+    const order = ['kospi','kosdaq','nikkei','topix','shanghai','hk','sp500','nasdaq','dow'];
+    const items = order.filter(k => data[k]).map(k => {
+      const d = data[k];
+      const cls = d.up ? 'up' : 'dn';
+      const isDomestic = DOMESTIC_INDICES.has(k);
+      return `<div class="index-item${isDomestic ? ' domestic' : ''}">
+        <span class="index-name">${d.name}</span>
+        <span class="index-price">${d.price}</span>
+        <span class="index-change ${cls}">${d.pct}</span>
+      </div>`;
+    }).join('');
+    document.getElementById('ticker-track').innerHTML = items + items;
+  } catch(e) {}
+}
+
+function openTickerModal() {
+  const order = ['kospi','kosdaq','nikkei','topix','shanghai','hk','sp500','nasdaq','dow'];
+  const data = lastIndicesData;
+  if (!Object.keys(data).length) return;
+  const grid = order.filter(k => data[k]).map(k => {
+    const d = data[k];
+    const cls = d.up ? 'up' : 'dn';
+    const isDomestic = DOMESTIC_INDICES.has(k);
+    return `<div class="ticker-detail-item ${cls}${isDomestic ? ' domestic' : ''}">
+      <div class="ticker-detail-name">${d.name}</div>
+      <div class="ticker-detail-price">${d.price}</div>
+      <div class="ticker-detail-change ${cls}">${d.pct}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('ticker-detail-grid').innerHTML = grid;
+  document.getElementById('ticker-modal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeTickerModal() {
+  document.getElementById('ticker-modal').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+loadIndices();
+setInterval(loadIndices, 60000);
+
+const TAB_SOURCES = {
+  all: [
+    "https://news.google.com/rss/search?q=ETF+한국+투자&hl=ko&gl=KR&ceid=KR:ko",
+    "https://news.google.com/rss/search?q=공모펀드+사모펀드&hl=ko&gl=KR&ceid=KR:ko",
+    "https://news.google.com/rss/search?q=코스피+코스닥+증시&hl=ko&gl=KR&ceid=KR:ko",
+    "https://www.hankyung.com/feed/finance",
+    "https://www.edaily.co.kr/rss/newsflash.xml",
+    "https://www.mt.co.kr/rss/index.html"
+  ],
+  etf: [
+    "https://news.google.com/rss/search?q=ETF&hl=ko&gl=KR&ceid=KR:ko",
+    "https://news.google.com/rss/search?q=상장지수펀드&hl=ko&gl=KR&ceid=KR:ko",
+    "https://news.google.com/rss/search?q=TIGER+ETF+KODEX&hl=ko&gl=KR&ceid=KR:ko",
+    "https://www.hankyung.com/feed/finance",
+    "https://www.edaily.co.kr/rss/newsflash.xml"
+  ],
+  fund: [
+    "https://news.google.com/rss/search?q=펀드&hl=ko&gl=KR&ceid=KR:ko",
+    "https://news.google.com/rss/search?q=공모펀드+사모펀드&hl=ko&gl=KR&ceid=KR:ko",
+    "https://news.google.com/rss/search?q=펀드+수익률+운용&hl=ko&gl=KR&ceid=KR:ko",
+    "https://www.mt.co.kr/rss/index.html"
+  ],
+  stock: [
+    "https://news.google.com/rss/search?q=코스피+코스닥&hl=ko&gl=KR&ceid=KR:ko",
+    "https://news.google.com/rss/search?q=주식+종목+주가&hl=ko&gl=KR&ceid=KR:ko",
+    "https://news.google.com/rss/search?q=증시+외국인+기관&hl=ko&gl=KR&ceid=KR:ko",
+    "https://www.hankyung.com/feed/finance",
+    "https://www.edaily.co.kr/rss/newsflash.xml",
+    "https://www.mt.co.kr/rss/index.html"
+  ]
+};
+
+const SOURCE_MAP = {
+  'hankyung.com':'한국경제','mk.co.kr':'매일경제','chosun.com':'조선일보',
+  'joongang.co.kr':'중앙일보','donga.com':'동아일보','hani.co.kr':'한겨레',
+  'yonhapnews.co.kr':'연합뉴스','yna.co.kr':'연합뉴스','mt.co.kr':'머니투데이',
+  'edaily.co.kr':'이데일리','sedaily.com':'서울경제','fnnews.com':'파이낸셜뉴스',
+  'heraldcorp.com':'헤럴드경제','asiae.co.kr':'아시아경제','news1.kr':'뉴스1',
+  'newsis.com':'뉴시스','etnews.com':'전자신문','zdnet.co.kr':'ZDNet',
+  'bloter.net':'블로터','khan.co.kr':'경향신문','hankookilbo.com':'한국일보',
+  'kmib.co.kr':'국민일보','seoul.co.kr':'서울신문','jtbc.co.kr':'JTBC',
+  'mbc.co.kr':'MBC','sbs.co.kr':'SBS','kbs.co.kr':'KBS',
+  'wowtv.co.kr':'한국경제TV','inews24.com':'아이뉴스24','thebell.co.kr':'더벨',
+  'biz.chosun.com':'조선비즈','moneys.mt.co.kr':'머니S','fn.co.kr':'파이낸셜뉴스',
+  'investchosun.com':'투자조선','etoday.co.kr':'이투데이','g-enews.com':'글로벌이코노믹',
+  'dailian.co.kr':'데일리안','businesspost.co.kr':'비즈니스포스트'
+};
+
+function cleanSource(raw) {
+  for (const [domain, name] of Object.entries(SOURCE_MAP)) {
+    if (raw.toLowerCase().includes(domain)) return name;
+  }
+  if (raw.includes('.')) return raw.split('.')[0].toUpperCase();
+  return raw;
+}
+
+function parseTitle(raw) {
+  const match = raw.match(/^(.*?)\s+-\s+(.+)$/);
+  if (match) return { title: cleanTitle(match[1].trim()), source: cleanSource(match[2].trim()) };
+  return { title: cleanTitle(raw.trim()), source: '뉴스' };
+}
+
+function cleanTitle(t) {
+  return t.replace(/[\uFFFD\u25A1\u25A0]/g, '').replace(/\s+/g, ' ').trim();
+}
+
+let curTab = 'all', allArticles = [], displayCount = 20;
+
+function switchTab(tab, el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  curTab = tab;
+  displayCount = 20;
+
+  if (tab === 'etfboard') {
+    document.getElementById('etf-widget').style.display = 'block';
+    document.getElementById('ai-summary').style.display = 'none';
+    document.getElementById('hot-news').style.display = 'none';
+    document.getElementById('summary-bar').style.display = 'none';
+    document.getElementById('news').style.display = 'none';
+    loadFearGreed();
+    // ✅ Fix: etfLoaded 체크 후 최초 1회만 로딩
+    if (!etfLoaded) { loadETF(); etfLoaded = true; }
+  } else {
+    document.getElementById('etf-widget').style.display = 'none';
+    document.getElementById('ai-summary').style.display = 'block';
+    document.getElementById('summary-bar').style.display = 'flex';
+    document.getElementById('news').style.display = 'block';
+    loadFeeds();
+    loadHotNews();
+  }
+}
+
+function toggleDark() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  if (isDark) {
+    document.documentElement.removeAttribute('data-theme');
+    document.getElementById('dark-toggle').textContent = '🌙';
+    localStorage.setItem('theme', 'light');
+  } else {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    document.getElementById('dark-toggle').textContent = '☀️';
+    localStorage.setItem('theme', 'dark');
+  }
+}
+if (localStorage.getItem('theme') === 'dark') {
+  document.documentElement.setAttribute('data-theme', 'dark');
+  document.getElementById('dark-toggle').textContent = '☀️';
+}
+
+function timeAgo(d) {
+  const m = Math.floor((Date.now() - new Date(d)) / 60000);
+  if (m < 1) return '방금';
+  if (m < 60) return m + '분 전';
+  if (m < 1440) return Math.floor(m / 60) + '시간 전';
+  return Math.floor(m / 1440) + '일 전';
+}
+
+function isNew(d) { return (Date.now() - new Date(d)) < 3600000; }
+
+function strip(h) {
+  return h ? h.replace(/<[^>]*>/g, '').replace(/&[a-z#0-9]+;/gi, ' ')
+              .replace(/[\uFFFD\u25A1\u25A0]/g, '').replace(/\s+/g, ' ').trim() : '';
+}
+
+async function fetchOne(url) {
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 10000);
+    const r = await fetch(`/api/rss?url=${encodeURIComponent(url)}`, { signal: controller.signal });
+    clearTimeout(timer);
+    if (!r.ok) return [];
+    const text = await r.text();
+    if (!text || text.length < 50) return [];
+    const xml = new DOMParser().parseFromString(text, 'text/xml');
+    const items = [...xml.querySelectorAll('item')];
+    if (!items.length) return [];
+    return items.slice(0, 20).map(item => {
+      const raw = item.querySelector('title')?.textContent?.trim() || '';
+      const { title, source } = parseTitle(raw);
+      return {
+        title, source,
+        link: item.querySelector('link')?.textContent?.trim() || item.querySelector('guid')?.textContent || '',
+        pubDate: item.querySelector('pubDate')?.textContent || new Date().toISOString(),
+        description: strip(item.querySelector('description')?.textContent || '')
+      };
+    }).filter(a => a.title && a.title.length > 2);
+  } catch (e) {
+    return [];
+  }
+}
+
+async function loadFeeds() {
+  document.getElementById('news').innerHTML = '<div id="loading"><div class="spinner"></div><br>최신 뉴스를 불러오고 있습니다...</div>';
+  document.getElementById('article-count').textContent = '뉴스 불러오는 중...';
+
+  const urls = TAB_SOURCES[curTab] || TAB_SOURCES.all;
+  const results = await Promise.all(urls.map(url => fetchOne(url)));
+  const all = results.flat();
+  all.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+
+  const seen = new Set();
+  const seenKeywords = [];
+  const sevenDaysAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
+  allArticles = all.filter(a => {
+    if (seen.has(a.title)) return false;
+    seen.add(a.title);
+    if (new Date(a.pubDate).getTime() < sevenDaysAgo) return false;
+    const words = a.title.replace(/[^가-힣a-zA-Z0-9]/g, ' ').split(' ').filter(w => w.length >= 2);
+    for (const prev of seenKeywords) {
+      const overlap = words.filter(w => prev.includes(w)).length;
+      if (overlap >= 4) return false;
+    }
+    seenKeywords.push(words);
+    return true;
+  });
+
+  if (!allArticles.length) {
+    document.getElementById('news').innerHTML = '<div id="loading">잠시 후 다시 시도해주세요.</div>';
+    return;
+  }
+
+  allArticles = scoreArticles(allArticles);
+  renderArticles();
+  document.getElementById('update-time').textContent = '최종 업데이트 ' + new Date().toLocaleTimeString('ko-KR');
+  loadAISummary(allArticles.map(a => a.title));
+  loadHotNews();
+}
+
+// ── 뉴스 카드 렌더링 개선 ──
+function renderArticles() {
+  document.getElementById('article-count').innerHTML = `총 <strong>${allArticles.length}</strong>건의 뉴스`;
+  const items = allArticles.slice(0, displayCount);
+  let html = '';
+
+  items.forEach((a, i) => {
+    const ago = timeAgo(a.pubDate);
+    const newBadge = isNew(a.pubDate) ? '<span class="new-badge">NEW</span>' : '';
+    const isTop = i < 3;
+    // 스니펫: 상위 3개만 표시, 제목과 중복되는 내용 제거 후 최대 60자
+    const snippet = a.description && a.description.length > 10
+      ? a.description.replace(a.title, '').trim().slice(0, 80)
+      : '';
+
+    if (i === 10) html += `<div class="ad-middle"></div>`;
+
+    html += `
+      <div onclick="openArticle('${a.link.replace(/'/g,"\\'")}','${a.title.replace(/'/g,"\\'")}','${a.source.replace(/'/g,"\\'")}')">
+        <div class="card${isTop ? ' card-top' : ''}">
+          <div class="card-num${isTop ? ' hot' : ''}">${i + 1}</div>
+          <div class="card-body">
+            <div class="card-meta">
+              <span class="source-badge">${a.source}</span>
+              <span class="time-badge">${ago}</span>
+              ${newBadge}
+            </div>
+            <div class="card-title">${a.title}</div>
+            ${snippet ? `<div class="card-snippet">${snippet}</div>` : ''}
+          </div>
+        </div>
+      </div>`;
+  });
+
+  if (allArticles.length > displayCount) {
+    html += `<button id="load-more" onclick="loadMore()">뉴스 더 보기 (${allArticles.length - displayCount}건 남음) ↓</button>`;
+  }
+
+  document.getElementById('news').innerHTML = html;
+}
+
+function loadMore() { displayCount += 20; renderArticles(); }
+
+function scoreArticles(articles) {
+  function getKeywords(title) {
+    return title.replace(/[^가-힣a-zA-Z0-9 ]/g, ' ').split(' ').filter(w => w.length >= 2).slice(0, 5);
+  }
+  const keywordCount = {};
+  articles.forEach(a => {
+    getKeywords(a.title).forEach(kw => { keywordCount[kw] = (keywordCount[kw] || 0) + 1; });
+  });
+  const now = Date.now();
+  articles.forEach(a => {
+    let kwScore = 0;
+    getKeywords(a.title).forEach(kw => { if (keywordCount[kw] > 1) kwScore += keywordCount[kw]; });
+    const ageMin = (now - new Date(a.pubDate)) / 60000;
+    let timeScore = 0;
+    if (ageMin < 60) timeScore = 100;
+    else if (ageMin < 180) timeScore = 60;
+    else if (ageMin < 360) timeScore = 30;
+    else if (ageMin < 720) timeScore = 10;
+    a.score = (timeScore * 2) + kwScore;
+  });
+  return articles.sort((a, b) => b.score - a.score);
+}
+
+let currentArticleUrl = '';
+
+function openArticle(url, title, source) {
+  currentArticleUrl = url;
+  trackClick(url, title);
+
+  document.getElementById('article-sheet-source').textContent = source;
+  document.getElementById('article-sheet-title').textContent = title;
+  document.getElementById('article-ai-content').innerHTML = `
+    <div style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.4);font-size:12px;">
+      <div class="ai-spinner"></div> 분석 중...
+    </div>`;
+  document.getElementById('article-etf-section').style.display = 'none';
+  document.getElementById('article-modal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+  history.pushState({ modal: 'article' }, '');
+
+  fetch('/api/article', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ title, source, url }),
+  }).then(r => r.json()).then(data => {
+    if (data.summary) {
+      const text = data.summary;
+      const oneline = text.match(/\[한줄요약\]\s*(.+)/)?.[1]?.trim() || '';
+      const point   = text.match(/\[투자포인트\]([\s\S]*?)(?=\[|$)/)?.[1]?.trim() || '';
+      const etf     = text.match(/\[관련ETF\]\s*(.+)/)?.[1]?.trim() || '';
+      let html = '';
+      if (oneline) html += `<div class="article-ai-section"><div class="article-ai-section-label">한줄요약</div><div class="article-ai-section-text">${oneline}</div></div>`;
+      if (point)   html += `<div class="article-ai-section"><div class="article-ai-section-label">투자포인트</div><div class="article-ai-section-text">${point.replace(/\n/g,'<br>')}</div></div>`;
+      if (etf)     html += `<div class="article-ai-section"><div class="article-ai-section-label">관련 ETF</div><div class="article-ai-section-text">${etf}</div></div>`;
+      document.getElementById('article-ai-content').innerHTML = html || text;
+
+      if (etf) {
+        const etfNames = etf.split(/[,·\/]/).map(e => e.trim()).filter(e => e.length > 1).slice(0, 4);
+        if (etfNames.length) {
+          document.getElementById('article-etf-section').style.display = 'block';
+          document.getElementById('article-etf-list').innerHTML = etfNames.map(e => `
+            <button onclick="goToETFBriefing('${e.replace(/'/g,"\\'")}'); closeArticle();"
+              style="padding:6px 12px;border-radius:16px;border:1px solid var(--red);background:rgba(232,0,26,0.1);
+              color:var(--red);font-size:11px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;">
+              ${e} →
+            </button>`).join('');
+        }
+      }
+    } else {
+      document.getElementById('article-ai-content').textContent = '요약 실패';
+    }
+  }).catch(() => {
+    document.getElementById('article-ai-content').textContent = '요약을 불러오지 못했습니다.';
+  });
+}
+
+function goToETFBriefing(etfName) {
+  const etfTab = document.querySelector('[onclick*="etfboard"]');
+  if (etfTab) etfTab.click();
+  setTimeout(() => {
+    const items = document.querySelectorAll('.etf-item-name');
+    for (const item of items) {
+      if (item.textContent.includes(etfName.replace(/ETF/g,'').trim())) {
+        item.closest('.etf-item')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const el = item.closest('.etf-item');
+        if (el) { el.style.background = 'rgba(232,0,26,0.1)'; setTimeout(() => el.style.background = '', 2000); }
+        break;
+      }
+    }
+  }, 500);
+}
+
+function closeArticle() {
+  document.getElementById('article-modal').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+if (window.Kakao && !Kakao.isInitialized()) {
+  Kakao.init('3e1b5b16a83bf1af306c25925bed481b');
+}
+
+function addKakaoChannel() {
+  window.open('https://pf.kakao.com/_ixdhMX', '_blank');
+}
+
+function closeKakaoChannel() {
+  document.getElementById('kakao-channel-banner').style.display = 'none';
+  localStorage.setItem('kakao-channel-closed', '1');
+}
+
+if (localStorage.getItem('kakao-channel-closed') === '1') {
+  document.getElementById('kakao-channel-banner').style.display = 'none';
+}
+
+function shareKakao() {
+  if (!window.Kakao || !Kakao.isInitialized()) { copyLink(); return; }
+  const title = document.getElementById('article-sheet-title').textContent;
+  const source = document.getElementById('article-sheet-source').textContent;
+  const shareUrl = 'https://etfradar.kr';
+  Kakao.Share.sendDefault({
+    objectType: 'feed',
+    content: {
+      title: `[ETF레이더] ${title}`,
+      description: `${source} · ETF레이더에서 더 많은 ETF 뉴스 보기`,
+      imageUrl: 'https://etfradar.kr/og-image.png',
+      link: { mobileWebUrl: shareUrl, webUrl: shareUrl }
+    },
+    buttons: [{ title: 'ETF레이더에서 보기', link: { mobileWebUrl: shareUrl, webUrl: shareUrl } }]
+  });
+}
+
+function copyLink() {
+  const title = document.getElementById('article-sheet-title').textContent;
+  const text = `[ETF레이더] ${title}\nhttps://etfradar.kr`;
+  navigator.clipboard.writeText(text).then(() => { alert('링크가 복사됐어요!'); }).catch(() => {
+    const el = document.createElement('textarea');
+    el.value = text;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    alert('링크가 복사됐어요!');
+  });
+}
+
+function shareNative() {
+  if (navigator.share) {
+    const title = document.getElementById('article-sheet-title').textContent;
+    navigator.share({ title: `[ETF레이더] ${title}`, text: 'ETF레이더에서 발견한 뉴스예요!', url: 'https://etfradar.kr' }).catch(() => {});
+  } else { copyLink(); }
+}
+
+function openOriginal() {
+  window.open(currentArticleUrl, '_blank', 'noopener');
+  closeArticle();
+}
+
+function trackClick(url, title) {
+  fetch('/api/hot', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ url, title, tab: curTab }),
+  }).catch(() => {});
+}
+
+async function loadHotNews() {
+  document.getElementById('hot-news-list').innerHTML = '';
+  document.getElementById('hot-news').style.display = 'none';
+  try {
+    const res = await fetch(`/api/hot?tab=${curTab}`);
+    const data = await res.json();
+    const hot = data.hot || [];
+    if (!hot.length) return;
+    const list = hot.map((item, i) => `
+      <a href="${item.url}" target="_blank" rel="noopener" onclick="trackClick('${item.url.replace(/'/g,"\\'")}','')">
+        <div class="hot-item">
+          <span class="hot-rank${i >= 3 ? ' gray' : ''}">${i + 1}</span>
+          <span class="hot-title">${item.title}</span>
+          <span class="hot-clicks">${item.clicks}회</span>
+        </div>
+      </a>`).join('');
+    document.getElementById('hot-news-list').innerHTML = list;
+    document.getElementById('hot-news').style.display = 'block';
+  } catch(e) {}
+}
+
+async function loadAISummary(titles) {
+  try {
+    const res = await fetch('/api/summarize', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ titles: titles.slice(0, 7) }),
+    });
+    const data = await res.json();
+    if (data.summary) {
+      renderSummary(data.summary);
+    } else {
+      document.getElementById('ai-summary-text').textContent = data.error || '요약 실패';
+    }
+  } catch (e) {
+    document.getElementById('ai-summary-text').textContent = '요약을 불러오지 못했습니다.';
+  }
+}
+
+function renderSummary(text) {
+  const stock = text.match(/\[주식시장\]\s*(.+)/)?.[1]?.trim() || '';
+  const news  = text.match(/\[주요뉴스\]\s*(.+)/)?.[1]?.trim() || '';
+  const etf   = text.match(/\[ETF\]\s*(.+)/)?.[1]?.trim() || '';
+  if (stock || news || etf) {
+    document.getElementById('ai-summary-text').innerHTML = `
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        ${stock ? `<div style="display:flex;gap:0;align-items:flex-start;"><span style="color:#e8001a;font-weight:700;font-size:10px;letter-spacing:0.05em;white-space:nowrap;padding-top:3px;min-width:52px;">주식시장</span><span style="flex:1;">${stock}</span></div>` : ''}
+        ${news  ? `<div style="display:flex;gap:0;align-items:flex-start;border-top:1px solid rgba(255,255,255,0.08);padding-top:10px;"><span style="color:#e8001a;font-weight:700;font-size:10px;letter-spacing:0.05em;white-space:nowrap;padding-top:3px;min-width:52px;">주요뉴스</span><span style="flex:1;">${news}</span></div>` : ''}
+        ${etf   ? `<div style="display:flex;gap:0;align-items:flex-start;border-top:1px solid rgba(255,255,255,0.08);padding-top:10px;"><span style="color:#e8001a;font-weight:700;font-size:10px;letter-spacing:0.05em;white-space:nowrap;padding-top:3px;min-width:52px;">ETF</span><span style="flex:1;">${etf}</span></div>` : ''}
+      </div>`;
+  } else {
+    document.getElementById('ai-summary-text').textContent = text;
+  }
+}
+
+document.getElementById('ai-summary-date').textContent =
+  new Date().toLocaleDateString('ko-KR', { month: 'long', day: 'numeric', weekday: 'short' });
+
+async function loadFearGreed() {
+  try {
+    const res = await fetch('/api/fear-greed');
+    const data = await res.json();
+    if (!data.index) return;
+    document.getElementById('fear-greed-number').textContent = data.index;
+    document.getElementById('fear-greed-number').style.color = data.color;
+    document.getElementById('fear-greed-emoji').textContent = data.emoji;
+    document.getElementById('fear-greed-status').textContent = data.label;
+    document.getElementById('fear-greed-status').style.color = data.color;
+    document.getElementById('fear-greed-bar').style.width = data.index + '%';
+    document.getElementById('fear-greed-bar').style.background = data.color;
+    if (data.details) {
+      document.getElementById('fear-greed-details').innerHTML = data.details.map(d =>
+        `<span class="fg-detail">${d.label} <span>${d.value}</span></span>`
+      ).join('');
+    }
+  } catch(e) {}
+}
+
+// ── 경제지표 캘린더 ──
+let calendarData = null;
+
+function openCalendar() {
+  document.getElementById('calendar-modal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+  document.getElementById('cal-brief-box').style.display = 'none';
+  if (!calendarData) loadCalendar();
+  history.pushState({ modal: 'calendar' }, '');
+}
+
+function closeCalendar() {
+  document.getElementById('calendar-modal').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+async function loadCalendar() {
+  try {
+    const res = await fetch('/api/econ-calendar');
+    calendarData = await res.json();
+    renderCalendar(calendarData);
+  } catch(e) {
+    document.getElementById('calendar-list').innerHTML = '<div style="padding:20px;text-align:center;color:var(--sub);font-size:13px;">일정을 불러오지 못했습니다.</div>';
+  }
+}
+
+function renderCalendar(data) {
+  const today = new Date().toISOString().split('T')[0];
+  let html = '';
+  if (data.thisWeek && data.thisWeek.length) {
+    html += '<div class="cal-section-title">이번 주</div>';
+    html += data.thisWeek.map(e => calItemHTML(e, today)).join('');
+  } else {
+    html += '<div class="cal-section-title">이번 주</div>';
+    html += '<div style="padding:12px 16px;font-size:13px;color:var(--sub);">이번 주 주요 지표 없음</div>';
+  }
+  const nextWeek = (data.upcoming || []);
+  if (nextWeek.length) {
+    html += '<div class="cal-section-title">다음 2주</div>';
+    html += nextWeek.map(e => calItemHTML(e, today)).join('');
+  }
+  if (data.past && data.past.length) {
+    html += '<div class="cal-section-title">지난 지표</div>';
+    html += data.past.map(e => calItemHTML(e, today)).join('');
+  }
+  document.getElementById('calendar-list').innerHTML = html;
+  const sheet = document.getElementById('calendar-sheet');
+  if (sheet) sheet.scrollTop = 0;
+}
+
+function calItemHTML(e, today) {
+  const d = new Date(e.date);
+  const isToday = e.date === today;
+  const dateStr = `${d.getMonth()+1}/${d.getDate()}(${['일','월','화','수','목','금','토'][d.getDay()]})`;
+  let valueBadge = '';
+  if (e.actual && e.estimate) {
+    valueBadge = `<span style="font-size:10px;font-weight:700;color:#1a6ce8;margin-left:4px;">${e.actual}<span style="color:var(--sub);font-weight:400;">(예상 ${e.estimate})</span></span>`;
+  } else if (e.actual) {
+    valueBadge = `<span style="font-size:10px;font-weight:700;color:#1a6ce8;margin-left:4px;">${e.actual}</span>`;
+  } else if (e.estimate) {
+    valueBadge = `<span style="font-size:10px;color:var(--sub);margin-left:4px;">예상 ${e.estimate}</span>`;
+  }
+  return `
+    <div class="cal-item${isToday ? ' today-item' : ''}" onclick="loadCalBrief('${e.name.replace(/'/g,"\\'")}','${e.date}','')">
+      <span class="cal-date${isToday ? ' today' : ''}">${isToday ? '오늘' : dateStr}</span>
+      <span class="cal-dot ${e.importance}"></span>
+      <span class="cal-name">${e.name}${valueBadge}</span>
+      <span class="cal-country">${e.country}</span>
+      <span class="cal-arrow">›</span>
+    </div>`;
+}
+
+async function loadCalBrief(name, date, desc) {
+  const box = document.getElementById('cal-brief-box');
+  const content = document.getElementById('cal-brief-content');
+  document.getElementById('cal-brief-name').textContent = name;
+  content.innerHTML = '<div style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.4);font-size:12px;"><div class="ai-spinner"></div> 분석 중...</div>';
+  box.style.display = 'block';
+  box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  try {
+    const res = await fetch(`/api/econ-calendar?type=brief&name=${encodeURIComponent(name)}&date=${date}`);
+    const data = await res.json();
+    if (data.brief) {
+      const what = data.brief.match(/\[이게뭔가요\]\s*([\s\S]*?)(?=\[|$)/)?.[1]?.trim() || '';
+      const good = data.brief.match(/\[좋으면\]\s*([\s\S]*?)(?=\[|$)/)?.[1]?.trim() || '';
+      const bad  = data.brief.match(/\[나쁘면\]\s*([\s\S]*?)(?=\[|$)/)?.[1]?.trim() || '';
+      let html = '';
+      if (what) html += `<div class="cal-brief-row"><div class="cal-brief-row-label">이게 뭔가요?</div><div class="cal-brief-row-text">${what}</div></div>`;
+      if (good) html += `<div class="cal-brief-row"><div class="cal-brief-row-label">예상보다 좋으면</div><div class="cal-brief-row-text">${good}</div></div>`;
+      if (bad)  html += `<div class="cal-brief-row"><div class="cal-brief-row-label">예상보다 나쁘면</div><div class="cal-brief-row-text">${bad}</div></div>`;
+      content.innerHTML = html || data.brief;
+    } else {
+      content.textContent = '해설을 불러오지 못했습니다.';
+    }
+  } catch(e) {
+    content.textContent = '해설을 불러오지 못했습니다.';
+  }
+}
+
+// ── 툴팁 ──
+let tipTimer;
+function showTip(msg, el) {
+  const popup = document.getElementById('tip-popup');
+  if (popup.classList.contains('show') && popup.textContent === msg) {
+    popup.classList.remove('show');
+    clearTimeout(tipTimer);
+    return;
+  }
+  popup.textContent = msg;
+  popup.classList.add('show');
+  const rect = el.getBoundingClientRect();
+  const popupW = 240;
+  let left = rect.left;
+  if (left + popupW > window.innerWidth - 16) left = window.innerWidth - popupW - 16;
+  popup.style.left = left + 'px';
+  popup.style.top = (rect.bottom + 8) + 'px';
+  clearTimeout(tipTimer);
+  tipTimer = setTimeout(() => popup.classList.remove('show'), 4000);
+}
+
+loadFeeds();
+
+// ── 뒤로가기로 모달 닫기 ──
+window.addEventListener('popstate', () => {
+  if (document.getElementById('calendar-modal').classList.contains('show')) { closeCalendar(); return; }
+  if (document.getElementById('article-modal').classList.contains('show')) { closeArticle(); return; }
+  if (document.getElementById('etf-modal').classList.contains('show')) { closeETFModal(); return; }
+  if (document.getElementById('ticker-modal').classList.contains('show')) { closeTickerModal(); return; }
+});
+
+window.addEventListener('scroll', () => {
+  if (document.getElementById('article-modal').classList.contains('show')) closeArticle();
+  if (document.getElementById('ticker-modal').classList.contains('show')) closeTickerModal();
+  if (document.getElementById('etf-modal').classList.contains('show')) closeETFModal();
+}, { passive: true });
+
+function addSwipeClose(sheetId, closeFn) {
+  const sheet = document.getElementById(sheetId);
+  if (!sheet) return;
+  let startY = 0;
+  sheet.addEventListener('touchstart', e => { startY = e.touches[0].clientY; }, { passive: true });
+  sheet.addEventListener('touchend', e => {
+    if (e.changedTouches[0].clientY - startY > 60) closeFn();
+  }, { passive: true });
+}
+addSwipeClose('article-sheet', closeArticle);
+addSwipeClose('ticker-sheet', closeTickerModal);
+addSwipeClose('etf-sheet', closeETFModal);
+addSwipeClose('calendar-sheet', closeCalendar);
+</script>
+
+<!-- 경제지표 캘린더 모달 -->
+<div id="calendar-modal" onclick="if(event.target===this)closeCalendar()">
+  <div id="calendar-sheet">
+    <div id="calendar-sheet-handle"></div>
+    <div id="calendar-sheet-header">
+      <span id="calendar-sheet-title">📅 경제지표 캘린더</span>
+      <button id="calendar-sheet-close-btn" onclick="closeCalendar()">✕</button>
+    </div>
+    <div id="cal-brief-box">
+      <div id="cal-brief-label">한줄 지표해설</div>
+      <div id="cal-brief-name"></div>
+      <div id="cal-brief-content"></div>
+    </div>
+    <div id="calendar-list"></div>
+  </div>
+</div>
+
+<!-- 툴팁 팝업 -->
+<div id="tip-popup" onclick="this.classList.remove('show')"></div>
+
+<!-- 뉴스 요약 모달 -->
+<div id="article-modal" onclick="if(event.target===this)closeArticle()">
+  <div id="article-sheet">
+    <div id="article-sheet-handle"></div>
+    <div id="article-sheet-header">
+      <span id="article-sheet-source"></span>
+    </div>
+    <div id="article-sheet-title"></div>
+    <div id="article-sheet-divider"></div>
+    <div id="article-ai-box">
+      <div id="article-ai-label">AI 인사이트</div>
+      <div id="article-ai-content">
+        <div style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.4);font-size:12px;">
+          <div class="ai-spinner"></div> 분석 중...
+        </div>
+      </div>
+    </div>
+    <div id="article-etf-section" style="display:none;margin:0 16px 8px;">
+      <div style="font-size:10px;font-weight:700;color:var(--sub);letter-spacing:0.1em;padding:6px 0 8px;">이 뉴스 관련 ETF</div>
+      <div id="article-etf-list" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+    </div>
+    <div id="article-share-btns">
+      <button class="share-btn kakao" onclick="shareKakao()">💬 카톡 공유</button>
+      <button class="share-btn" onclick="copyLink()">🔗 링크 복사</button>
+      <button class="share-btn" onclick="shareNative()">↗ 공유</button>
+    </div>
+    <div id="article-sheet-actions">
+      <button id="article-close-btn" onclick="closeArticle()">닫기</button>
+      <button id="article-open-btn" onclick="openOriginal()">원문 보기 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- 지수 상세 모달 -->
+<div id="ticker-modal" onclick="if(event.target===this)closeTickerModal()">
+  <div id="ticker-sheet">
+    <div id="ticker-sheet-handle"></div>
+    <div id="ticker-sheet-title">실시간 글로벌 지수</div>
+    <div class="ticker-detail-grid" id="ticker-detail-grid"></div>
+    <button id="ticker-close-btn" onclick="closeTickerModal()">닫기</button>
+  </div>
+</div>
+
+<!-- ETF 브리핑 모달 -->
+<div id="etf-modal" onclick="if(event.target===this)closeETFModal()">
+  <div id="etf-sheet">
+    <div id="etf-sheet-handle"></div>
+    <div id="etf-sheet-info">
+      <div id="etf-sheet-name"></div>
+      <div>
+        <div id="etf-sheet-price"></div>
+        <div id="etf-sheet-pct"></div>
+      </div>
+    </div>
+    <div id="etf-brief-box">
+      <div id="etf-brief-label">AI ETF 브리핑</div>
+      <div id="etf-brief-content">
+        <div style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.4);font-size:12px;">
+          <div class="ai-spinner"></div> 분석 중...
+        </div>
+      </div>
+    </div>
+    <div id="etf-related-news">
+      <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.35);letter-spacing:0.1em;padding:8px 0 6px;">관련 뉴스</div>
+      <div id="etf-related-news-list"></div>
+    </div>
+    <button id="etf-sheet-close" onclick="closeETFModal()">닫기</button>
+  </div>
+</div>
+
+<script>
+// ✅ Fix: 전역 변수 명시적 선언 (정렬 버그 원인)
+let etfData = {};
+let currentTheme = '전체';
+let etfLoaded = false;
+let currentSort = 'default';
+
+// ── ETF 정렬 (버그 수정됨) ──
+function sortETF(type, el) {
+  document.querySelectorAll('.etf-sort-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  currentSort = type;
+
+  // ✅ Fix: currentTheme이 항상 초기화된 상태에서 참조
+  let list = currentTheme === '전체'
+    ? (etfData.etfs || [])
+    : (etfData.themes?.[currentTheme] || []);
+
+  if (!list.length) return;
+  list = [...list]; // 원본 복사 후 정렬
+
+  if (type === 'up') {
+    list.sort((a, b) => parseFloat(b.pct) - parseFloat(a.pct));
+  } else if (type === 'dn') {
+    list.sort((a, b) => parseFloat(a.pct) - parseFloat(b.pct));
+  }
+  // 'default'는 원본 순서 (themes 데이터 기준)
+
+  renderETFList(list);
+}
+
+// ── ETF 관련 뉴스 ──
+async function loadETFRelatedNews(etfName) {
+  const el = document.getElementById('etf-related-news-list');
+  el.innerHTML = '<div style="padding:8px 0;font-size:12px;color:rgba(255,255,255,0.3);">뉴스 불러오는 중...</div>';
+  try {
+    const keyword = etfName
+      .replace('TIGER','').replace('KODEX','').replace('ACE','').replace('PLUS','').replace('SOL','')
+      .replace('TOP10','').replace('TOP3','').replace('TOP7','').replace('TOP4','').replace('Plus','')
+      .replace('액티브','').replace('플러스','').replace('TR','').replace(/[()&]/g,'').trim();
+
+    const rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(keyword)}&hl=ko&gl=KR&ceid=KR:ko`;
+    const res = await fetch(`/api/rss?url=${encodeURIComponent(rssUrl)}`);
+    const text = await res.text();
+    const itemMatches = [...text.matchAll(/<item>([\s\S]*?)<\/item>/g)];
+    const news = itemMatches.slice(0, 3).map(m => {
+      const item = m[1];
+      const titleMatch = item.match(/<title><!\[CDATA\[(.*?)\]\]><\/title>/) || item.match(/<title>(.*?)<\/title>/);
+      const linkMatch = item.match(/<link>(.*?)<\/link>/);
+      const dateMatch = item.match(/<pubDate>(.*?)<\/pubDate>/);
+      const rawTitle = titleMatch?.[1] || '';
+      const title = rawTitle.replace(/\s+-\s+.+$/, '').trim();
+      const link = linkMatch?.[1] || '';
+      const date = dateMatch?.[1] ? timeAgo(new Date(dateMatch[1])) : '';
+      return { title, link, date };
+    }).filter(n => n.title.length > 2 && !n.title.includes('Google'));
+
+    if (!news.length) {
+      el.innerHTML = '<div style="padding:8px 0;font-size:12px;color:rgba(255,255,255,0.3);">관련 뉴스 없음</div>';
+      return;
+    }
+    el.innerHTML = news.map(n => `
+      <div class="etf-related-news-item" onclick="openArticle('${n.link.replace(/'/g,"\\'")}','${n.title.replace(/'/g,"\\'")}','관련뉴스')">
+        <div class="etf-related-news-title">${n.title}</div>
+        <div class="etf-related-news-meta">${n.date}</div>
+      </div>`).join('');
+  } catch(e) {
+    el.innerHTML = '<div style="padding:8px 0;font-size:12px;color:rgba(255,255,255,0.3);">뉴스 불러오기 실패</div>';
+  }
+}
+
+async function loadETF() {
+  try {
+    const res = await fetch('/api/etf-prices');
+    const data = await res.json();
+    etfData = data;
+    renderETFTabs(data);
+    renderETFList(data.etfs);
+  } catch(e) {
+    document.getElementById('etf-loading').textContent = '시세 불러오기 실패';
+  }
+}
+
+function renderETFTabs(data) {
+  const themes = ['전체', ...Object.keys(data.themes || {})];
+  const tabs = themes.map((t, i) => `
+    <button class="etf-theme-tab${i === 0 ? ' active' : ''}" onclick="switchETFTheme('${t}', this)">${t}</button>
+  `).join('');
+  document.getElementById('etf-theme-tabs').innerHTML = tabs;
+}
+
+function switchETFTheme(theme, el) {
+  document.querySelectorAll('.etf-theme-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  currentTheme = theme;
+  currentSort = 'default';
+  // 테마 변경 시 정렬 버튼도 '테마별'로 초기화
+  document.querySelectorAll('.etf-sort-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('.etf-sort-btn').classList.add('active');
+  const list = theme === '전체' ? etfData.etfs : (etfData.themes?.[theme] || []);
+  renderETFList(list);
+}
+
+function renderETFList(list) {
+  if (!list || !list.length) {
+    document.getElementById('etf-list').innerHTML = '<div id="etf-loading">데이터 없음</div>';
+    return;
+  }
+  const html = list.map(e => `
+    <div class="etf-item" onclick="openETFModal('${e.code}','${e.name}','${e.price}','${e.pct}','${e.change}',${e.up})">
+      <div class="etf-item-name">${e.name}</div>
+      <div class="etf-item-price">${e.price}</div>
+      <div class="etf-item-pct ${e.up ? 'up' : 'dn'}">${e.pct}</div>
+      <span style="font-size:10px;color:var(--sub);">›</span>
+    </div>
+  `).join('');
+  document.getElementById('etf-list').innerHTML = html;
+}
+
+function openETFModal(code, name, price, pct, change, up) {
+  document.getElementById('etf-sheet-name').textContent = name;
+  document.getElementById('etf-sheet-price').textContent = price + '원';
+  const pctEl = document.getElementById('etf-sheet-pct');
+  pctEl.textContent = change + '원 (' + pct + ')';
+  pctEl.className = up ? 'up' : 'dn';
+  document.getElementById('etf-brief-content').innerHTML = `
+    <div style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.4);font-size:12px;">
+      <div class="ai-spinner"></div> 분석 중...
+    </div>`;
+  document.getElementById('etf-modal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+  history.pushState({ modal: 'etf' }, '');
+
+  fetch('/api/etf-brief', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ etfCode: code, etfName: name, price, pct }),
+  }).then(r => r.json()).then(data => {
+    if (data.brief) {
+      const situation = data.brief.match(/\[지금상황\]\s*(.+)/)?.[1]?.trim() || '';
+      const news      = data.brief.match(/\[핵심뉴스\]\s*(.+)/)?.[1]?.trim() || '';
+      const hint      = data.brief.match(/\[투자힌트\]\s*(.+)/)?.[1]?.trim() || '';
+      let html = '';
+      if (situation) html += `<div class="etf-brief-row"><div class="etf-brief-row-label">지금상황</div><div class="etf-brief-row-text">${situation}</div></div>`;
+      if (news)      html += `<div class="etf-brief-row"><div class="etf-brief-row-label">핵심뉴스</div><div class="etf-brief-row-text">${news}</div></div>`;
+      if (hint)      html += `<div class="etf-brief-row"><div class="etf-brief-row-label">투자힌트</div><div class="etf-brief-row-text">${hint}</div></div>`;
+      document.getElementById('etf-brief-content').innerHTML = html || data.brief;
+    } else {
+      document.getElementById('etf-brief-content').textContent = '브리핑을 불러오지 못했습니다.';
+    }
+  }).catch(() => {
+    document.getElementById('etf-brief-content').textContent = '브리핑을 불러오지 못했습니다.';
+  });
+
+  loadETFRelatedNews(name);
+}
+
+function closeETFModal() {
+  document.getElementById('etf-modal').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+// ✅ Fix: loadETF() 중복 호출 제거 — switchTab에서만 호출
+</script>
+
+</body>
+</html>
