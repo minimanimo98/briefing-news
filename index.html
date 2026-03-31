@@ -1688,6 +1688,7 @@ function openArticle(url, title, source) {
     <div style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.4);font-size:12px;">
       <div class="ai-spinner"></div> 분석 중...
     </div>`;
+  document.getElementById('article-etf-section').style.display = 'none';
   document.getElementById('article-modal').classList.add('show');
   document.body.style.overflow = 'hidden';
   history.pushState({ modal: 'article' }, '');
@@ -1707,12 +1708,43 @@ function openArticle(url, title, source) {
       if (point)   html += `<div class="article-ai-section"><div class="article-ai-section-label">투자포인트</div><div class="article-ai-section-text">${point.replace(/\n/g,'<br>')}</div></div>`;
       if (etf)     html += `<div class="article-ai-section"><div class="article-ai-section-label">관련 ETF</div><div class="article-ai-section-text">${etf}</div></div>`;
       document.getElementById('article-ai-content').innerHTML = html || text;
+
+      // 관련 ETF 칩 표시
+      if (etf) {
+        const etfNames = etf.split(/[,·\/]/).map(e => e.trim()).filter(e => e.length > 1).slice(0, 4);
+        if (etfNames.length) {
+          document.getElementById('article-etf-section').style.display = 'block';
+          document.getElementById('article-etf-list').innerHTML = etfNames.map(e => `
+            <button onclick="goToETFBriefing('${e.replace(/'/g,"\\'")}'); closeArticle();"
+              style="padding:6px 12px;border-radius:16px;border:1px solid var(--red);background:rgba(232,0,26,0.1);
+              color:var(--red);font-size:11px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;">
+              ${e} →
+            </button>`).join('');
+        }
+      }
     } else {
       document.getElementById('article-ai-content').textContent = '요약 실패';
     }
   }).catch(() => {
     document.getElementById('article-ai-content').textContent = '요약을 불러오지 못했습니다.';
   });
+}
+
+function goToETFBriefing(etfName) {
+  // ETF브리핑 탭으로 이동 후 해당 ETF 검색
+  const etfTab = document.querySelector('[onclick*="etfboard"]');
+  if (etfTab) etfTab.click();
+  setTimeout(() => {
+    const items = document.querySelectorAll('.etf-item-name');
+    for (const item of items) {
+      if (item.textContent.includes(etfName.replace(/ETF/g,'').trim())) {
+        item.closest('.etf-item')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        item.closest('.etf-item')?.style && (item.closest('.etf-item').style.background = 'rgba(232,0,26,0.1)');
+        setTimeout(() => item.closest('.etf-item') && (item.closest('.etf-item').style.background = ''), 2000);
+        break;
+      }
+    }
+  }, 500);
 }
 
 function closeArticle() {
@@ -2092,6 +2124,11 @@ addSwipeClose('calendar-sheet', closeCalendar);
         </div>
       </div>
     </div>
+    <!-- 관련 ETF 섹션 -->
+    <div id="article-etf-section" style="display:none;margin:0 16px 8px;">
+      <div style="font-size:10px;font-weight:700;color:var(--sub);letter-spacing:0.1em;padding:6px 0 8px;">이 뉴스 관련 ETF</div>
+      <div id="article-etf-list" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+    </div>
     <div id="article-share-btns">
       <button class="share-btn kakao" onclick="shareKakao()">💬 카톡 공유</button>
       <button class="share-btn" onclick="copyLink()">🔗 링크 복사</button>
@@ -2167,38 +2204,37 @@ async function loadETFRelatedNews(etfName) {
   el.innerHTML = '<div style="padding:8px 0;font-size:12px;color:rgba(255,255,255,0.3);">뉴스 불러오는 중...</div>';
 
   try {
-    // ETF명에서 핵심 키워드 추출
     const keyword = etfName
       .replace('TIGER','').replace('KODEX','').replace('ACE','').replace('PLUS','').replace('SOL','')
-      .replace('TOP10','').replace('TOP3','').replace('TOP7','').replace('TOP4','')
-      .replace('액티브','').replace('플러스','').replace('Plus','')
-      .replace(/[()&]/g,'').trim();
+      .replace('TOP10','').replace('TOP3','').replace('TOP7','').replace('TOP4','').replace('Plus','')
+      .replace('액티브','').replace('플러스','').replace('TR','').replace(/[()&]/g,'').trim();
 
     const rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(keyword)}&hl=ko&gl=KR&ceid=KR:ko`;
     const res = await fetch(`/api/rss?url=${encodeURIComponent(rssUrl)}`);
     const text = await res.text();
 
-    let titles = [...text.matchAll(/<title><!\[CDATA\[(.*?)\]\]><\/title>/g)].map(m => m[1]);
-    let links = [...text.matchAll(/<link>(.*?)<\/link>/g)].map(m => m[1]);
-    let dates = [...text.matchAll(/<pubDate>(.*?)<\/pubDate>/g)].map(m => m[1]);
-
-    if (titles.length <= 1) {
-      titles = [...text.matchAll(/<title>(.*?)<\/title>/g)].map(m => m[1]);
-    }
-
-    const news = titles.slice(1, 4).map((t, i) => ({
-      title: t.replace(/\s+-\s+.+$/, '').trim(),
-      link: links[i+1] || '',
-      date: dates[i] ? timeAgo(new Date(dates[i])) : '',
-    })).filter(n => n.title.length > 2);
+    // items만 파싱 (채널 title 제외)
+    const itemMatches = [...text.matchAll(/<item>([\s\S]*?)<\/item>/g)];
+    const news = itemMatches.slice(0, 3).map(m => {
+      const item = m[1];
+      const titleMatch = item.match(/<title><!\[CDATA\[(.*?)\]\]><\/title>/) || item.match(/<title>(.*?)<\/title>/);
+      const linkMatch = item.match(/<link>(.*?)<\/link>/);
+      const dateMatch = item.match(/<pubDate>(.*?)<\/pubDate>/);
+      const rawTitle = titleMatch?.[1] || '';
+      const title = rawTitle.replace(/\s+-\s+.+$/, '').trim();
+      const link = linkMatch?.[1] || '';
+      const date = dateMatch?.[1] ? timeAgo(new Date(dateMatch[1])) : '';
+      return { title, link, date };
+    }).filter(n => n.title.length > 2 && !n.title.includes('Google'));
 
     if (!news.length) {
       el.innerHTML = '<div style="padding:8px 0;font-size:12px;color:rgba(255,255,255,0.3);">관련 뉴스 없음</div>';
       return;
     }
 
+    // 사이트 내 모달로 열기 (원문 바로 안 나감)
     el.innerHTML = news.map(n => `
-      <div class="etf-related-news-item" onclick="window.open('${n.link}','_blank','noopener')">
+      <div class="etf-related-news-item" onclick="openArticle('${n.link.replace(/'/g,"\\'")}','${n.title.replace(/'/g,"\\'")}','관련뉴스')">
         <div class="etf-related-news-title">${n.title}</div>
         <div class="etf-related-news-meta">${n.date}</div>
       </div>`).join('');
