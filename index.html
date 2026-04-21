@@ -1,4 +1,4 @@
-<!-- v2.1 -->
+<!-- v2.2 -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -111,7 +111,6 @@ a { text-decoration: none; color: inherit; }
 #topbar-right a { color: rgba(255,255,255,0.35); transition: color 0.15s; font-size: 10px; }
 #topbar-right a:hover { color: rgba(255,255,255,0.7); }
 
-/* ── 티커바 (코스피·코스닥 포함) ── */
 #ticker-bar {
   background: #0d1f3c;
   border-bottom: 1px solid rgba(255,255,255,0.06);
@@ -136,7 +135,6 @@ a { text-decoration: none; color: inherit; }
 .index-change { font-size: 10px; font-weight: 600; }
 .index-change.up { color: #ff6b6b; }
 .index-change.dn { color: #74b9ff; }
-/* 코스피·코스닥 강조 */
 .index-item.domestic .index-name { color: rgba(255,200,100,0.7); }
 .index-item.domestic .index-price { color: #ffe680; }
 
@@ -223,6 +221,48 @@ a { text-decoration: none; color: inherit; }
 #kakao-channel-close {
   font-size: 18px;
   color: rgba(0,0,0,0.35);
+  cursor: pointer;
+  padding: 4px;
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  line-height: 1;
+}
+
+/* ── 텔레그램 채널 배너 ── */
+#telegram-channel-banner {
+  background: linear-gradient(135deg, #229ED9 0%, #1a7ab8 100%);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+#telegram-channel-banner-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  cursor: pointer;
+}
+#telegram-channel-banner-text { font-size: 13px; font-weight: 700; color: #fff; line-height: 1.4; }
+#telegram-channel-banner-sub { font-size: 10px; color: rgba(255,255,255,0.7); }
+#telegram-channel-banner-btn {
+  background: #fff;
+  color: #229ED9;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  cursor: pointer;
+  border: none;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+#telegram-channel-close {
+  font-size: 18px;
+  color: rgba(255,255,255,0.5);
   cursor: pointer;
   padding: 4px;
   flex-shrink: 0;
@@ -406,7 +446,6 @@ a { text-decoration: none; color: inherit; }
 
 #news { max-width: 760px; margin: 0 auto; padding: 4px 12px 60px; }
 
-/* ── 뉴스 카드 개선 ── */
 .card-featured {
   background: var(--white);
   border-radius: 8px;
@@ -467,7 +506,6 @@ a { text-decoration: none; color: inherit; }
   cursor: pointer;
 }
 .card:hover { box-shadow: var(--card-shadow-hover); border-left-color: var(--red); transform: translateY(-1px); }
-/* 상위 3개 카드 강조 */
 .card.card-top { border-left-color: rgba(232,0,26,0.2); }
 .card.card-top:hover { border-left-color: var(--red); }
 
@@ -522,8 +560,6 @@ a { text-decoration: none; color: inherit; }
   word-break: keep-all;
   font-family: 'Noto Serif KR', serif;
 }
-
-
 
 .section-label {
   font-size: 10px;
@@ -790,7 +826,6 @@ a { text-decoration: none; color: inherit; }
 .share-btn.kakao:hover { background: #f0d800; border-color: #f0d800; }
 [data-theme="dark"] .share-btn { background: #22263a; border-color: #2a2d3a; color: #e8eaf0; }
 
-/* ── 지수 상세 모달 ── */
 #ticker-modal {
   display: none;
   position: fixed;
@@ -838,7 +873,6 @@ a { text-decoration: none; color: inherit; }
 }
 .ticker-detail-item.up { border-left-color: #ff6b6b; }
 .ticker-detail-item.dn { border-left-color: #74b9ff; }
-/* 국내 지수 강조 */
 .ticker-detail-item.domestic { background: rgba(255,230,100,0.08); }
 .ticker-detail-item.domestic.up { border-left-color: #ffcc00; }
 .ticker-detail-name { font-size: 10px; color: rgba(255,255,255,0.45); margin-bottom: 4px; }
@@ -860,7 +894,6 @@ a { text-decoration: none; color: inherit; }
   cursor: pointer;
 }
 
-/* ── ETF 전광판 ── */
 #etf-widget {
   max-width: 760px;
   margin: 8px auto 0;
@@ -951,7 +984,6 @@ a { text-decoration: none; color: inherit; }
 }
 #etf-loading { text-align: center; padding: 20px; color: var(--sub); font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; }
 
-/* ETF 브리핑 모달 */
 #etf-modal {
   display: none;
   position: fixed;
@@ -1012,7 +1044,6 @@ a { text-decoration: none; color: inherit; }
   .tab { padding: 11px 15px; font-size: 12px; }
 }
 
-/* ── 경제지표 캘린더 모달 ── */
 #calendar-modal {
   display: none;
   position: fixed;
@@ -1157,7 +1188,6 @@ a { text-decoration: none; color: inherit; }
   border-color: transparent transparent #111827;
 }
 
-/* ── PWA 설치 유도 배너 ── */
 #pwa-banner {
   position: fixed;
   bottom: 16px;
@@ -1232,7 +1262,6 @@ a { text-decoration: none; color: inherit; }
 .etf-sort-btn.dn.active { background: #1a6ce8; border-color: #1a6ce8; color: #fff; }
 [data-theme="dark"] .etf-sort-btn { border-color: #2a2d3a; color: #8b8fa8; }
 
-/* ETF 관련 뉴스 */
 .etf-related-news-item {
   padding: 9px 0;
   border-bottom: 1px solid rgba(255,255,255,0.07);
@@ -1293,6 +1322,7 @@ a { text-decoration: none; color: inherit; }
 
 <div id="ad-top"></div>
 
+<!-- 카카오 채널 배너 -->
 <div id="kakao-channel-banner">
   <div id="kakao-channel-banner-left" onclick="addKakaoChannel()">
     <span id="kakao-channel-banner-icon">💬</span>
@@ -1303,6 +1333,19 @@ a { text-decoration: none; color: inherit; }
   </div>
   <button id="kakao-channel-banner-btn" onclick="addKakaoChannel()">채널 추가</button>
   <button id="kakao-channel-close" onclick="closeKakaoChannel()">✕</button>
+</div>
+
+<!-- 텔레그램 채널 배너 -->
+<div id="telegram-channel-banner">
+  <div id="telegram-channel-banner-left" onclick="openTelegram()">
+    <span style="font-size:20px;flex-shrink:0;">✈️</span>
+    <div>
+      <div id="telegram-channel-banner-text">ETF 브리핑 텔레그램 채널</div>
+      <div id="telegram-channel-banner-sub">매시간 테마별 ETF 브리핑 자동 발송</div>
+    </div>
+  </div>
+  <button id="telegram-channel-banner-btn" onclick="openTelegram()">구독하기</button>
+  <button id="telegram-channel-close" onclick="closeTelegramBanner()">✕</button>
 </div>
 
 <div id="tabs">
@@ -1343,7 +1386,6 @@ a { text-decoration: none; color: inherit; }
 <!-- ETF 전광판 -->
 <div id="etf-widget" style="display:none;">
   <div id="etf-widget-inner">
-    <!-- 공포/탐욕 지수 -->
     <div style="margin:12px 12px 0;border-radius:8px;padding:14px 16px;background:linear-gradient(135deg,#0a1628 0%,#122040 100%);display:flex;align-items:center;gap:16px;">
       <div style="flex-shrink:0;text-align:center;width:72px;">
         <div id="fear-greed-number" style="font-size:34px;font-weight:900;line-height:1;color:#f0a500;font-variant-numeric:tabular-nums;">-</div>
@@ -1385,7 +1427,6 @@ a { text-decoration: none; color: inherit; }
   </div>
 </div>
 
-<!-- PWA 설치 유도 배너 -->
 <div id="pwa-banner">
   <span id="pwa-banner-icon">📱</span>
   <div id="pwa-banner-text">
@@ -1405,15 +1446,13 @@ a { text-decoration: none; color: inherit; }
 
 <div id="ad-fixed-bottom"></div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 <script>
 document.getElementById('topbar-date').textContent = new Date().toLocaleDateString('ko-KR', {
   year: 'numeric', month: 'long', day: 'numeric', weekday: 'short'
 });
 
-// ── 국내 지수 목록 (코스피·코스닥 포함) ──
 const DOMESTIC_INDICES = new Set(['kospi', 'kosdaq']);
-
 let lastIndicesData = {};
 
 async function loadIndices() {
@@ -1421,7 +1460,6 @@ async function loadIndices() {
     const res = await fetch('/api/indices');
     const data = await res.json();
     lastIndicesData = data;
-    // 코스피·코스닥을 맨 앞에 배치
     const order = ['kospi','kosdaq','nikkei','topix','shanghai','hk','sp500','nasdaq','dow'];
     const items = order.filter(k => data[k]).map(k => {
       const d = data[k];
@@ -1667,7 +1705,6 @@ function renderArticles() {
     const newBadge = isNew(a.pubDate) ? '<span class="new-badge">NEW</span>' : '';
     const isTop = i < 3;
 
-
     if (i === 10) html += `<div class="ad-middle"></div>`;
 
     html += `
@@ -1809,6 +1846,20 @@ if (localStorage.getItem('kakao-channel-closed') === '1') {
   document.getElementById('kakao-channel-banner').style.display = 'none';
 }
 
+// 텔레그램 채널
+function openTelegram() {
+  window.open('https://t.me/etfradar_kr', '_blank');
+}
+
+function closeTelegramBanner() {
+  document.getElementById('telegram-channel-banner').style.display = 'none';
+  localStorage.setItem('telegram-banner-closed', '1');
+}
+
+if (localStorage.getItem('telegram-banner-closed') === '1') {
+  document.getElementById('telegram-channel-banner').style.display = 'none';
+}
+
 function shareKakao() {
   if (!window.Kakao || !Kakao.isInitialized()) { copyLink(); return; }
   const title = document.getElementById('article-sheet-title').textContent;
@@ -1938,7 +1989,6 @@ async function loadFearGreed() {
   } catch(e) {}
 }
 
-// ── 경제지표 캘린더 ──
 let calendarData = null;
 
 function openCalendar() {
@@ -2038,7 +2088,6 @@ async function loadCalBrief(name, date, desc) {
   }
 }
 
-// ── 툴팁 ──
 let tipTimer;
 function showTip(msg, el) {
   const popup = document.getElementById('tip-popup');
@@ -2059,7 +2108,6 @@ function showTip(msg, el) {
   tipTimer = setTimeout(() => popup.classList.remove('show'), 4000);
 }
 
-// ── PWA 설치 유도 ──
 let deferredPrompt = null;
 
 function shouldShowPWA() {
@@ -2103,10 +2151,8 @@ function closePWABanner() {
 }
 
 checkIOSInstall();
-
 loadFeeds();
 
-// ── 뒤로가기로 모달 닫기 ──
 window.addEventListener('popstate', () => {
   if (document.getElementById('calendar-modal').classList.contains('show')) { closeCalendar(); return; }
   if (document.getElementById('article-modal').classList.contains('show')) { closeArticle(); return; }
@@ -2152,7 +2198,6 @@ addSwipeClose('calendar-sheet', closeCalendar);
   </div>
 </div>
 
-<!-- 툴팁 팝업 -->
 <div id="tip-popup" onclick="this.classList.remove('show')"></div>
 
 <!-- 뉴스 요약 모달 -->
@@ -2226,40 +2271,34 @@ addSwipeClose('calendar-sheet', closeCalendar);
 </div>
 
 <script>
-// ✅ Fix: 전역 변수 명시적 선언 (정렬 버그 원인)
 let etfData = {};
 let currentTheme = '전체';
 let etfLoaded = false;
 let currentSort = 'default';
 
-// 페이지 로드 시 ETF 데이터 미리 로딩 (탭 클릭 시 바로 표시)
 loadETF().then(() => { etfLoaded = true; });
 
-// ── ETF 정렬 (버그 수정됨) ──
 function sortETF(type, el) {
   document.querySelectorAll('.etf-sort-btn').forEach(b => b.classList.remove('active'));
   el.classList.add('active');
   currentSort = type;
 
-  // ✅ Fix: currentTheme이 항상 초기화된 상태에서 참조
   let list = currentTheme === '전체'
     ? (etfData.etfs || [])
     : (etfData.themes?.[currentTheme] || []);
 
   if (!list.length) return;
-  list = [...list]; // 원본 복사 후 정렬
+  list = [...list];
 
   if (type === 'up') {
     list.sort((a, b) => parseFloat(b.pct) - parseFloat(a.pct));
   } else if (type === 'dn') {
     list.sort((a, b) => parseFloat(a.pct) - parseFloat(b.pct));
   }
-  // 'default'는 원본 순서 (themes 데이터 기준)
 
   renderETFList(list);
 }
 
-// ── ETF 관련 뉴스 ──
 async function loadETFRelatedNews(etfName) {
   const el = document.getElementById('etf-related-news-list');
   el.innerHTML = '<div style="padding:8px 0;font-size:12px;color:rgba(255,255,255,0.3);">뉴스 불러오는 중...</div>';
@@ -2301,18 +2340,15 @@ async function loadETFRelatedNews(etfName) {
 
 async function loadETF() {
   const listEl = document.getElementById('etf-list');
-  if (listEl) listEl.innerHTML = '<div style="padding:16px;font-size:12px;color:#aaa;">① API 호출 중...</div>';
+  if (listEl) listEl.innerHTML = '<div id="etf-loading" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:20px;color:var(--sub);font-size:12px;"><div class="ai-spinner" style="border-color:#e2e6ed;border-top-color:var(--red);"></div> 시세 불러오는 중...</div>';
   try {
     const res = await fetch('/api/etf-prices');
-    if (listEl) listEl.innerHTML = '<div style="padding:16px;font-size:12px;color:#aaa;">② 응답 받음, 파싱 중...</div>';
     const data = await res.json();
-    if (listEl) listEl.innerHTML = '<div style="padding:16px;font-size:12px;color:#aaa;">③ 파싱 완료, etfs: ' + (data.etfs?.length ?? 'undefined') + '개</div>';
     etfData = data;
     renderETFTabs(data);
     renderETFList(data.etfs);
   } catch(e) {
-    console.error('loadETF 에러:', e);
-    if (listEl) listEl.innerHTML = '<div style="padding:16px;font-size:12px;color:red;">에러: ' + e.message + '</div>';
+    if (listEl) listEl.innerHTML = '<div style="padding:16px;font-size:12px;color:red;">시세 불러오기 실패</div>';
   }
 }
 
@@ -2389,56 +2425,15 @@ function openETFModal(code, name, price, pct, change, up) {
   loadETFRelatedNews(name);
 }
 
-// ── 북마크 기능 ──
 function getBookmarks() {
   try { return JSON.parse(localStorage.getItem('etf_bookmarks') || '[]'); }
   catch(e) { return []; }
-}
-
-function toggleBookmark(code, btn) {
-  let bookmarks = getBookmarks();
-  if (bookmarks.includes(code)) {
-    bookmarks = bookmarks.filter(c => c !== code);
-    btn.textContent = '☆';
-    btn.classList.remove('active');
-  } else {
-    bookmarks.push(code);
-    btn.textContent = '★';
-    btn.classList.add('active');
-    // 별 애니메이션
-    btn.style.transform = 'scale(1.4)';
-    setTimeout(() => btn.style.transform = '', 200);
-  }
-  localStorage.setItem('etf_bookmarks', JSON.stringify(bookmarks));
-  // 관심 탭 보고 있으면 다시 렌더
-  if (currentTheme === '__bookmark__') renderBookmarkedETFs();
-}
-
-function renderBookmarkedETFs() {
-  const bookmarks = getBookmarks();
-  if (!bookmarks.length) {
-    document.getElementById('etf-list').innerHTML = `
-      <div id="etf-empty-bookmark">
-        ☆ 관심 ETF가 없어요<br>
-        <span style="font-size:12px;color:#bbb;">ETF 옆 ☆ 버튼을 눌러 추가해보세요</span>
-      </div>`;
-    return;
-  }
-  const all = etfData.etfs || [];
-  const list = bookmarks.map(code => all.find(e => e.code === code)).filter(Boolean);
-  if (!list.length) {
-    document.getElementById('etf-list').innerHTML = `<div id="etf-empty-bookmark">시세 데이터를 불러오는 중이에요</div>`;
-    return;
-  }
-  renderETFList(list);
 }
 
 function closeETFModal() {
   document.getElementById('etf-modal').classList.remove('show');
   document.body.style.overflow = '';
 }
-
-// ✅ Fix: loadETF() 중복 호출 제거 — switchTab에서만 호출
 </script>
 
 </body>
