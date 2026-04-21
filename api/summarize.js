@@ -6,6 +6,23 @@ module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   if (req.method === 'OPTIONS') return res.status(200).end();
 
+  // ── GET: 캐시만 즉시 반환 (프론트 초기 로딩용) ──
+  if (req.method === 'GET') {
+    try {
+      const cacheRes = await fetch(`${SUPABASE_URL}/rest/v1/ai_summary_cache?id=eq.1`, {
+        headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+      });
+      const cacheData = await cacheRes.json();
+      if (cacheData?.[0]?.summary && cacheData[0].summary.length > 10) {
+        return res.status(200).json({ summary: cacheData[0].summary, cached: true });
+      }
+      return res.status(200).json({ summary: null });
+    } catch(e) {
+      return res.status(200).json({ summary: null });
+    }
+  }
+
+  // ── POST: 뉴스 기반 새 브리핑 생성 ──
   let body = req.body;
   if (typeof body === 'string') {
     try { body = JSON.parse(body); } catch(e) { body = {}; }
@@ -18,12 +35,9 @@ module.exports = async function handler(req, res) {
   if (!apiKey) return res.status(500).json({ error: 'API 키 없음' });
 
   try {
-    // 1. 캐시 확인 (1시간 이내면 반환)
+    // 캐시 확인 (1시간 이내면 반환)
     const cacheRes = await fetch(`${SUPABASE_URL}/rest/v1/ai_summary_cache?id=eq.1`, {
-      headers: {
-        'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${SUPABASE_KEY}`,
-      }
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
     });
     const cacheData = await cacheRes.json();
     if (cacheData?.[0]?.summary && cacheData?.[0]?.created_at) {
@@ -33,7 +47,7 @@ module.exports = async function handler(req, res) {
       }
     }
 
-    // 2. 새로 생성 - ETF 투자자 관점 특화 프롬프트
+    // 새로 생성
     const prompt = `당신은 10년 경력의 ETF 전문 애널리스트입니다.
 오늘의 주요 뉴스 제목을 보고, 국내 ETF 투자자 입장에서 "지금 당장 어떻게 행동해야 하는가"를 핵심만 짚어주세요.
 
@@ -74,7 +88,7 @@ ${titles.map((t, i) => `${i + 1}. ${t}`).join('\n')}
     const data = await response.json();
     const summary = data?.content?.[0]?.text || '요약 실패';
 
-    // 3. Supabase에 캐시 저장
+    // Supabase 캐시 저장
     if (summary !== '요약 실패') {
       await fetch(`${SUPABASE_URL}/rest/v1/ai_summary_cache?id=eq.1`, {
         method: 'PATCH',
