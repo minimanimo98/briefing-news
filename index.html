@@ -1932,6 +1932,16 @@ async function loadHotNews() {
   } catch(e) {}
 }
 
+// 페이지 로드 즉시 캐시 브리핑 표시
+async function loadCachedSummary() {
+  try {
+    const res = await fetch('/api/summarize'); // GET
+    const data = await res.json();
+    if (data.summary) renderSummary(data.summary);
+  } catch(e) {}
+}
+
+// 뉴스 로딩 후 최신 브리핑 갱신
 async function loadAISummary(titles) {
   try {
     const res = await fetch('/api/summarize', {
@@ -1940,14 +1950,8 @@ async function loadAISummary(titles) {
       body: JSON.stringify({ titles: titles.slice(0, 7) }),
     });
     const data = await res.json();
-    if (data.summary) {
-      renderSummary(data.summary);
-    } else {
-      document.getElementById('ai-summary-text').textContent = data.error || '요약 실패';
-    }
-  } catch (e) {
-    document.getElementById('ai-summary-text').textContent = '요약을 불러오지 못했습니다.';
-  }
+    if (data.summary) renderSummary(data.summary);
+  } catch (e) {}
 }
 
 function renderSummary(text) {
@@ -2151,7 +2155,8 @@ function closePWABanner() {
 }
 
 checkIOSInstall();
-loadFeeds();
+loadCachedSummary(); // 페이지 열자마자 캐시 브리핑 즉시 표시
+loadFeeds();         // 뉴스 로딩 병렬 실행
 
 window.addEventListener('popstate', () => {
   if (document.getElementById('calendar-modal').classList.contains('show')) { closeCalendar(); return; }
