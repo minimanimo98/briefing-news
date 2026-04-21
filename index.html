@@ -1692,6 +1692,7 @@ async function loadFeeds() {
 
   allArticles = scoreArticles(allArticles);
   renderArticles();
+  prefetchArticles(allArticles);
   document.getElementById('update-time').textContent = '최종 업데이트 ' + new Date().toLocaleTimeString('ko-KR');
   loadAISummary(allArticles.map(a => a.title));
   loadHotNews();
@@ -1944,6 +1945,20 @@ async function loadCachedSummary() {
 }
 
 // 뉴스 로딩 후 최신 브리핑 갱신
+// 상위 5개 기사 백그라운드 프리패치
+function prefetchArticles(articles) {
+  articles.slice(0, 5).forEach(a => {
+    if (!a.link) return;
+    setTimeout(() => {
+      fetch('/api/article', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: a.title, source: a.source, url: a.link }),
+      }).catch(() => {});
+    }, 2000);
+  });
+}
+
 async function loadAISummary(titles) {
   try {
     const res = await fetch('/api/summarize', {
