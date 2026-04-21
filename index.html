@@ -2324,17 +2324,31 @@ function sortETF(type, el) {
 async function loadETFRelatedNews(etfName) {
   const el = document.getElementById('etf-related-news-list');
   el.innerHTML = '<div style="padding:8px 0;font-size:12px;color:rgba(255,255,255,0.3);">뉴스 불러오는 중...</div>';
+
+  // 키워드 추출 (운용사명만 제거, 테마는 유지)
+  const keyword = etfName
+    .replace(/TIGER|KODEX|ACE|PLUS|SOL|RISE|HANARO|1Q/gi, '')
+    .replace(/TOP\d+|Plus|액티브|플러스|TR/g, '')
+    .replace(/[()&]/g, '')
+    .trim()
+    .split(/\s+/)
+    .filter(w => w.length >= 2)
+    .slice(0, 2)
+    .join(' ') || etfName;
+
   try {
-    const keyword = etfName
-      .replace('TIGER','').replace('KODEX','').replace('ACE','').replace('PLUS','').replace('SOL','')
-      .replace('TOP10','').replace('TOP3','').replace('TOP7','').replace('TOP4','').replace('Plus','')
-      .replace('액티브','').replace('플러스','').replace('TR','').replace(/[()&]/g,'').trim();
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 5000); // 5초 타임아웃
 
     const rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(keyword)}&hl=ko&gl=KR&ceid=KR:ko`;
-    const res = await fetch(`/api/rss?url=${encodeURIComponent(rssUrl)}`);
+    const res = await fetch(`/api/rss?url=${encodeURIComponent(rssUrl)}`, {
+      signal: controller.signal
+    });
+    clearTimeout(timer);
+
     const text = await res.text();
     const itemMatches = [...text.matchAll(/<item>([\s\S]*?)<\/item>/g)];
-    const news = itemMatches.slice(0, 3).map(m => {
+    const news = itemMatches.slice(0, 2).map(m => { // 3개→2개
       const item = m[1];
       const titleMatch = item.match(/<title><!\[CDATA\[(.*?)\]\]><\/title>/) || item.match(/<title>(.*?)<\/title>/);
       const linkMatch = item.match(/<link>(.*?)<\/link>/);
@@ -2356,7 +2370,7 @@ async function loadETFRelatedNews(etfName) {
         <div class="etf-related-news-meta">${n.date}</div>
       </div>`).join('');
   } catch(e) {
-    el.innerHTML = '<div style="padding:8px 0;font-size:12px;color:rgba(255,255,255,0.3);">뉴스 불러오기 실패</div>';
+    el.innerHTML = '<div style="padding:8px 0;font-size:12px;color:rgba(255,255,255,0.3);">관련 뉴스 없음</div>';
   }
 }
 
@@ -2423,28 +2437,30 @@ function openETFModal(code, name, price, pct, change, up) {
   document.body.style.overflow = 'hidden';
   history.pushState({ modal: 'etf' }, '');
 
-  fetch('/api/etf-brief', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ etfCode: code, etfName: name, price, pct }),
-  }).then(r => r.json()).then(data => {
-    if (data.brief) {
-      const situation = data.brief.match(/\[지금상황\]\s*(.+)/)?.[1]?.trim() || '';
-      const news      = data.brief.match(/\[핵심뉴스\]\s*(.+)/)?.[1]?.trim() || '';
-      const hint      = data.brief.match(/\[투자힌트\]\s*(.+)/)?.[1]?.trim() || '';
-      let html = '';
-      if (situation) html += `<div class="etf-brief-row"><div class="etf-brief-row-label">지금상황</div><div class="etf-brief-row-text">${situation}</div></div>`;
-      if (news)      html += `<div class="etf-brief-row"><div class="etf-brief-row-label">핵심뉴스</div><div class="etf-brief-row-text">${news}</div></div>`;
-      if (hint)      html += `<div class="etf-brief-row"><div class="etf-brief-row-label">투자힌트</div><div class="etf-brief-row-text">${hint}</div></div>`;
-      document.getElementById('etf-brief-content').innerHTML = html || data.brief;
-    } else {
+  // 브리핑 + 관련뉴스 병렬 실행
+  Promise.all([
+    fetch('/api/etf-brief', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ etfCode: code, etfName: name, price, pct }),
+    }).then(r => r.json()).then(data => {
+      if (data.brief) {
+        const situation = data.brief.match(/\[지금상황\]\s*(.+)/)?.[1]?.trim() || '';
+        const news      = data.brief.match(/\[핵심뉴스\]\s*(.+)/)?.[1]?.trim() || '';
+        const hint      = data.brief.match(/\[투자힌트\]\s*(.+)/)?.[1]?.trim() || '';
+        let html = '';
+        if (situation) html += `<div class="etf-brief-row"><div class="etf-brief-row-label">지금상황</div><div class="etf-brief-row-text">${situation}</div></div>`;
+        if (news)      html += `<div class="etf-brief-row"><div class="etf-brief-row-label">핵심뉴스</div><div class="etf-brief-row-text">${news}</div></div>`;
+        if (hint)      html += `<div class="etf-brief-row"><div class="etf-brief-row-label">투자힌트</div><div class="etf-brief-row-text">${hint}</div></div>`;
+        document.getElementById('etf-brief-content').innerHTML = html || data.brief;
+      } else {
+        document.getElementById('etf-brief-content').textContent = '브리핑을 불러오지 못했습니다.';
+      }
+    }).catch(() => {
       document.getElementById('etf-brief-content').textContent = '브리핑을 불러오지 못했습니다.';
-    }
-  }).catch(() => {
-    document.getElementById('etf-brief-content').textContent = '브리핑을 불러오지 못했습니다.';
-  });
-
-  loadETFRelatedNews(name);
+    }),
+    loadETFRelatedNews(name)
+  ]);
 }
 
 function getBookmarks() {
