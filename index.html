@@ -1783,12 +1783,19 @@ function openArticle(url, title, source) {
     if (data.summary) {
       const text = data.summary;
       const oneline = text.match(/\[한줄요약\]\s*(.+)/)?.[1]?.trim() || '';
-      const point   = text.match(/\[투자포인트\]([\s\S]*?)(?=\[|$)/)?.[1]?.trim() || '';
-      const etf     = text.match(/\[관련ETF\]\s*(.+)/)?.[1]?.trim() || '';
+      const pointBlock = text.match(/\[투자포인트\]([\s\S]*?)(?=\[|$)/)?.[1]?.trim() || '';
+      const etf = text.match(/\[관련ETF\]\s*(.+)/)?.[1]?.trim() || '';
+
+      // 투자포인트 bullet 파싱
+      const points = pointBlock
+        .split('\n')
+        .map(l => l.replace(/^[-•]\s*/, '').trim())
+        .filter(l => l.length > 0);
+
       let html = '';
       if (oneline) html += `<div class="article-ai-section"><div class="article-ai-section-label">한줄요약</div><div class="article-ai-section-text">${oneline}</div></div>`;
-      if (point)   html += `<div class="article-ai-section"><div class="article-ai-section-label">투자포인트</div><div class="article-ai-section-text">${point.replace(/\n/g,'<br>')}</div></div>`;
-      if (etf)     html += `<div class="article-ai-section"><div class="article-ai-section-label">관련 ETF</div><div class="article-ai-section-text">${etf}</div></div>`;
+      if (points.length) html += `<div class="article-ai-section"><div class="article-ai-section-label">투자포인트</div><div class="article-ai-section-text">${points.map(p => `• ${p}`).join('<br>')}</div></div>`;
+      if (etf) html += `<div class="article-ai-section"><div class="article-ai-section-label">관련 ETF</div><div class="article-ai-section-text">${etf}</div></div>`;
       document.getElementById('article-ai-content').innerHTML = html || text;
 
       if (etf) {
