@@ -81,13 +81,21 @@ module.exports = async function handler(req, res) {
 
     // ✅ 짧은 프롬프트 + max_tokens 150
     const newsText = newsResult.length ? newsResult.map((t,i) => `${i+1}. ${t}`).join('\n') : '없음';
-    const prompt = `ETF: ${etfName} ${pct}
-뉴스: ${newsText}
+    const prompt = `주식 초보자에게 ETF를 쉽게 설명해주는 친절한 선생님입니다.
+
+ETF: ${etfName} (오늘 ${pct})
+관련 뉴스: ${newsText}
+
+규칙:
+- 중학생도 이해하는 쉬운 말
+- 어려운 용어 금지 (변동성→가격 출렁임, 매수→사기, 매도→팔기)
+- 20자 이내로 짧게
+- 마침표 금지
 
 형식 그대로 출력:
-[지금상황] 20자이내
-[핵심뉴스] 20자이내
-[투자힌트] 20자이내`;
+[지금상황] 오늘 왜 이런지 한마디
+[핵심뉴스] 가장 중요한 뉴스 한마디
+[투자힌트] 지금 어떻게 할지 한마디`;
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
