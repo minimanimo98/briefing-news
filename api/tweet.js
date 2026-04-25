@@ -1,38 +1,25 @@
-// /api/tweet.js - 시간대별 테마 자동 트윗
-// 장중(09~15시): 변동성 큰 테마 / 장외: 글로벌·전망 테마
+// /api/tweet.js - 하루 4회 테마 자동 트윗 (크레딧 절약)
+// 8시(아침) / 12시(점심) / 18시(저녁) / 22시(미국장)
 
 const SCHEDULE = {
-  // 시간: { name, query, tags, template }
-  8:  { name: '반도체', query: '반도체 ETF 주가', tags: '#ETF #반도체 #TIGER반도체', tpl: 'briefing' },
-  9:  { name: 'AI',     query: 'AI ETF 주가 인공지능', tags: '#ETF #AI #TIGER글로벌AI', tpl: 'hot' },
-  10: { name: '방산',   query: '방산 ETF 주가 K방산', tags: '#ETF #방산 #K방산 #TIGER방산', tpl: 'why' },
-  11: { name: '2차전지',query: '2차전지 ETF 배터리 주가', tags: '#ETF #2차전지 #배터리', tpl: 'buy' },
-  12: { name: '반도체', query: '반도체 ETF 삼성 SK하이닉스', tags: '#ETF #반도체 #SK하이닉스', tpl: 'hot' },
-  13: { name: '조선',   query: '조선 ETF 주가 수주', tags: '#ETF #조선 #TIGER조선', tpl: 'why' },
-  14: { name: 'AI',     query: 'AI ETF 엔비디아 주가', tags: '#ETF #AI #엔비디아', tpl: 'buy' },
-  15: { name: '방산',   query: '방산 ETF 방위산업 주가', tags: '#ETF #방산 #K방산', tpl: 'hot' },
-  16: { name: '전력인프라', query: '전력 ETF 인프라 주가', tags: '#ETF #전력 #TIGER전력', tpl: 'briefing' },
-  17: { name: '원자력', query: '원자력 ETF SMR 주가', tags: '#ETF #원자력 #SMR', tpl: 'why' },
-  18: { name: '우주항공',query: '우주항공 ETF 스페이스X', tags: '#ETF #우주항공 #스페이스X', tpl: 'buy' },
-  19: { name: '미국',   query: '미국 ETF S&P500 나스닥', tags: '#ETF #미국 #나스닥 #SP500', tpl: 'briefing' },
-  20: { name: '2차전지',query: '2차전지 ETF 전고체 배터리', tags: '#ETF #2차전지 #전고체', tpl: 'hot' },
-  21: { name: 'AI',     query: 'AI ETF 미국장 주가', tags: '#ETF #AI #미국장', tpl: 'why' },
-  22: { name: '반도체', query: '반도체 ETF 미국 필라델피아', tags: '#ETF #반도체 #필라델피아', tpl: 'buy' },
-  23: { name: '우주항공',query: '우주항공 ETF 내일 전망', tags: '#ETF #우주항공 #내일전망', tpl: 'briefing' },
+  8:  { name: '반도체', query: '반도체 ETF 주가 삼성 SK하이닉스', tags: '#ETF #반도체 #TIGER반도체', tpl: 'briefing' },
+  12: { name: 'AI',     query: 'AI ETF 주가 인공지능 엔비디아',  tags: '#ETF #AI #TIGER글로벌AI',  tpl: 'buy' },
+  18: { name: '방산',   query: '방산 ETF 주가 K방산 한화',       tags: '#ETF #방산 #K방산',         tpl: 'hot' },
+  22: { name: '미국',   query: '미국 ETF S&P500 나스닥 주가',    tags: '#ETF #미국 #나스닥 #SP500', tpl: 'why' },
 };
 
-function buildTweet(tpl, theme, summary) {
+function buildTweet(tpl, theme, summary, tags) {
   switch(tpl) {
-    case 'why':
-      return `📉 오늘 내 ${theme} ETF 하락한 이유\n\n${summary}..\n\n👉 전체 분석 → https://etfradar.kr\n\n`;
-    case 'hot':
-      return `🚨 ${theme} ETF 지금 난리났다\n\n${summary}..\n\n📊 실시간 확인 → https://etfradar.kr\n\n`;
-    case 'buy':
-      return `💡 ${theme} ETF 지금 사도 될까?\n\n${summary}..\n\n🔍 분석 보기 → https://etfradar.kr\n\n`;
     case 'briefing':
-      return `📊 ${theme} ETF 오늘의 핵심 이슈\n\n${summary}..\n\n👉 더 보기 → https://etfradar.kr\n\n`;
+      return `오늘은 ${theme} 위주로 큰 변동성을 보임\n내 ${theme} ETF만 하락한 이유는...?\n\n${summary}\n\n🔍 etfradar.kr\n\n${tags}`;
+    case 'hot':
+      return `지금 ${theme} ETF 난리난 이유 알아?\n\n${summary}\n\n📊 etfradar.kr\n\n${tags}`;
+    case 'buy':
+      return `${theme} ETF 지금 사도 될까?\n\n${summary}\n\n💡 etfradar.kr\n\n${tags}`;
+    case 'why':
+      return `${theme} ETF 오늘 왜 이러는 거야?\n\n${summary}\n\n👉 etfradar.kr\n\n${tags}`;
     default:
-      return `📈 ${theme} ETF 지금 주목!\n\n${summary}..\n\n→ https://etfradar.kr\n\n`;
+      return `${theme} ETF 오늘의 핵심\n\n${summary}\n\n→ etfradar.kr\n\n${tags}`;
   }
 }
 
@@ -59,14 +46,15 @@ async function fetchThemeNews(item) {
 async function generateSummary(themeName, headlines) {
   if (!headlines.length) return null;
   try {
-    const prompt = `다음은 오늘의 ${themeName} ETF 관련 뉴스 헤드라인이야:
+    const prompt = `다음은 오늘의 ${themeName} ETF 관련 뉴스야:
 ${headlines.map((h, i) => `${i+1}. ${h}`).join('\n')}
 
-위 뉴스를 바탕으로 투자자 관점에서 핵심 이슈를 1~2줄로 요약해줘.
-- 문장은 "~으로", "~하며", "~속에" 등으로 끝내
-- 마침표(.)로 끝내지 마
-- 20자 이상 40자 이하
-- 요약문만 출력해`;
+위 뉴스를 바탕으로 일반인이 읽기 쉽게 1~2줄로 요약해줘.
+- 친구한테 말하듯 자연스러운 말투
+- 어려운 금융용어 금지
+- 25자~40자 사이
+- 마침표 금지
+- 요약문만 출력`;
 
     const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -141,7 +129,7 @@ module.exports = async function handler(req, res) {
     const summary = await generateSummary(schedule.name, headlines);
     if (!summary) return res.status(200).json({ message: '요약 실패' });
 
-    const body = buildTweet(schedule.tpl, schedule.name, summary) + schedule.tags;
+    const body = buildTweet(schedule.tpl, schedule.name, summary, schedule.tags);
     const truncated = body.length > 280 ? body.substring(0, 277) + '...' : body;
 
     const result = await postTweet(truncated);
